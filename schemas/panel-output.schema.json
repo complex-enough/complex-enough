@@ -1,0 +1,341 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:orchestrate-multi-perspective-panel:schema:panel-output:v1",
+  "title": "Multi-Perspective Panel Public Output",
+  "description": "Public panel observations, evidence, decisions, coverage, and gate. Hidden chain-of-thought and raw internal transcripts are prohibited.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run", "perspectives", "items", "decisions", "gate", "summary"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": ["1.0", "1.1"]
+    },
+    "run": {"$ref": "#/$defs/run"},
+    "orchestration": {"$ref": "#/$defs/orchestration"},
+    "perspectives": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/perspective"}
+    },
+    "items": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/item"}
+    },
+    "decisions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/decision"}
+    },
+    "coverage": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/coverage"}
+    },
+    "gate": {"$ref": "#/$defs/gate"},
+    "summary": {"$ref": "#/$defs/summary"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": "1.0"}}},
+      "then": {
+        "properties": {
+          "orchestration": false,
+          "coverage": false,
+          "perspectives": {
+            "items": {
+              "properties": {
+                "stage": false,
+                "executor": false,
+                "failure": false,
+                "replacement_perspective_id": false
+              }
+            }
+          },
+          "items": {"items": {"properties": {"stage": false}}},
+          "decisions": {"items": {"properties": {"stage": false}}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "1.1"}}},
+      "then": {
+        "required": ["orchestration", "coverage"],
+        "properties": {
+          "perspectives": {
+            "items": {"required": ["executor"]}
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "run": {
+            "properties": {"mode": {"const": "full_cycle"}},
+            "required": ["mode"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "perspectives": {
+            "allOf": [
+              {"contains": {"properties": {"stage": {"const": "ideate"}, "status": {"const": "completed"}}, "required": ["stage", "status"]}},
+              {"contains": {"properties": {"stage": {"const": "design"}, "status": {"const": "completed"}}, "required": ["stage", "status"]}},
+              {"contains": {"properties": {"stage": {"const": "converge"}, "status": {"const": "completed"}}, "required": ["stage", "status"]}},
+              {"contains": {"properties": {"stage": {"const": "review"}, "status": {"const": "completed"}}, "required": ["stage", "status"]}}
+            ]
+          },
+          "items": {
+            "allOf": [
+              {"contains": {"properties": {"stage": {"const": "ideate"}}, "required": ["stage"]}},
+              {"contains": {"properties": {"stage": {"const": "design"}}, "required": ["stage"]}},
+              {"contains": {"properties": {"stage": {"const": "converge"}}, "required": ["stage"]}},
+              {"contains": {"properties": {"stage": {"const": "review"}}, "required": ["stage"]}}
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nullableString": {"type": ["string", "null"]},
+    "stage": {
+      "type": ["string", "null"],
+      "enum": ["ideate", "design", "converge", "review", null]
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "branch", "revision"],
+      "properties": {
+        "repository": {"$ref": "#/$defs/nullableString"},
+        "branch": {"$ref": "#/$defs/nullableString"},
+        "revision": {"$ref": "#/$defs/nullableString"}
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "mode", "objective", "scope", "non_goals", "authorities", "baseline", "started_at", "completed_at"],
+      "properties": {
+        "run_id": {"type": "string", "minLength": 1},
+        "mode": {"type": "string", "enum": ["ideate", "design", "converge", "review", "full_cycle"]},
+        "objective": {"type": "string", "minLength": 1},
+        "scope": {"$ref": "#/$defs/stringArray"},
+        "non_goals": {"$ref": "#/$defs/stringArray"},
+        "authorities": {"$ref": "#/$defs/stringArray"},
+        "baseline": {"$ref": "#/$defs/baseline"},
+        "started_at": {"type": ["string", "null"], "format": "date-time"},
+        "completed_at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    },
+    "failure": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["code", "message", "retry_count"],
+      "properties": {
+        "code": {"type": "string", "enum": ["unavailable", "timeout", "cancelled", "tool_error", "capacity"]},
+        "message": {"type": "string"},
+        "retry_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "perspective": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["perspective_id", "name", "lens", "selection_reason", "status"],
+      "properties": {
+        "perspective_id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "lens": {"type": "string", "minLength": 1},
+        "selection_reason": {"type": "string", "minLength": 1},
+        "stage": {"$ref": "#/$defs/stage"},
+        "executor": {"type": "string", "enum": ["subagent", "main_session"]},
+        "status": {"type": "string", "enum": ["completed", "failed", "replaced"]},
+        "failure": {"$ref": "#/$defs/failure"},
+        "replacement_perspective_id": {"$ref": "#/$defs/nullableString"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "completed"}}},
+          "then": {
+            "properties": {
+              "failure": {"type": "null"},
+              "replacement_perspective_id": {"type": "null"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "failed"}}},
+          "then": {
+            "required": ["failure"],
+            "properties": {
+              "failure": {"type": "object"},
+              "replacement_perspective_id": {"type": "null"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "replaced"}}},
+          "then": {
+            "required": ["failure", "replacement_perspective_id"],
+            "properties": {
+              "failure": {"type": "object"},
+              "replacement_perspective_id": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "locator", "observation"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "locator": {"$ref": "#/$defs/nullableString"},
+        "observation": {"type": "string", "minLength": 1}
+      }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["item_id", "perspective_id", "kind", "severity", "statement", "evidence", "impact", "proposal", "confidence"],
+      "properties": {
+        "item_id": {"type": "string", "minLength": 1},
+        "perspective_id": {"type": "string", "minLength": 1},
+        "stage": {"$ref": "#/$defs/stage"},
+        "kind": {"type": "string", "enum": ["idea", "option", "risk", "finding", "question"]},
+        "severity": {
+          "type": ["string", "null"],
+          "enum": ["blocker", "high", "medium", "low", null]
+        },
+        "statement": {"type": "string", "minLength": 1},
+        "evidence": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/evidence"}
+        },
+        "impact": {"type": "string"},
+        "proposal": {"$ref": "#/$defs/nullableString"},
+        "confidence": {"type": "string", "enum": ["high", "medium", "low"]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"const": "finding"}}},
+          "then": {
+            "properties": {
+              "severity": {"type": "string", "enum": ["blocker", "high", "medium", "low"]},
+              "evidence": {"minItems": 1}
+            }
+          },
+          "else": {
+            "if": {"properties": {"kind": {"const": "risk"}}},
+            "then": {"properties": {"evidence": {"minItems": 1}}},
+            "else": {"properties": {"severity": {"type": "null"}}}
+          }
+        }
+      ]
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision_id", "source_item_ids", "status", "rationale", "resulting_change"],
+      "properties": {
+        "decision_id": {"type": "string", "minLength": 1},
+        "source_item_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "stage": {"$ref": "#/$defs/stage"},
+        "status": {"type": "string", "enum": ["accepted", "rejected", "deferred", "out_of_scope", "needs_user_decision"]},
+        "rationale": {"type": "string", "minLength": 1},
+        "resulting_change": {"$ref": "#/$defs/nullableString"}
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["risk_surface", "lens", "critical", "status", "evidence_item_ids"],
+      "properties": {
+        "risk_surface": {"type": "string", "minLength": 1},
+        "lens": {"type": "string", "minLength": 1},
+        "critical": {"type": "boolean"},
+        "status": {"type": "string", "enum": ["covered", "partially_covered", "uncovered"]},
+        "evidence_item_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "covered"}}},
+          "then": {"properties": {"evidence_item_ids": {"minItems": 1}}}
+        }
+      ]
+    },
+    "orchestration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution", "degraded", "waves", "notes"],
+      "properties": {
+        "execution": {"type": "string", "enum": ["subagents", "waves", "single_session_fallback", "mixed"]},
+        "degraded": {"type": "boolean"},
+        "waves": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {"type": "string"},
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "notes": {"$ref": "#/$defs/stringArray"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"execution": {"const": "single_session_fallback"}}},
+          "then": {
+            "properties": {
+              "degraded": {"const": true},
+              "waves": {"maxItems": 0}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"execution": {"const": "mixed"}}},
+          "then": {"properties": {"degraded": {"const": true}}}
+        }
+      ]
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "rationale", "unresolved_item_ids", "next_step"],
+      "properties": {
+        "state": {"type": "string", "enum": ["continue", "revise", "go", "no_go", "blocked"]},
+        "rationale": {"type": "string", "minLength": 1},
+        "unresolved_item_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "next_step": {"type": "string", "minLength": 1}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["headline", "accepted_changes", "remaining_risks", "needs_user_decision"],
+      "properties": {
+        "headline": {"type": "string", "minLength": 1},
+        "accepted_changes": {"$ref": "#/$defs/stringArray"},
+        "remaining_risks": {"$ref": "#/$defs/stringArray"},
+        "needs_user_decision": {"$ref": "#/$defs/stringArray"}
+      }
+    }
+  }
+}

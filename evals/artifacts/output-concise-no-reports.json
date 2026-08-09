@@ -1,0 +1,13 @@
+{
+  "artifact_version": "1.0",
+  "case_id": "output-concise-no-reports",
+  "host": "codex",
+  "run_id": "cee51fd3-55e0-4e18-8a72-511f041c8168",
+  "executed_at": "2026-08-10T01:41:03+08:00",
+  "execution": "forward",
+  "runtime_revision": "sha256:e0227e5694800774399aa6f1961b882cbc04d3910136c5e4e081d8dc2549f8ae",
+  "suite_revision": "sha256:d64b046fa8fae9854e3008c9b3b55205289a93762e3a0f9cc94617619e99b8cf",
+  "skill_path": "/home/sai/project/orchestrate-multi-perspective-panel",
+  "prompt_sha256": "sha256:b8c40f50148ed208395e3cb49d709a9e9c5cf527beb129c1c5866f1602543c45",
+  "output": "Decision: accept Option 2, transactional outbox, for the next two releases.\n\nIt best satisfies correctness and rollback safety by making the Order commit and delivery intent atomic without tying the create response to Fulfillment availability. It uses the approved broker and is feasible within eight weeks. Stable mobile retries still require an Order-side idempotency key and replayed equivalent response. At-least-once fulfillment requires stable event IDs, versioned schemas, consumer deduplication, and idempotent side effects.\n\nRejected: Option 1, synchronous call, couples availability and latency; a timeout or lost response makes client retries ambiguous and can leave an order committed without a durable delivery path. Option 3, database polling, makes Order storage a consumer contract, while timestamp cursors risk misses, duplicates, and brittle rollback. No option is deferred, no user decision is required, and no fourth architecture is justified.\n\nRemaining risk: an outbox alone does not guarantee publish or consume correctness; gaps, duplicate effects, lag, and incompatible versions remain. Fresh child contexts were unavailable, so the two lens passes ran sequentially in the main session, reducing independence.\n\nNext step: define the event and idempotency contracts, relay/inbox ownership, metrics, replay and rollback thresholds; ship a shadow path in release 1, then canary and reconcile before release 2 cutover."
+}

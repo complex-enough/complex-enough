@@ -1,0 +1,160 @@
+{
+  "suite_version": "1.0.0",
+  "skill": "orchestrate-multi-perspective-panel",
+  "target_platforms": ["codex", "claude-code"],
+  "cases": [
+    {
+      "id": "ideate-pure-product",
+      "mode": "ideate",
+      "tags": ["ideate", "product", "concise"],
+      "request": "Use a multi-perspective panel to ideate product opportunities that reduce patient no-shows for small clinics. Preserve divergent directions, do not pick a winner, and return only a concise synthesis without raw panel reports.",
+      "fixtures": [],
+      "capability": "subagents_available",
+      "assertions": ["selects lenses from distinct value and risk surfaces", "keeps multiple differentiated framings", "does not use severity or a GO gate", "includes small experiments", "does not paste raw reports"]
+    },
+    {
+      "id": "design-cross-module",
+      "mode": "design",
+      "tags": ["design", "architecture", "cross_module"],
+      "request": "Use a multi-perspective panel to design the bounded cross-module architecture described in the fixture. Return responsibilities, ownership, contracts, state/failure behavior, migration, trade-offs, and only genuine decision gates.",
+      "fixtures": ["fixtures/cross-module-architecture.md"],
+      "capability": "subagents_available",
+      "assertions": ["uses distinct architecture, consumer, and operations/risk lenses where material", "does not expand into a big-bang rewrite", "covers idempotency and ownership", "keeps design separate from implementation"]
+    },
+    {
+      "id": "converge-options",
+      "mode": "converge",
+      "tags": ["converge", "options", "decision"],
+      "request": "Use a multi-perspective panel to converge the supplied options into an actionable decision. Apply the shared criteria, record accepted/rejected/deferred outcomes, and do not reopen unconstrained ideation.",
+      "fixtures": ["fixtures/convergence-options.md"],
+      "capability": "subagents_available",
+      "assertions": ["adjudicates rather than votes", "does not invent options unless constraints require it", "gives reasons for rejected options", "returns a next action"]
+    },
+    {
+      "id": "review-preimplementation-readiness",
+      "mode": "review",
+      "tags": ["review", "readiness", "repository", "dirty_worktree", "branch_gate"],
+      "request": "Use a multi-perspective panel for a read-only pre-implementation readiness review of the fixture. Return evidence-backed findings and a GO/NO-GO gate. Do not edit files or switch branches.",
+      "fixtures": ["fixtures/preimplementation-plan.md"],
+      "capability": "subagents_available",
+      "assertions": ["respects read-only authorization", "detects compatibility, migration, rollback, and branch/dirty-worktree gates", "does not modify the unrelated change", "does not issue GO with unresolved high risks"]
+    },
+    {
+      "id": "design-mobile-api-customer",
+      "mode": "design",
+      "tags": ["mobile", "api", "customer", "design"],
+      "request": "Use a multi-perspective panel to design the Mobile App rescheduling flow in the fixture. Include independent Mobile/API consumer and end-customer consequences when justified, then synthesize one concise design.",
+      "fixtures": ["fixtures/mobile-api-customer.md"],
+      "capability": "subagents_available",
+      "assertions": ["covers offline retries and idempotency", "protects the original slot until the new slot is secured", "covers client-version compatibility and concurrent staff edits", "does not treat channels as mandatory seats without reasons"]
+    },
+    {
+      "id": "review-accounting-identity-permission",
+      "mode": "review",
+      "tags": ["accounting", "identity", "permission", "high_risk"],
+      "request": "Use a multi-perspective panel for a read-only readiness review of the accounting, identity, and permission fixture. Return a concise gate and do not decide by reviewer count.",
+      "fixtures": ["fixtures/accounting-identity-permission.md"],
+      "capability": "subagents_available",
+      "assertions": ["gives dedicated coverage to accounting and authorization", "accepts reproducible runtime evidence over unsupported majority opinion", "identifies append-only and permission violations", "returns NO_GO or revise rather than GO"]
+    },
+    {
+      "id": "converge-conflicting-panel-advice",
+      "mode": "converge",
+      "tags": ["conflict", "privacy", "reliability", "converge"],
+      "request": "Use the skill to adjudicate the conflicting independent proposals in the fixture. Preserve the conflict until authority-based adjudication and return one integrated decision, not a vote tally.",
+      "fixtures": ["fixtures/conflicting-advice.md"],
+      "capability": "subagents_available",
+      "assertions": ["rejects proposals that violate privacy authority", "does not count votes", "explains rejected proposals", "keeps cost subordinate to non-negotiable policy"]
+    },
+    {
+      "id": "review-minority-runtime-evidence",
+      "mode": "review",
+      "tags": ["minority", "runtime_evidence", "anchoring", "review"],
+      "request": "Use a multi-perspective panel to review the migration fixture. Resolve the majority/minority conflict using evidence and return a concise readiness gate.",
+      "fixtures": ["fixtures/runtime-minority-evidence.md"],
+      "capability": "subagents_available",
+      "assertions": ["does not follow reviewer majority", "verifies the reproducible decoder behavior", "treats the supported Mobile version as a real consumer", "does not issue GO for a global switch"]
+    },
+    {
+      "id": "fallback-slots-waves",
+      "mode": "review",
+      "tags": ["slots", "waves", "fallback"],
+      "request": "Run a pre-implementation review of the cross-module fixture. Only one child-agent slot is available at a time. Preserve all required lenses, execute waves, and disclose the orchestration state in the synthesis.",
+      "fixtures": ["fixtures/cross-module-architecture.md"],
+      "capability": "one_child_slot",
+      "assertions": ["does not reduce required lens coverage", "uses sequential fresh-context waves", "does not leak earlier findings to later panelists", "does not equate capacity limits with failure"]
+    },
+    {
+      "id": "fallback-agent-timeout",
+      "mode": "review",
+      "tags": ["timeout", "partial_failure", "fallback"],
+      "request": "Run the readiness review of the pre-implementation fixture. The API-consumer panelist times out before returning findings. Apply the skill fallback, record the failure honestly, and do not claim coverage that was not recovered.",
+      "fixtures": ["fixtures/preimplementation-plan.md"],
+      "capability": "panelist_timeout",
+      "assertions": ["records timeout for the same lens", "retries at most once when useful or uses explicit fallback", "does not silently substitute a nearby role", "does not issue GO while critical coverage is missing"]
+    },
+    {
+      "id": "fallback-subagents-unavailable",
+      "mode": "design",
+      "tags": ["unavailable", "single_session_fallback", "degraded"],
+      "request": "Use the skill to design the Mobile/API/customer fixture, but the platform reports that subagents are unavailable. Complete the safest in-scope fallback and clearly distinguish it from independent panel validation.",
+      "fixtures": ["fixtures/mobile-api-customer.md"],
+      "capability": "subagents_unavailable",
+      "assertions": ["performs explicit lens-by-lens fallback", "discloses reduced independence", "does not say independent panel completed", "retains material lenses and residual risk"]
+    },
+    {
+      "id": "output-machine-readable-gui",
+      "mode": "review",
+      "tags": ["gui", "json", "schema", "no_cot"],
+      "request": "Run a review of the accounting/permission fixture and return only machine-readable JSON for a GUI consumer using the current stable public panel contract. Do not include hidden reasoning or raw reports.",
+      "fixtures": ["fixtures/accounting-identity-permission.md"],
+      "capability": "subagents_available",
+      "assertions": ["validates against schemas/panel-output.schema.json", "uses schema_version 1.1", "contains public evidence, decisions, coverage, and degradation state", "contains no chain-of-thought or raw transcripts"]
+    },
+    {
+      "id": "output-concise-no-reports",
+      "mode": "converge",
+      "tags": ["concise", "synthesis", "no_raw_reports"],
+      "request": "Converge the options fixture with independent perspectives, but give me at most 220 words: conclusion, key rationale, rejected options, remaining risk, and next step. Do not include panelist-by-panelist reports.",
+      "fixtures": ["fixtures/convergence-options.md"],
+      "capability": "subagents_available",
+      "assertions": ["stays within 220 words", "leads with the decision", "does not expose raw reports", "retains important rejected rationale and risk"]
+    },
+    {
+      "id": "full-cycle-reselect-lenses",
+      "mode": "full_cycle",
+      "tags": ["full_cycle", "stage_boundaries", "reselection"],
+      "request": "Use a multi-perspective panel for the full cycle in the fixture: ideate, design, converge, then readiness review. Keep the output concise, preserve stage boundaries, and reselect lenses rather than carrying a fixed panel through every stage.",
+      "fixtures": ["fixtures/full-cycle-objective.md"],
+      "capability": "subagents_available",
+      "assertions": ["runs all four behaviors distinctly", "does not prematurely converge during ideation", "reselects lenses at stage boundaries", "ends with a readiness gate rather than claiming implementation"]
+    },
+    {
+      "id": "trigger-positive-multi-perspective",
+      "mode": "design",
+      "tags": ["trigger", "positive"],
+      "request": "Bring independent product, API consumer, and operations perspectives together to review this cross-module design, then synthesize the result.",
+      "fixtures": ["fixtures/cross-module-architecture.md"],
+      "capability": "subagents_available",
+      "assertions": ["skill should trigger", "runs dynamic selection rather than treating named lenses as a complete fixed roster"]
+    },
+    {
+      "id": "trigger-negative-routine-review",
+      "mode": null,
+      "tags": ["trigger", "negative"],
+      "request": "Review this three-line pure function for an off-by-one error.",
+      "fixtures": [],
+      "capability": "not_applicable",
+      "assertions": ["skill should not trigger without a multi-perspective need", "ordinary single-lens review remains lightweight"]
+    },
+    {
+      "id": "platform-portable-core",
+      "mode": "design",
+      "tags": ["platform", "portable", "codex", "claude_code"],
+      "request": "Use the multi-perspective skill on this host to design the supplied Mobile/API/customer fixture. Apply the host adapter but keep the public decisions and schema platform-neutral.",
+      "fixtures": ["fixtures/mobile-api-customer.md"],
+      "capability": "host_native_subagents",
+      "assertions": ["loads only the current host adapter", "uses genuinely separate contexts when host subagents are available", "keeps public schema free of host tool names", "uses the shared core without host-specific public decisions"]
+    }
+  ]
+}

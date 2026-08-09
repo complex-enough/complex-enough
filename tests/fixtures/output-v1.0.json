@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "run": {
+    "run_id": "run-v1-compat",
+    "mode": "ideate",
+    "objective": "Explore appointment reminder opportunities",
+    "scope": ["product discovery"],
+    "non_goals": ["selecting a winner"],
+    "authorities": ["user request"],
+    "baseline": {"repository": null, "branch": null, "revision": null},
+    "started_at": null,
+    "completed_at": null
+  },
+  "perspectives": [
+    {
+      "perspective_id": "P1",
+      "name": "Clinic operations",
+      "lens": "Staff workflow and recoverable capacity",
+      "selection_reason": "No-shows create a distinct operating cost",
+      "status": "completed"
+    }
+  ],
+  "items": [
+    {
+      "item_id": "I1",
+      "perspective_id": "P1",
+      "kind": "idea",
+      "severity": null,
+      "statement": "Offer one-tap confirmation and rescheduling.",
+      "evidence": [],
+      "impact": "Converts silent absence into an actionable signal.",
+      "proposal": "Test against reminder-only messaging.",
+      "confidence": "medium"
+    }
+  ],
+  "decisions": [],
+  "gate": {
+    "state": "continue",
+    "rationale": "The idea remains a discovery candidate.",
+    "unresolved_item_ids": [],
+    "next_step": "Run a small message experiment."
+  },
+  "summary": {
+    "headline": "Several discovery paths remain open.",
+    "accepted_changes": [],
+    "remaining_risks": ["Value assumptions are untested."],
+    "needs_user_decision": []
+  }
+}

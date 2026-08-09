@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.1",
+  "run": {
+    "run_id": "run-v1-1",
+    "mode": "review",
+    "objective": "Review refund permission readiness",
+    "scope": ["ledger", "authorization"],
+    "non_goals": ["refund limits"],
+    "authorities": ["confirmed product policy", "contract test"],
+    "baseline": {"repository": "example/repo", "branch": "main", "revision": "abc123"},
+    "started_at": null,
+    "completed_at": null
+  },
+  "orchestration": {
+    "execution": "waves",
+    "degraded": true,
+    "waves": [["P1"], ["P2"]],
+    "notes": ["The first authorization panelist timed out; a replacement completed the same lens."]
+  },
+  "perspectives": [
+    {
+      "perspective_id": "P1",
+      "name": "Authorization reviewer",
+      "lens": "Server-side authorization boundary",
+      "selection_reason": "Posting authority is a critical risk surface",
+      "stage": "review",
+      "executor": "subagent",
+      "status": "replaced",
+      "failure": {"code": "timeout", "message": "No response before deadline", "retry_count": 1},
+      "replacement_perspective_id": "P2"
+    },
+    {
+      "perspective_id": "P2",
+      "name": "Authorization reviewer replacement",
+      "lens": "Server-side authorization boundary",
+      "selection_reason": "Recover the failed critical lens without changing its question",
+      "stage": "review",
+      "executor": "subagent",
+      "status": "completed",
+      "failure": null,
+      "replacement_perspective_id": null
+    }
+  ],
+  "items": [
+    {
+      "item_id": "I1",
+      "perspective_id": "P2",
+      "stage": "review",
+      "kind": "finding",
+      "severity": "blocker",
+      "statement": "A support token can post a refund.",
+      "evidence": [
+        {
+          "source": "tests/refund_contract_test.php",
+          "locator": "support_token_posts_refund",
+          "observation": "The request returns 201 and creates a posted entry three of three times."
+        }
+      ],
+      "impact": "An unauthorized actor can create a financial ledger entry.",
+      "proposal": "Derive the actor from the authenticated principal and require finance_approver.",
+      "confidence": "high"
+    }
+  ],
+  "decisions": [
+    {
+      "decision_id": "D1",
+      "source_item_ids": ["I1"],
+      "stage": "review",
+      "status": "accepted",
+      "rationale": "The reproducible runtime behavior contradicts confirmed posting policy.",
+      "resulting_change": "Add server-side role enforcement before implementation."
+    }
+  ],
+  "coverage": [
+    {
+      "risk_surface": "refund posting authorization",
+      "lens": "Authorization reviewer",
+      "critical": true,
+      "status": "covered",
+      "evidence_item_ids": ["I1"]
+    }
+  ],
+  "gate": {
+    "state": "no_go",
+    "rationale": "A confirmed blocker remains unresolved.",
+    "unresolved_item_ids": ["I1"],
+    "next_step": "Correct authorization and rerun the contract test."
+  },
+  "summary": {
+    "headline": "Refund posting is not ready.",
+    "accepted_changes": ["Enforce finance_approver server-side."],
+    "remaining_risks": ["Authorization fix is not yet verified."],
+    "needs_user_decision": []
+  }
+}

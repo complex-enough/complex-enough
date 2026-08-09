@@ -1,0 +1,267 @@
+{
+  "suite_version": "1.0.0",
+  "suite_revision": "sha256:d64b046fa8fae9854e3008c9b3b55205289a93762e3a0f9cc94617619e99b8cf",
+  "skill_revision": "sha256:e0227e5694800774399aa6f1961b882cbc04d3910136c5e4e081d8dc2549f8ae",
+  "executed_at": "2026-08-10T02:08:42+08:00",
+  "verified_at": "2026-08-10T02:14:31+08:00",
+  "environment": {
+    "host": "codex",
+    "forward_runner": "Fresh isolated Codex contexts with digest-bound public moderator artifacts, real waves, and explicit degraded fallbacks",
+    "failure_injection": "mixed"
+  },
+  "cases": [
+    {
+      "case_id": "ideate-pure-product",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/ideate-pure-product.json",
+      "artifact_sha256": "sha256:e0aa06a137ae6d56b88db081f705b0a617e727a8fdcb713c201bd116f71a5837",
+      "run_id": "codex-20260810-ideate-pure-product",
+      "assertions": [
+        {"assertion": "selects lenses from distinct value and risk surfaces", "status": "pass", "evidence": "Fresh patient-behavior/access, clinic-operations, and product-experiment lenses were selected dynamically."},
+        {"assertion": "keeps multiple differentiated framings", "status": "pass", "evidence": "The synthesis retained eight unranked mechanisms spanning reminders, barriers, clarity, continuity, and operations."},
+        {"assertion": "does not use severity or a GO gate", "status": "pass", "evidence": "No severity ranking or readiness gate appeared in the ideation result."},
+        {"assertion": "includes small experiments", "status": "pass", "evidence": "Every retained direction included a smallest discriminating experiment."},
+        {"assertion": "does not paste raw reports", "status": "pass", "evidence": "The user received one compact opportunity table rather than panelist transcripts."}
+      ],
+      "notes": "Independent Codex run with three distinct lenses."
+    },
+    {
+      "case_id": "design-cross-module",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/design-cross-module.json",
+      "artifact_sha256": "sha256:013ec6df66020b86609bd8a4a627a3ab4e5e58272cb01b8f284990a06eb009fd",
+      "run_id": "codex-20260810-design-cross-module",
+      "assertions": [
+        {"assertion": "uses distinct architecture, consumer, and operations/risk lenses where material", "status": "pass", "evidence": "Ownership/consistency, client contracts, and migration/operations lenses ran independently."},
+        {"assertion": "does not expand into a big-bang rewrite", "status": "pass", "evidence": "The design used staged ownership and coexistence rather than replacing all modules."},
+        {"assertion": "covers idempotency and ownership", "status": "pass", "evidence": "Order idempotency, transactional outbox, authoritative owners, and durable consumer progress were explicit."},
+        {"assertion": "keeps design separate from implementation", "status": "pass", "evidence": "The result defined boundaries and gates without editing or implementing runtime code."}
+      ],
+      "notes": "Three lenses completed in constrained waves."
+    },
+    {
+      "case_id": "converge-options",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/converge-options.json",
+      "artifact_sha256": "sha256:9890e35465ceca1fb51bb561a37ead527628f2b3439b0ab673330a66250ffb1e",
+      "run_id": "codex-20260810-converge-options",
+      "assertions": [
+        {"assertion": "adjudicates rather than votes", "status": "pass", "evidence": "Authority, reliability, compatibility, and cost criteria selected transactional outbox without vote counts."},
+        {"assertion": "does not invent options unless constraints require it", "status": "pass", "evidence": "The finite supplied option set remained bounded."},
+        {"assertion": "gives reasons for rejected options", "status": "pass", "evidence": "Synchronous and polling choices were rejected with concrete failure and operating-cost reasons."},
+        {"assertion": "returns a next action", "status": "pass", "evidence": "The synthesis named the contract and verification work to perform next."}
+      ],
+      "notes": "Corrected rerun after exact wire-enum/item-budget prompt tightening."
+    },
+    {
+      "case_id": "review-preimplementation-readiness",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/review-preimplementation-readiness.json",
+      "artifact_sha256": "sha256:3c6c53b74b3a61fdc893e22845779e61d01ce0cca401a01530dc8564eb6920d8",
+      "run_id": "codex-20260810-review-preimplementation-readiness",
+      "assertions": [
+        {"assertion": "respects read-only authorization", "status": "pass", "evidence": "The runner reported no file edits or branch changes."},
+        {"assertion": "detects compatibility, migration, rollback, and branch/dirty-worktree gates", "status": "pass", "evidence": "It identified Mobile v4 compatibility, 2.4M-row backfill, destructive rollback, main branch, and unrelated dirty work."},
+        {"assertion": "does not modify the unrelated change", "status": "pass", "evidence": "The Billing change was explicitly preserved and untouched."},
+        {"assertion": "does not issue GO with unresolved high risks", "status": "pass", "evidence": "The integrated gate was NO_GO."}
+      ],
+      "notes": "Capacity-limited run used disclosed main-session lens passes; evidence and gate remained review-mode correct."
+    },
+    {
+      "case_id": "design-mobile-api-customer",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/design-mobile-api-customer.json",
+      "artifact_sha256": "sha256:ba363694632004fe366bd37fcd92d0a95e8b4a6a0d20dd79a33f4430801e55dc",
+      "run_id": "codex-20260810-design-mobile-api-customer",
+      "assertions": [
+        {"assertion": "covers offline retries and idempotency", "status": "pass", "evidence": "Stable operation keys, queued-intent persistence, replay, and ambiguous timeout reconciliation were specified."},
+        {"assertion": "protects the original slot until the new slot is secured", "status": "pass", "evidence": "The atomic transaction retained the old booking until replacement commit."},
+        {"assertion": "covers client-version compatibility and concurrent staff edits", "status": "pass", "evidence": "A six-month legacy bridge and version conflict fence covered old Mobile and Web staff concurrency."},
+        {"assertion": "does not treat channels as mandatory seats without reasons", "status": "pass", "evidence": "Mobile/API, customer, and reliability lenses were justified by distinct contracts and failure consequences."}
+      ],
+      "notes": "Capacity-limited run disclosed main-session fallback and reduced independence; decisions remained platform-neutral."
+    },
+    {
+      "case_id": "review-accounting-identity-permission",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/review-accounting-identity-permission.json",
+      "artifact_sha256": "sha256:896a2b8b22c672b5824b28d0aedb1b0f5ae9c559f7d5b8b094a0297d971a0da8",
+      "run_id": "codex-20260810-review-accounting-identity-permission",
+      "assertions": [
+        {"assertion": "gives dedicated coverage to accounting and authorization", "status": "pass", "evidence": "Accounting integrity and identity/permission were independently owned lenses."},
+        {"assertion": "accepts reproducible runtime evidence over unsupported majority opinion", "status": "pass", "evidence": "The moderator accepted the reproducible runtime failure despite contrary reviewer count."},
+        {"assertion": "identifies append-only and permission violations", "status": "pass", "evidence": "Mutable ledger history and caller-selected actor/permission paths were prioritized."},
+        {"assertion": "returns NO_GO or revise rather than GO", "status": "pass", "evidence": "The final gate was NO_GO."}
+      ],
+      "notes": "High-risk evidence adjudication used disclosed main-session fallback under thread limits."
+    },
+    {
+      "case_id": "converge-conflicting-panel-advice",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/converge-conflicting-panel-advice.json",
+      "artifact_sha256": "sha256:69675a60e132c574104800081f70219b6f48b5da4d27bd13b2b2b425587ad6d7",
+      "run_id": "8633c486-542c-4222-8165-3b4870da45b1",
+      "assertions": [
+        {"assertion": "rejects proposals that violate privacy authority", "status": "pass", "evidence": "Full-body push was rejected; opaque notification plus authenticated fetch was accepted."},
+        {"assertion": "does not count votes", "status": "pass", "evidence": "No tally appeared; authority and evidence drove adjudication."},
+        {"assertion": "explains rejected proposals", "status": "pass", "evidence": "Polling, lowest-cost, and sensitive-payload proposals each received concrete rationale."},
+        {"assertion": "keeps cost subordinate to non-negotiable policy", "status": "pass", "evidence": "Privacy and delivery correctness outranked the cheapest option."}
+      ],
+      "notes": "Thread capacity forced disclosed moderator lens passes; authority-based adjudication remained intact."
+    },
+    {
+      "case_id": "review-minority-runtime-evidence",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/review-minority-runtime-evidence.json",
+      "artifact_sha256": "sha256:70164d58b2ca1fdfab52640eb7acf4a6a44865b7b24c6e29c452a83ac29ef892",
+      "run_id": "296d3a2a-f02b-4d33-bba8-d4e23b6578b5",
+      "assertions": [
+        {"assertion": "does not follow reviewer majority", "status": "pass", "evidence": "The minority runtime result controlled the gate."},
+        {"assertion": "verifies the reproducible decoder behavior", "status": "pass", "evidence": "The moderator used the supplied 5/5 decoder reproduction as direct evidence."},
+        {"assertion": "treats the supported Mobile version as a real consumer", "status": "pass", "evidence": "Supported Mobile compatibility was included in the affected consumer set."},
+        {"assertion": "does not issue GO for a global switch", "status": "pass", "evidence": "The result rejected the global switch and returned NO_GO."}
+      ],
+      "notes": "Also exercised in the accounting/identity high-risk run."
+    },
+    {
+      "case_id": "fallback-slots-waves",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/fallback-slots-waves.json",
+      "artifact_sha256": "sha256:8261b65bd88e71e21ae096c2cff9014163780645db49f0684e95fe207fd34c8e",
+      "run_id": "codex-20260810-slots-waves",
+      "assertions": [
+        {"assertion": "does not reduce required lens coverage", "status": "pass", "evidence": "All three required ownership, consumer, and operations lenses completed."},
+        {"assertion": "uses sequential fresh-context waves", "status": "pass", "evidence": "Exactly one child slot produced three sequential one-panelist waves."},
+        {"assertion": "does not leak earlier findings to later panelists", "status": "pass", "evidence": "Each wave received the unchanged original authority packet, not prior findings."},
+        {"assertion": "does not equate capacity limits with failure", "status": "pass", "evidence": "The synthesis reported increased latency but no coverage or independence degradation."}
+      ],
+      "notes": "Actual one-child-slot constraint, not simulated."
+    },
+    {
+      "case_id": "fallback-agent-timeout",
+      "execution": "simulated_failure",
+      "status": "pass",
+      "artifact_path": "artifacts/fallback-agent-timeout.json",
+      "artifact_sha256": "sha256:36121ed006c2c298c06b527bd0965f6788c3092ae43cf8eac7e9352185c64abf",
+      "run_id": "run-e67379e8-dd5d-46db-bb54-54a22947b48a",
+      "assertions": [
+        {"assertion": "records timeout for the same lens", "status": "pass", "evidence": "The orchestration record retained the original consumer_compatibility failed/timeout attempt."},
+        {"assertion": "retries at most once when useful or uses explicit fallback", "status": "pass", "evidence": "The simulated timeout used an explicit main-session fallback for the exact same API-consumer lens."},
+        {"assertion": "does not silently substitute a nearby role", "status": "pass", "evidence": "The result explicitly stated no nearby role was substituted."},
+        {"assertion": "does not issue GO while critical coverage is missing", "status": "pass", "evidence": "Recovered coverage was disclosed and the artifact still received NO_GO on evidence."}
+      ],
+      "notes": "Failure injection was simulated and labeled; same-lens fallback was explicit and reduced independence was disclosed."
+    },
+    {
+      "case_id": "fallback-subagents-unavailable",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/fallback-subagents-unavailable.json",
+      "artifact_sha256": "sha256:a9c5e32de739a05e3d5c7781c4b0952c22f0d55b2babd96f9bfe984e2b06af4a",
+      "run_id": "run-20260810-013328-codex-fallback-unavailable-001",
+      "assertions": [
+        {"assertion": "performs explicit lens-by-lens fallback", "status": "pass", "evidence": "The runner made separate main-session passes for each material lens."},
+        {"assertion": "discloses reduced independence", "status": "pass", "evidence": "The synthesis identified single-session fallback and reduced independence."},
+        {"assertion": "does not say independent panel completed", "status": "pass", "evidence": "No independent-subagent completion claim was made."},
+        {"assertion": "retains material lenses and residual risk", "status": "pass", "evidence": "Mobile/API, customer, and operations risks remained covered with an explicit residual assurance limit."}
+      ],
+      "notes": "Actual unavailable child capability in a bounded Luna context."
+    },
+    {
+      "case_id": "output-machine-readable-gui",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/output-machine-readable-gui.json",
+      "artifact_sha256": "sha256:cc8e81f3994c6818b8058c290652fba030774be47943eb4a566642a8ff1ed6f3",
+      "run_id": "eval-output-machine-readable-gui-20260810T013837+0800",
+      "assertions": [
+        {"assertion": "validates against schemas/panel-output.schema.json", "status": "pass", "evidence": "The captured JSON passed validate_panel_output.py."},
+        {"assertion": "uses schema_version 1.1", "status": "pass", "evidence": "The payload declared schema_version 1.1."},
+        {"assertion": "contains public evidence, decisions, coverage, and degradation state", "status": "pass", "evidence": "All four public structures were present with locatable evidence and an explicit orchestration record."},
+        {"assertion": "contains no chain-of-thought or raw transcripts", "status": "pass", "evidence": "Prohibited-field scan returned no matches."}
+      ],
+      "notes": "The public JSON output is captured and digest-bound; raw panel reports and private reasoning are excluded."
+    },
+    {
+      "case_id": "output-concise-no-reports",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/output-concise-no-reports.json",
+      "artifact_sha256": "sha256:d6ff5fec9a9f382de152f720185817e9de4fed1b92007b4f87008f28afa52e63",
+      "run_id": "cee51fd3-55e0-4e18-8a72-511f041c8168",
+      "assertions": [
+        {"assertion": "stays within 220 words", "status": "pass", "evidence": "The integrated decision was under the requested 220-word limit."},
+        {"assertion": "leads with the decision", "status": "pass", "evidence": "It opened with the accepted transactional-outbox choice."},
+        {"assertion": "does not expose raw reports", "status": "pass", "evidence": "No panelist-by-panelist report was returned."},
+        {"assertion": "retains important rejected rationale and risk", "status": "pass", "evidence": "Rejected synchronous/polling rationales and the remaining delivery risk were retained."}
+      ],
+      "notes": "Rerun after panelist item-budget tightening."
+    },
+    {
+      "case_id": "full-cycle-reselect-lenses",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/full-cycle-reselect-lenses.json",
+      "artifact_sha256": "sha256:8423a2260a0e9580f6845ac6068b1a29ec8d4c13332c8a7cec8758b7a46a9ed2",
+      "run_id": "run-20260810T014441+0800-full-cycle-reselect-lenses",
+      "assertions": [
+        {"assertion": "runs all four behaviors distinctly", "status": "pass", "evidence": "The output showed separate ideate, design, converge, and review artifacts."},
+        {"assertion": "does not prematurely converge during ideation", "status": "pass", "evidence": "Ideation retained an unranked opportunity set and discriminating experiments."},
+        {"assertion": "reselects lenses at stage boundaries", "status": "pass", "evidence": "The artifact names different lens sets for all four stages rather than carrying a fixed panel."},
+        {"assertion": "ends with a readiness gate rather than claiming implementation", "status": "pass", "evidence": "The cycle ended NO_GO with preimplementation gaps and no file changes."}
+      ],
+      "notes": "Thread capacity forced a disclosed stage/lens-separated main-session fallback with reduced independence."
+    },
+    {
+      "case_id": "trigger-positive-multi-perspective",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/trigger-positive-installed.json",
+      "artifact_sha256": "sha256:cfb0bbaacfb6818a468c47664076e0ba3403ce50959b8f27b8019cb189012f62",
+      "run_id": "codex-20260810-trigger-positive-installed",
+      "assertions": [
+        {"assertion": "skill should trigger", "status": "pass", "evidence": "Without a skill name or path, installed discovery selected product integrity, API-consumer, and operations lenses and attempted fresh orchestration before the disclosed capacity fallback."},
+        {"assertion": "runs dynamic selection rather than treating named lenses as a complete fixed roster", "status": "pass", "evidence": "The runner expanded product into the domain/ownership question, retained only distinct material lenses, and synthesized by evidence rather than roster or vote."}
+      ],
+      "notes": "Fresh installed-skill discovery run; prompt contained no skill name or path."
+    },
+    {
+      "case_id": "trigger-negative-routine-review",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/trigger-negative-routine-review.json",
+      "artifact_sha256": "sha256:58d29ac3112668153777df819c36468ccdd88e4bc0dbfade9ca51bef7ae5f957",
+      "run_id": "codex-20260810-trigger-negative",
+      "assertions": [
+        {"assertion": "skill should not trigger without a multi-perspective need", "status": "pass", "evidence": "No panel or child context was started for the routine missing-snippet request."},
+        {"assertion": "ordinary single-lens review remains lightweight", "status": "pass", "evidence": "The response only requested the omitted three-line function or file locator."}
+      ],
+      "notes": "Fresh installed-skill discovery run; prompt contained no skill name or path."
+    },
+    {
+      "case_id": "platform-portable-core",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/platform-portable-core.json",
+      "artifact_sha256": "sha256:c6eb820aad84480590c14a71c317a4d03ef0871bcf18d1c9dc434fc0629e3f4b",
+      "run_id": "codex-20260810-portable-core",
+      "assertions": [
+        {"assertion": "loads only the current host adapter", "status": "pass", "evidence": "Codex runs loaded the Codex adapter; Claude metadata was not used in execution."},
+        {"assertion": "uses genuinely separate contexts when host subagents are available", "status": "pass", "evidence": "The Mobile/API/customer run used three fresh independent Codex contexts."},
+        {"assertion": "keeps public schema free of host tool names", "status": "pass", "evidence": "The public schema and wire fields contain no host tool identifiers."},
+        {"assertion": "uses the shared core without host-specific public decisions", "status": "pass", "evidence": "The resulting contract, states, evidence, and decisions were platform-neutral."}
+      ],
+      "notes": "Codex behavioral pass; Claude Code remains structural-only and is not claimed as behaviorally passed."
+    }
+  ],
+  "gate": "GO"
+}

@@ -1,0 +1,13 @@
+{
+  "artifact_version": "1.0",
+  "case_id": "review-minority-runtime-evidence",
+  "host": "codex",
+  "run_id": "296d3a2a-f02b-4d33-bba8-d4e23b6578b5",
+  "executed_at": "2026-08-10T01:23:27+08:00",
+  "execution": "forward",
+  "runtime_revision": "sha256:e0227e5694800774399aa6f1961b882cbc04d3910136c5e4e081d8dc2549f8ae",
+  "suite_revision": "sha256:d64b046fa8fae9854e3008c9b3b55205289a93762e3a0f9cc94617619e99b8cf",
+  "skill_path": "/home/sai/project/orchestrate-multi-perspective-panel",
+  "prompt_sha256": "sha256:62e318f7d889d24ebba9c7b48fd7956ae1ae7908e8ace962298e53182b4d3ba9",
+  "output": "NO_GO — the global `/v2/customers` response-shape switch is not ready.\n\nSelected lenses: supported Mobile v4 runtime compatibility and API migration rollout/readiness. Codex could not open fresh child contexts because the agent thread limit was reached, so these were explicit moderator lens passes with reduced independence. The gate is based on the fixture's reproducible runtime evidence, not reviewer counts.\n\nHigh finding: the plan's universal compatibility claim does not hold. At `mobile/src/customer_decoder.kt:88`, the supported Mobile v4 client uses closed decoding for `status`. `mobile/tests/customer_decoder_test.kt::unknown_status_crashes` supplies `{ \"status\": \"archived\" }` and raises `SerializationException` in five of five reproductions; no source contradicts that result. Ignoring unknown JSON fields does not imply accepting an unknown enum value. Because Mobile v4 remains supported for four months and cannot be force-upgraded, a global switch that exposes this value would crash an in-scope client. The four unsupported compatibility opinions do not outweigh the reproduced minority evidence.\n\nGate: `NO_GO` while this high-severity incompatibility is unresolved. Before reconsidering `GO`, either keep Mobile v4 on a compatible `/v1` or compatibility response until its support window ends, or prevent it from receiving unsupported enum values; then reproduce migration tests against the exact `/v2/customers` payload for every supported client. Scope rollout by client/version instead of assuming a global cutover is safe."
+}

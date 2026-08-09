@@ -1,0 +1,21 @@
+{
+  "schema_major": 1,
+  "locked_through_schema_version": "1.1",
+  "description": "Frozen v1 wire-enum baseline. Values cannot be removed, renamed, localized, reordered, or repurposed. Future additions must be listed in additions with an introduced_in schema minor newer than the locked baseline.",
+  "enums": {
+    "schema_version": ["1.0", "1.1"],
+    "run.mode": ["ideate", "design", "converge", "review", "full_cycle"],
+    "stage": ["ideate", "design", "converge", "review", null],
+    "perspective.status": ["completed", "failed", "replaced"],
+    "perspective.executor": ["subagent", "main_session"],
+    "failure.code": ["unavailable", "timeout", "cancelled", "tool_error", "capacity"],
+    "item.kind": ["idea", "option", "risk", "finding", "question"],
+    "item.severity": ["blocker", "high", "medium", "low", null],
+    "item.confidence": ["high", "medium", "low"],
+    "decision.status": ["accepted", "rejected", "deferred", "out_of_scope", "needs_user_decision"],
+    "coverage.status": ["covered", "partially_covered", "uncovered"],
+    "orchestration.execution": ["subagents", "waves", "single_session_fallback", "mixed"],
+    "gate.state": ["continue", "revise", "go", "no_go", "blocked"]
+  },
+  "additions": {}
+}

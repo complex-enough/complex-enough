@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-skill:orchestrate-multi-perspective-panel:eval-artifact:v1",
+  "title": "Captured Public Forward-Eval Artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_version",
+    "case_id",
+    "host",
+    "run_id",
+    "executed_at",
+    "execution",
+    "runtime_revision",
+    "suite_revision",
+    "skill_path",
+    "prompt_sha256",
+    "output"
+  ],
+  "properties": {
+    "artifact_version": {"const": "1.0"},
+    "case_id": {"type": "string", "minLength": 1},
+    "host": {"type": "string", "enum": ["codex", "claude-code"]},
+    "run_id": {"type": "string", "minLength": 8},
+    "executed_at": {"type": "string", "format": "date-time"},
+    "execution": {"type": "string", "enum": ["forward", "simulated_failure"]},
+    "runtime_revision": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "suite_revision": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "skill_path": {"type": ["string", "null"]},
+    "prompt_sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "output": {"type": "string", "minLength": 16}
+  }
+}

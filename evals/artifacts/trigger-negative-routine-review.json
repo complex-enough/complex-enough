@@ -1,0 +1,13 @@
+{
+  "artifact_version": "1.0",
+  "case_id": "trigger-negative-routine-review",
+  "host": "codex",
+  "run_id": "codex-20260810-trigger-negative",
+  "executed_at": "2026-08-10T01:56:25+08:00",
+  "execution": "forward",
+  "runtime_revision": "sha256:e0227e5694800774399aa6f1961b882cbc04d3910136c5e4e081d8dc2549f8ae",
+  "suite_revision": "sha256:d64b046fa8fae9854e3008c9b3b55205289a93762e3a0f9cc94617619e99b8cf",
+  "skill_path": null,
+  "prompt_sha256": "sha256:33d908c69c7c96aa142e0aea34046f60d1281b420633d431668433c4a9220c65",
+  "output": "I don’t see the three-line function/code in the task payload or inherited context, so I can’t assess an off-by-one yet. Please send the snippet (and ideally expected boundary behavior)."
+}

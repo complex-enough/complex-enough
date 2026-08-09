@@ -1,0 +1,13 @@
+{
+  "artifact_version": "1.0",
+  "case_id": "review-accounting-identity-permission",
+  "host": "codex",
+  "run_id": "codex-20260810-review-accounting-identity-permission",
+  "executed_at": "2026-08-10T01:18:06+08:00",
+  "execution": "forward",
+  "runtime_revision": "sha256:e0227e5694800774399aa6f1961b882cbc04d3910136c5e4e081d8dc2549f8ae",
+  "suite_revision": "sha256:d64b046fa8fae9854e3008c9b3b55205289a93762e3a0f9cc94617619e99b8cf",
+  "skill_path": "/home/sai/project/orchestrate-multi-perspective-panel",
+  "prompt_sha256": "sha256:c74e0b6bdb3b2e1b80d5b11badae30fc677b8426de767672251a3803cf4a9946",
+  "output": "NO_GO — the refund-posting API is not ready for implementation.\n\nI covered accounting integrity, identity/authorization, and API reliability in three isolated moderator passes. Child-thread capacity was unavailable, so this has reduced independence and is not presented as independent subagent validation. The gate is based on confirmed policy and reproducible runtime evidence, not reviewer count.\n\nBlocking findings:\n\n- Accounting — blocker: `DELETE /ledger/{entry_id}` directly violates the confirmed append-only ledger policy. Corrections must be new reversal or adjustment entries linked to the original entry; posted entries must remain immutable and auditable.\n- Identity and authorization — blocker: `POST /refunds` trusts caller-supplied `actor_id` and defines no server-side role check. The contract test shows a `support_agent` token creating a posted entry with `201`, reproduced three of three times, directly violating the policy that only `finance_approver` may post. Identity must come from trusted authentication context, posting authorization must be enforced server-side, and support agents must be limited to proposal creation.\n- API reliability — high: `POST /refunds` has no idempotency semantics. A retry can create duplicate financial entries. Define an idempotency key scope, atomically persist the key, request fingerprint, ledger result, and response, replay the same result for matching retries, reject conflicting key reuse, and handle concurrent duplicates.\n\nThe internal-network argument does not mitigate these policy and runtime failures. Before re-review, remove destructive ledger correction, enforce trusted identity and role authorization with zero mutation on denial, specify idempotent posting, and add negative authorization, actor-spoofing, retry, conflict, and concurrency tests."
+}
