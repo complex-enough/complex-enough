@@ -1,4 +1,4 @@
 interface:
-  display_name: "Multi-Perspective Panel"
-  short_description: "動態選擇獨立視角，支援發想、設計、收斂、審查與 GUI 決策輸出"
-  default_prompt: "Use $orchestrate-multi-perspective-panel to assemble independent perspectives for this task and return one evidence-based synthesis."
+  display_name: "Boss-Led Multi-Perspective Meeting"
+  short_description: "由 main 產生角色並確認凍結後，召集獨立多視角會議"
+  default_prompt: "Use $orchestrate-multi-perspective-panel to generate a complete role slate for my review, then run the confirmed independent perspectives and return one evidence-based synthesis."

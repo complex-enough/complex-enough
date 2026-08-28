@@ -22,7 +22,9 @@ class PanelOutputValidationTest(unittest.TestCase):
     def setUp(self) -> None:
         self.v10_path = ROOT / "tests" / "fixtures" / "output-v1.0.json"
         self.v11_path = ROOT / "tests" / "fixtures" / "output-v1.1.json"
+        self.v12_path = ROOT / "tests" / "fixtures" / "output-v1.2.json"
         self.v11 = json.loads(self.v11_path.read_text(encoding="utf-8"))
+        self.v12 = json.loads(self.v12_path.read_text(encoding="utf-8"))
         self.schema = json.loads(
             (ROOT / "schemas" / "panel-output.schema.json").read_text(encoding="utf-8")
         )
@@ -85,6 +87,49 @@ class PanelOutputValidationTest(unittest.TestCase):
 
     def test_v11_fixture_is_valid(self) -> None:
         self.assertEqual(validate(self.v11_path), [])
+
+    def test_v12_fixture_is_valid(self) -> None:
+        self.assertEqual(validate(self.v12_path), [])
+
+    def test_v12_replacement_preserves_the_frozen_role_revision(self) -> None:
+        payload = copy.deepcopy(self.v12)
+        payload["perspectives"][0].update(
+            {
+                "status": "replaced",
+                "failure": {
+                    "code": "timeout",
+                    "message": "Timed out",
+                    "retry_count": 1,
+                },
+                "replacement_perspective_id": "P2",
+            }
+        )
+        self.assertTrue(
+            any(
+                "does not preserve frozen role revision" in error
+                for error in semantic_errors(payload)
+            )
+        )
+
+    def test_v12_coverage_evidence_must_come_from_a_planned_role(self) -> None:
+        payload = copy.deepcopy(self.v12)
+        payload["coverage"][0]["evidence_item_ids"] = ["I2"]
+        errors = semantic_errors(payload)
+        self.assertTrue(any("does not claim that risk surface" in error for error in errors))
+        self.assertTrue(any("from unplanned role role-operations" in error for error in errors))
+
+    def test_v12_is_a_closed_round_result_not_a_full_cycle_aggregate(self) -> None:
+        payload = copy.deepcopy(self.v12)
+        payload["run"]["mode"] = "full_cycle"
+        self.assertTrue(
+            any("closed-round result" in error for error in semantic_errors(payload))
+        )
+
+    def test_v12_fields_cannot_be_down_labeled_as_v11(self) -> None:
+        payload = copy.deepcopy(self.v12)
+        payload["schema_version"] = "1.1"
+        errors = self.validate_payload(payload)
+        self.assertTrue(any("False schema does not allow" in error for error in errors))
 
     def test_duplicate_ids_are_rejected(self) -> None:
         payload = copy.deepcopy(self.v11)
@@ -616,12 +661,14 @@ class PanelOutputValidationTest(unittest.TestCase):
         )
 
         additive_schema = copy.deepcopy(unrecorded_schema)
-        additive_schema["properties"]["schema_version"]["enum"].append("1.2")
+        additive_schema["properties"]["schema_version"]["enum"].append("1.3")
         additive_lock = copy.deepcopy(self.enum_lock)
-        additive_lock["additions"] = {
-            "schema_version": [{"value": "1.2", "introduced_in": "1.2"}],
-            "item.kind": [{"value": "constraint", "introduced_in": "1.2"}],
-        }
+        additive_lock["additions"]["schema_version"].append(
+            {"value": "1.3", "introduced_in": "1.3"}
+        )
+        additive_lock["additions"]["item.kind"] = [
+            {"value": "constraint", "introduced_in": "1.3"}
+        ]
         self.assertEqual(stable_enum_errors(additive_schema, additive_lock), [])
 
 

@@ -1,0 +1,659 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:orchestrate-multi-perspective-panel:schema:meeting-plan:v1",
+  "title": "Boss-Led Multi-Perspective Meeting Plan",
+  "description": "Public control-plane state for main-generated role proposals, user adjustments, freeze, execution phases, and round handoff. It excludes hidden reasoning and raw agent transcripts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "meeting",
+    "rounds",
+    "risk_surfaces",
+    "role_revisions",
+    "plan_revisions",
+    "source_artifacts",
+    "import_previews",
+    "events"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "enum": ["1.0"]},
+    "meeting": {"$ref": "#/$defs/meeting"},
+    "rounds": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/round"},
+      "minItems": 1
+    },
+    "risk_surfaces": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/riskSurface"}
+    },
+    "role_revisions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/roleRevision"}
+    },
+    "plan_revisions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/planRevision"}
+    },
+    "source_artifacts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/sourceArtifact"}
+    },
+    "import_previews": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/importPreview"}
+    },
+    "events": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/event"}
+    }
+  },
+  "$defs": {
+    "nullableString": {"type": ["string", "null"]},
+    "stringArray": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "nonEmptyStringArray": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "stage": {
+      "type": ["string", "null"],
+      "enum": ["ideate", "design", "converge", "review", null]
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "branch", "revision"],
+      "properties": {
+        "repository": {"$ref": "#/$defs/nullableString"},
+        "branch": {"$ref": "#/$defs/nullableString"},
+        "revision": {"$ref": "#/$defs/nullableString"}
+      }
+    },
+    "meeting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meeting_id",
+        "objective",
+        "scope",
+        "non_goals",
+        "authorities",
+        "terminal_condition",
+        "baseline",
+        "status",
+        "current_round_id"
+      ],
+      "properties": {
+        "meeting_id": {"type": "string", "pattern": "^meeting-[A-Za-z0-9._-]+$"},
+        "objective": {"type": "string", "minLength": 1},
+        "scope": {"$ref": "#/$defs/stringArray"},
+        "non_goals": {"$ref": "#/$defs/stringArray"},
+        "authorities": {"$ref": "#/$defs/stringArray"},
+        "terminal_condition": {"type": "string", "minLength": 1},
+        "baseline": {"$ref": "#/$defs/baseline"},
+        "status": {"type": "string", "enum": ["active", "completed", "cancelled", "failed"]},
+        "current_round_id": {
+          "oneOf": [
+            {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "attention": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["code", "message", "recoverable"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "STALE_DRAFT_REVISION",
+            "INVALID_STATE_TRANSITION",
+            "ROLE_SLATE_FROZEN",
+            "CRITICAL_COVERAGE_UNACKNOWLEDGED",
+            "IMPORT_EMPTY",
+            "IMPORT_UNPARSABLE",
+            "IMPORT_TOO_LARGE",
+            "IMPORT_AUTHORITY_CONFLICT",
+            "PLAN_DIGEST_MISMATCH",
+            "RUN_NOT_RESUMABLE"
+          ]
+        },
+        "message": {"type": "string", "minLength": 1},
+        "recoverable": {"type": "boolean"}
+      }
+    },
+    "handoffItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_round_id", "source_item_id", "disposition", "rationale"],
+      "properties": {
+        "source_round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+        "source_item_id": {"type": "string", "minLength": 1},
+        "disposition": {
+          "type": "string",
+          "enum": ["carry_forward", "deferred", "excluded", "needs_user_decision"]
+        },
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    },
+    "round": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "round_id",
+        "sequence",
+        "mode",
+        "stage",
+        "agenda",
+        "previous_round_id",
+        "supersedes_round_id",
+        "handoff",
+        "state",
+        "state_version",
+        "active_plan_revision_id",
+        "frozen_plan_revision_id",
+        "frozen_plan_digest",
+        "panel_run_id",
+        "close_gate",
+        "attention",
+        "allowed_actions"
+      ],
+      "properties": {
+        "round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+        "sequence": {"type": "integer", "minimum": 1},
+        "mode": {"type": "string", "enum": ["ideate", "design", "converge", "review", "full_cycle"]},
+        "stage": {"$ref": "#/$defs/stage"},
+        "agenda": {"type": "string", "minLength": 1},
+        "previous_round_id": {
+          "oneOf": [
+            {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+            {"type": "null"}
+          ]
+        },
+        "supersedes_round_id": {
+          "oneOf": [
+            {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+            {"type": "null"}
+          ]
+        },
+        "handoff": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/handoffItem"}
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "generating_roles",
+            "awaiting_role_review",
+            "frozen",
+            "queued",
+            "independent_opening",
+            "deliberating",
+            "verifying",
+            "adjudicating",
+            "completed",
+            "needs_attention",
+            "cancel_requested",
+            "cancelled",
+            "failed"
+          ]
+        },
+        "state_version": {"type": "integer", "minimum": 1},
+        "active_plan_revision_id": {
+          "oneOf": [
+            {"type": "string", "pattern": "^planrev-[A-Za-z0-9._-]+$"},
+            {"type": "null"}
+          ]
+        },
+        "frozen_plan_revision_id": {
+          "oneOf": [
+            {"type": "string", "pattern": "^planrev-[A-Za-z0-9._-]+$"},
+            {"type": "null"}
+          ]
+        },
+        "frozen_plan_digest": {
+          "oneOf": [
+            {"$ref": "#/$defs/digest"},
+            {"type": "null"}
+          ]
+        },
+        "panel_run_id": {"$ref": "#/$defs/nullableString"},
+        "close_gate": {
+          "type": ["string", "null"],
+          "enum": ["continue", "revise", "go", "no_go", "blocked", null]
+        },
+        "attention": {"$ref": "#/$defs/attention"},
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "regenerate_roles",
+              "edit_role",
+              "add_role",
+              "remove_role",
+              "merge_roles",
+              "split_role",
+              "reset_role_to_generated",
+              "preview_import",
+              "apply_import",
+              "confirm_and_start",
+              "cancel",
+              "resume",
+              "create_next_round"
+            ]
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "riskSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "risk_surface_id",
+        "round_id",
+        "name",
+        "decision_question",
+        "required_evidence",
+        "critical"
+      ],
+      "properties": {
+        "risk_surface_id": {"type": "string", "pattern": "^risk-[A-Za-z0-9._-]+$"},
+        "round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+        "name": {"type": "string", "minLength": 1},
+        "decision_question": {"type": "string", "minLength": 1},
+        "required_evidence": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "critical": {"type": "boolean"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "claimed_provider", "source_reference", "source_digest"],
+      "properties": {
+        "kind": {"type": "string", "enum": ["main_generated", "user_authored", "external_prompt", "derived"]},
+        "claimed_provider": {"$ref": "#/$defs/nullableString"},
+        "source_reference": {"$ref": "#/$defs/nullableString"},
+        "source_digest": {
+          "oneOf": [
+            {"$ref": "#/$defs/digest"},
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "roleRevision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role_revision_id",
+        "role_id",
+        "round_id",
+        "revision",
+        "source",
+        "source_artifact_id",
+        "derived_from_role_revision_ids",
+        "name",
+        "department",
+        "lens_question",
+        "selection_reason",
+        "risk_surface_ids",
+        "responsibilities",
+        "explicitly_excluded",
+        "required_evidence",
+        "expected_deliverables",
+        "authority_limits",
+        "execution_constraints",
+        "mode_constraints",
+        "stage_constraints",
+        "optional_instructions",
+        "provenance",
+        "digest"
+      ],
+      "properties": {
+        "role_revision_id": {"type": "string", "pattern": "^rolerev-[A-Za-z0-9._-]+$"},
+        "role_id": {"type": "string", "pattern": "^role-[A-Za-z0-9._-]+$"},
+        "round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+        "revision": {"type": "integer", "minimum": 1},
+        "source": {
+          "type": "string",
+          "enum": ["main_generated", "user_edited", "user_added", "imported", "merged", "split"]
+        },
+        "source_artifact_id": {
+          "oneOf": [
+            {"type": "string", "pattern": "^source-[A-Za-z0-9._-]+$"},
+            {"type": "null"}
+          ]
+        },
+        "derived_from_role_revision_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^rolerev-[A-Za-z0-9._-]+$"},
+          "uniqueItems": true
+        },
+        "name": {"type": "string", "minLength": 1},
+        "department": {"type": "string", "minLength": 1},
+        "lens_question": {"type": "string", "minLength": 1},
+        "selection_reason": {"type": "string", "minLength": 1},
+        "risk_surface_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^risk-[A-Za-z0-9._-]+$"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "responsibilities": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "explicitly_excluded": {"$ref": "#/$defs/stringArray"},
+        "required_evidence": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "expected_deliverables": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "authority_limits": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "execution_constraints": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "mode_constraints": {
+          "type": "array",
+          "items": {"type": "string", "enum": ["ideate", "design", "converge", "review", "full_cycle"]},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "stage_constraints": {
+          "type": "array",
+          "items": {"type": "string", "enum": ["ideate", "design", "converge", "review"]},
+          "uniqueItems": true
+        },
+        "optional_instructions": {"$ref": "#/$defs/nullableString"},
+        "provenance": {"$ref": "#/$defs/provenance"},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "roleBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role_id", "role_revision_id", "role_digest"],
+      "properties": {
+        "role_id": {"type": "string", "pattern": "^role-[A-Za-z0-9._-]+$"},
+        "role_revision_id": {"type": "string", "pattern": "^rolerev-[A-Za-z0-9._-]+$"},
+        "role_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "coveragePlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["risk_surface_id", "role_ids", "status"],
+      "properties": {
+        "risk_surface_id": {"type": "string", "pattern": "^risk-[A-Za-z0-9._-]+$"},
+        "role_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^role-[A-Za-z0-9._-]+$"},
+          "uniqueItems": true
+        },
+        "status": {"type": "string", "enum": ["assigned", "uncovered"]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "assigned"}}},
+          "then": {"properties": {"role_ids": {"minItems": 1}}},
+          "else": {"properties": {"role_ids": {"maxItems": 0}}}
+        }
+      ]
+    },
+    "warning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["warning_id", "code", "severity", "message", "role_ids", "risk_surface_ids"],
+      "properties": {
+        "warning_id": {"type": "string", "pattern": "^warning-[A-Za-z0-9._-]+$"},
+        "code": {
+          "type": "string",
+          "enum": [
+            "LENS_DUPLICATION",
+            "PERSONA_BIAS",
+            "EXCESSIVE_VERBOSITY",
+            "UNVERIFIABLE_ORIGIN",
+            "WEAK_EVIDENCE_DUTIES",
+            "CRITICAL_COVERAGE_REMOVAL",
+            "AUTHORITY_SCOPE_EXPANSION",
+            "MODERATOR_IMPERSONATION",
+            "FORCED_CONCLUSION",
+            "PEER_PRIVATE_ACCESS",
+            "PRIVATE_REASONING_REQUEST",
+            "UNPARSABLE_IMPORT",
+            "LIVE_EXTERNAL_EXECUTION",
+            "IMPORT_TOO_LARGE"
+          ]
+        },
+        "severity": {"type": "string", "enum": ["warning", "blocking"]},
+        "message": {"type": "string", "minLength": 1},
+        "role_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^role-[A-Za-z0-9._-]+$"},
+          "uniqueItems": true
+        },
+        "risk_surface_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^risk-[A-Za-z0-9._-]+$"},
+          "uniqueItems": true
+        }
+      }
+    },
+    "planRevision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan_revision_id",
+        "round_id",
+        "revision",
+        "parent_plan_revision_id",
+        "operation",
+        "created_by",
+        "role_bindings",
+        "removed_role_ids",
+        "coverage",
+        "warnings",
+        "acknowledged_warning_ids",
+        "created_at",
+        "digest"
+      ],
+      "properties": {
+        "plan_revision_id": {"type": "string", "pattern": "^planrev-[A-Za-z0-9._-]+$"},
+        "round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+        "revision": {"type": "integer", "minimum": 1},
+        "parent_plan_revision_id": {
+          "oneOf": [
+            {"type": "string", "pattern": "^planrev-[A-Za-z0-9._-]+$"},
+            {"type": "null"}
+          ]
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "generate",
+            "regenerate",
+            "edit",
+            "add",
+            "remove",
+            "merge",
+            "split",
+            "reset",
+            "import_add",
+            "import_replace",
+            "import_merge"
+          ]
+        },
+        "created_by": {"type": "string", "enum": ["main", "user"]},
+        "role_bindings": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/roleBinding"},
+          "minItems": 1
+        },
+        "removed_role_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^role-[A-Za-z0-9._-]+$"},
+          "uniqueItems": true
+        },
+        "coverage": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/coveragePlan"}
+        },
+        "warnings": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/warning"}
+        },
+        "acknowledged_warning_ids": {
+          "description": "Visible non-blocking warnings this exact plan proposal binds for acknowledgement upon exact user confirmation; actual acknowledgement is evidenced by the later user-authored freeze event.",
+          "type": "array",
+          "items": {"type": "string", "pattern": "^warning-[A-Za-z0-9._-]+$"},
+          "uniqueItems": true
+        },
+        "created_at": {"type": ["string", "null"], "format": "date-time"},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "sourceArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_artifact_id",
+        "round_id",
+        "origin",
+        "claimed_provider",
+        "source_reference",
+        "raw_digest",
+        "source_text",
+        "retention",
+        "imported_at"
+      ],
+      "properties": {
+        "source_artifact_id": {"type": "string", "pattern": "^source-[A-Za-z0-9._-]+$"},
+        "round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+        "origin": {"type": "string", "enum": ["external_prompt", "user_text"]},
+        "claimed_provider": {"$ref": "#/$defs/nullableString"},
+        "source_reference": {"$ref": "#/$defs/nullableString"},
+        "raw_digest": {"$ref": "#/$defs/digest"},
+        "source_text": {"$ref": "#/$defs/nullableString"},
+        "retention": {"type": "string", "enum": ["draft_only", "digest_only", "explicit_export"]},
+        "imported_at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    },
+    "fieldChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "disposition", "rationale"],
+      "properties": {
+        "field": {"type": "string", "minLength": 1},
+        "disposition": {"type": "string", "enum": ["accepted", "rewritten", "ignored", "conflicting"]},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    },
+    "importPreview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "import_preview_id",
+        "round_id",
+        "source_artifact_id",
+        "operation",
+        "target_role_id",
+        "status",
+        "field_changes",
+        "warning_codes",
+        "result_role_revision_id"
+      ],
+      "properties": {
+        "import_preview_id": {"type": "string", "pattern": "^import-[A-Za-z0-9._-]+$"},
+        "round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+        "source_artifact_id": {"type": "string", "pattern": "^source-[A-Za-z0-9._-]+$"},
+        "operation": {"type": "string", "enum": ["import_add", "import_replace", "import_merge"]},
+        "target_role_id": {
+          "oneOf": [
+            {"type": "string", "pattern": "^role-[A-Za-z0-9._-]+$"},
+            {"type": "null"}
+          ]
+        },
+        "status": {"type": "string", "enum": ["previewed", "applied", "rejected"]},
+        "field_changes": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/fieldChange"}
+        },
+        "warning_codes": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/warning/properties/code"},
+          "uniqueItems": true
+        },
+        "result_role_revision_id": {
+          "oneOf": [
+            {"type": "string", "pattern": "^rolerev-[A-Za-z0-9._-]+$"},
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event_id",
+        "meeting_id",
+        "round_id",
+        "sequence",
+        "type",
+        "state_version",
+        "plan_revision_id",
+        "role_revision_id",
+        "perspective_id",
+        "detail",
+        "occurred_at"
+      ],
+      "properties": {
+        "event_id": {"type": "string", "pattern": "^event-[A-Za-z0-9._-]+$"},
+        "meeting_id": {"type": "string", "pattern": "^meeting-[A-Za-z0-9._-]+$"},
+        "round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+        "sequence": {"type": "integer", "minimum": 1},
+        "type": {
+          "type": "string",
+          "enum": [
+            "roles_generated",
+            "plan_revision_created",
+            "import_previewed",
+            "role_slate_frozen",
+            "run_phase_changed",
+            "role_queued",
+            "role_started",
+            "role_completed",
+            "role_failed",
+            "role_replaced",
+            "degradation_changed",
+            "attention_required",
+            "result_ready",
+            "next_round_created"
+          ]
+        },
+        "state_version": {"type": "integer", "minimum": 1},
+        "plan_revision_id": {
+          "oneOf": [
+            {"type": "string", "pattern": "^planrev-[A-Za-z0-9._-]+$"},
+            {"type": "null"}
+          ]
+        },
+        "role_revision_id": {
+          "oneOf": [
+            {"type": "string", "pattern": "^rolerev-[A-Za-z0-9._-]+$"},
+            {"type": "null"}
+          ]
+        },
+        "perspective_id": {"$ref": "#/$defs/nullableString"},
+        "detail": {"type": "string"},
+        "occurred_at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    }
+  }
+}

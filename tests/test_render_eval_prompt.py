@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from render_eval_prompt import render_prompt  # noqa: E402
+from render_eval_prompt import render_conversation, render_prompt  # noqa: E402
 
 
 class RenderEvalPromptTest(unittest.TestCase):
@@ -42,6 +42,32 @@ class RenderEvalPromptTest(unittest.TestCase):
         self.assertIn("claude-code behavioral evaluation", rendered)
         self.assertIn("/tmp/portable-skill", rendered)
         self.assertNotIn("Use the Codex skill", rendered)
+
+    def test_multi_turn_conversation_keeps_followups_separate(self) -> None:
+        case = {
+            "tags": ["meeting"],
+            "request": "Generate the meeting roles.",
+            "fixtures": [],
+            "followups": [
+                "Edit the operations role and show the new slate.",
+                "Use the current slate and start.",
+            ],
+        }
+        turns = render_conversation(case, "codex", Path("/tmp/portable-skill"))
+        self.assertEqual(len(turns), 3)
+        self.assertIn("Generate the meeting roles", turns[0])
+        self.assertEqual(turns[1], case["followups"][0])
+        self.assertNotIn(case["followups"][1], turns[0])
+
+    def test_followups_must_be_nonempty_strings(self) -> None:
+        case = {
+            "tags": ["meeting"],
+            "request": "Generate roles.",
+            "fixtures": [],
+            "followups": [""],
+        }
+        with self.assertRaisesRegex(ValueError, "followups"):
+            render_conversation(case, "codex", Path("/tmp/portable-skill"))
 
 
 if __name__ == "__main__":

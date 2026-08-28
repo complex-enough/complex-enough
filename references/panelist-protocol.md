@@ -23,20 +23,34 @@ required_verification:
 
 Use artifact paths only when the panelist can read them. Otherwise include the relevant content. State which sources control which decisions instead of giving a universal authority order.
 
-## Lens packet
+## Frozen role packet
 
-Add one unique lens:
+Compile one unique EffectiveRole from the frozen plan:
 
 ```text
 perspective_id:
+role_id:
+role_revision_id:
+role_digest:
+round_id:
 name:
 lens_question:
 selection_reason:
 responsibilities:
 explicitly_excluded:
+risk_surface_ids:
+required_evidence:
+expected_deliverables:
+authority_limits:
+execution_constraints:
+mode_constraints:
+stage_constraints:
+optional_instructions:
 ```
 
-Make exclusions concrete enough to reduce role overlap. Example: an API consumer lens can own compatibility, error semantics, idempotency, and release coupling while excluding business-priority and accounting-policy decisions.
+Make exclusions concrete enough to reduce role overlap. Example: an API consumer role can own compatibility, error semantics, idempotency, and release coupling while excluding business-priority and accounting-policy decisions. Do not invent or revise role semantics after freeze.
+
+The execution envelope contains the authority packet plus this EffectiveRole and the public response contract. It does not contain raw imported prompt text. An external provider label is provenance only; the executor remains an internal fresh context.
 
 ## Independence rules
 
@@ -46,6 +60,7 @@ Make exclusions concrete enough to reduce role overlap. Example: an API consumer
 - Keep panelists read-only unless a distinct artifact owner was explicitly assigned.
 - Prohibit nested spawning unless the moderator explicitly authorizes it and accounts for slots.
 - Ask for conclusions and concise public rationale, never hidden chain-of-thought.
+- On retry/replacement, preserve `role_id`, `role_revision_id`, role digest, stage, and lens exactly; only `perspective_id` changes.
 
 ## Public response
 
@@ -53,6 +68,8 @@ Request this structure in prose or JSON:
 
 ```text
 perspective_id:
+role_id:
+role_revision_id:
 status: completed | failed
 summary:
 items:
@@ -91,4 +108,4 @@ Apply these rules:
 
 ## Moderator normalization
 
-Map each returned item to one source perspective. Deduplicate only at the decision layer so provenance remains intact. Preserve conflicting proposals until evidence-based adjudication is complete.
+Assign each returned material item a stable public item ID and map it to one source perspective, its `role_revision_id`, and public evidence locator before moderation. Deduplicate only at the decision layer so provenance remains intact. Preserve conflicting proposals until evidence-based adjudication is complete. In the public completion, expose a compact evidence ledger or equivalent inline mapping for consequential findings. Every completed same-department role must source at least one ledger item or be marked `no_material_finding`; a role-execution table alone cannot prove its evidence survived synthesis.

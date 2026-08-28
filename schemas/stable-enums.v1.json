@@ -17,5 +17,9 @@
     "orchestration.execution": ["subagents", "waves", "single_session_fallback", "mixed"],
     "gate.state": ["continue", "revise", "go", "no_go", "blocked"]
   },
-  "additions": {}
+  "additions": {
+    "schema_version": [
+      {"value": "1.2", "introduced_in": "1.2"}
+    ]
+  }
 }

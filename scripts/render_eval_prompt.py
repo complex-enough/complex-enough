@@ -40,11 +40,36 @@ def render_prompt(case: dict, host: str, skill_path: Path | None) -> str:
     return "\n\n".join(sections)
 
 
+def render_conversation(
+    case: dict, host: str, skill_path: Path | None
+) -> list[str]:
+    """Render the exact user turns without exposing assertions or evaluator notes."""
+
+    initial = render_prompt(case, host, skill_path)
+    followups = case.get("followups", [])
+    if not isinstance(followups, list) or not all(
+        isinstance(turn, str) and turn.strip() for turn in followups
+    ):
+        raise ValueError("case followups must be non-empty strings")
+    return [initial, *followups]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("case_id")
     parser.add_argument("--host", choices=["codex", "claude-code"], required=True)
     parser.add_argument("--skill-path", type=Path)
+    parser.add_argument(
+        "--turn",
+        type=int,
+        default=0,
+        help="zero-based user turn to render",
+    )
+    parser.add_argument(
+        "--conversation-json",
+        action="store_true",
+        help="render every user turn as a JSON array",
+    )
     args = parser.parse_args()
 
     suite = json.loads((REPO_ROOT / "evals" / "cases.json").read_text(encoding="utf-8"))
@@ -53,7 +78,15 @@ def main() -> int:
         parser.error(f"unknown case_id: {args.case_id}")
 
     try:
-        print(render_prompt(case, args.host, args.skill_path))
+        turns = render_conversation(case, args.host, args.skill_path)
+        if args.conversation_json:
+            print(json.dumps(turns, ensure_ascii=False, indent=2))
+        elif args.turn < 0 or args.turn >= len(turns):
+            parser.error(
+                f"turn {args.turn} is out of range for {len(turns)}-turn conversation"
+            )
+        else:
+            print(turns[args.turn])
     except ValueError as error:
         parser.error(str(error))
     return 0

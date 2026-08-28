@@ -57,5 +57,5 @@ Set or infer a bounded wait appropriate to task cost. A timeout is a failed exec
 
 - Record `failed` with `failure.code=timeout`.
 - Retry the same lens at most once when the failure appears transient and remaining time/cost justifies it.
-- Give a replacement a fresh context, the same lens question, and no prior findings.
+- Give a replacement a fresh context, the same frozen `role_id`, `role_revision_id`, lens question, and no prior findings.
 - If recovery fails, mark coverage partial/uncovered and apply the gate rules; do not replace the lens with an easier nearby role.

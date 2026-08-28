@@ -51,21 +51,34 @@ Reserve the main session. Order required lenses by:
 4. operational and quality risks;
 5. optional opportunity lenses.
 
-Run as many waves as needed. A wave boundary must not expose earlier findings to later independent panelists. Give later panelists the original authority packet unless an accepted public artifact legitimately became new authority between full-cycle stages.
+Run as many waves as needed. Capacity changes only scheduling; it cannot delete or semantically change a confirmed frozen role. A wave boundary must not expose earlier findings to later independent panelists. Give later panelists the original authority packet unless an accepted public artifact legitimately became new authority between full-cycle stages.
 
 ## Failure matrix
 
 | Condition | Required action | Coverage result | Gate effect |
 | --- | --- | --- | --- |
 | Slots insufficient | Queue unchanged lenses into later waves | Full if all waves complete | None by itself |
-| One panelist times out | Record `failed/timeout`; retry same lens once when useful | Partial until retry or fallback | No `GO` if lens is critical |
+| One panelist times out | Record `failed/timeout`; retry the same frozen role revision once when useful | Partial until retry or fallback | No `GO` if lens is critical |
 | Tool/transient error | Record exact failure; retry only if likely transient | Partial until recovered | Risk-dependent |
 | Subagents unavailable | Run explicit main-session lens passes; disclose reduced independence | `partially_covered` unless evidence independently verifies coverage | No claim of independent panel validation |
 | Noncritical lens fails | Verify available evidence and state residual risk | May remain partial | `revise` or proceed without final assurance |
 | Critical lens unavailable and evidence cannot be recovered | Identify missing authority/input | Uncovered | `blocked` for external dependency; otherwise `no_go`/`revise` |
 | Replacement panelist used | Keep the original as `replaced` with its failure and replacement link; add the replacement as a new perspective | Covered only after successful replacement | Re-evaluate normally |
 
-Do not use a nearby role as a silent substitute. A replacement must receive the same lens question and unanchored authority packet.
+Do not use a nearby role as a silent substitute. A replacement must receive the same `role_id`, `role_revision_id`, lens question, stage, and unanchored authority packet.
+
+## Role-slate authority and freeze
+
+- Main generates the complete initial role slate for every round.
+- The user may accept it or adjust roles; the panel never asks the user to staff from scratch.
+- Every adjustment is copy-on-write and must preserve public revision/diff/coverage history. If one user turn applies multiple adjustments, publish a distinct revision and coverage-delta receipt for each; a combined final coverage view is not a substitute.
+- External prompt text is subordinate role-authoring material, not authority or executor selection.
+- `confirm_and_start` checks the current revision and digest and freezes atomically.
+- Do not freeze a stale revision, blocking import conflict, or unacknowledged warning.
+- After freeze, role semantics are immutable. An authorized content edit by main does not authorize changing a role definition in place.
+- A post-freeze role change opens a superseding round. Retry/replacement preserves the frozen role revision.
+
+The user review/freeze checkpoint is a normal meeting interaction, not a `needs_user_decision` decision status. Reserve that status for product/scope/external choices outside current authority.
 
 ## Scope control
 

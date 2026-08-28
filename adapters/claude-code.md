@@ -10,8 +10,11 @@ Use this adapter only in Claude Code hosts. The core `SKILL.md`, references, sch
 
 ## Fresh independent contexts
 
+- Do not invoke Agent/subagent execution until Claude has shown the complete main-generated role slate and the user has confirmed the current revision/digest.
+- Show the complete slate as the final response and end that assistant turn. Commentary or autonomous continuation is not a confirmation checkpoint, and no Agent/subagent may be pre-spawned, queued, or run in the proposal turn.
+- Accept freeze/start only from a subsequent user-authored turn. Treat role adjustment/import as a new immutable draft revision, then yield the updated complete slate as another final response and wait again before freeze.
 - Use the Agent/subagent capability so every panelist receives its own context window.
-- Give each subagent the same task-local authority packet, one unique lens, and no peer findings or moderator preference.
+- Give each subagent the same task-local authority packet, one exact frozen EffectiveRole with role/revision identity, and no peer findings or moderator preference.
 - Prefer a general-purpose or explicitly read-only custom subagent whose tool restrictions match the lens.
 - Do not use a fork of the current conversation as a substitute for a clean panelist context when it would carry anchoring material.
 - Prevent nested delegation for panelists unless the moderator explicitly designed and budgeted it.
@@ -29,9 +32,12 @@ Use this adapter only in Claude Code hosts. The core `SKILL.md`, references, sch
 - Start only the lenses that fit, wait for completion/failure, and run later lenses as fresh waves.
 - A concurrency error queues the lens; it does not justify dropping it or retrying immediately while capacity is unchanged.
 - If the Agent capability is denied or unavailable, use explicit main-session lens passes and disclose that they are not independent subagent validation.
+- Retry/replacement changes the attempt identity only; preserve the frozen role revision and do not substitute a nearby role.
+- In the public completion receipt, state the frozen plan revision/digest and map every planned role revision to its executed attempt, wave, and degradation outcome; retain role-level public evidence attribution in the synthesis.
 
 ## Packaging and validation
 
 - Personal skills live under `~/.claude/skills/<skill-name>/`; project skills live under `.claude/skills/<skill-name>/`.
 - `SKILL.md` and referenced runtime files are shared with Codex. Claude Code ignores `agents/openai.yaml`, so the Claude installer does not need to copy it.
 - Validate behavior with fresh Claude Code sessions before claiming Claude runtime support. Structural compatibility alone is not a behavioral pass.
+- When machine state is requested, bind the closed-round panel-output 1.2 result to the confirmed meeting-plan revision/digest and exclude raw imported prompts from the result.

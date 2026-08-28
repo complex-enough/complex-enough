@@ -1,0 +1,30 @@
+{
+  "schema_major": 1,
+  "locked_through_schema_version": "1.0",
+  "description": "Frozen meeting-plan v1 wire-enum baseline. Values cannot be removed, renamed, localized, reordered, or repurposed within v1.",
+  "enums": {
+    "schema_version": ["1.0"],
+    "meeting.status": ["active", "completed", "cancelled", "failed"],
+    "round.mode": ["ideate", "design", "converge", "review", "full_cycle"],
+    "stage": ["ideate", "design", "converge", "review", null],
+    "round.state": ["generating_roles", "awaiting_role_review", "frozen", "queued", "independent_opening", "deliberating", "verifying", "adjudicating", "completed", "needs_attention", "cancel_requested", "cancelled", "failed"],
+    "round.close_gate": ["continue", "revise", "go", "no_go", "blocked", null],
+    "round.allowed_actions": ["regenerate_roles", "edit_role", "add_role", "remove_role", "merge_roles", "split_role", "reset_role_to_generated", "preview_import", "apply_import", "confirm_and_start", "cancel", "resume", "create_next_round"],
+    "attention.code": ["STALE_DRAFT_REVISION", "INVALID_STATE_TRANSITION", "ROLE_SLATE_FROZEN", "CRITICAL_COVERAGE_UNACKNOWLEDGED", "IMPORT_EMPTY", "IMPORT_UNPARSABLE", "IMPORT_TOO_LARGE", "IMPORT_AUTHORITY_CONFLICT", "PLAN_DIGEST_MISMATCH", "RUN_NOT_RESUMABLE"],
+    "handoff.disposition": ["carry_forward", "deferred", "excluded", "needs_user_decision"],
+    "role.source": ["main_generated", "user_edited", "user_added", "imported", "merged", "split"],
+    "provenance.kind": ["main_generated", "user_authored", "external_prompt", "derived"],
+    "plan.operation": ["generate", "regenerate", "edit", "add", "remove", "merge", "split", "reset", "import_add", "import_replace", "import_merge"],
+    "plan.created_by": ["main", "user"],
+    "coverage.status": ["assigned", "uncovered"],
+    "warning.code": ["LENS_DUPLICATION", "PERSONA_BIAS", "EXCESSIVE_VERBOSITY", "UNVERIFIABLE_ORIGIN", "WEAK_EVIDENCE_DUTIES", "CRITICAL_COVERAGE_REMOVAL", "AUTHORITY_SCOPE_EXPANSION", "MODERATOR_IMPERSONATION", "FORCED_CONCLUSION", "PEER_PRIVATE_ACCESS", "PRIVATE_REASONING_REQUEST", "UNPARSABLE_IMPORT", "LIVE_EXTERNAL_EXECUTION", "IMPORT_TOO_LARGE"],
+    "warning.severity": ["warning", "blocking"],
+    "source.origin": ["external_prompt", "user_text"],
+    "source.retention": ["draft_only", "digest_only", "explicit_export"],
+    "import.operation": ["import_add", "import_replace", "import_merge"],
+    "import.status": ["previewed", "applied", "rejected"],
+    "field_change.disposition": ["accepted", "rewritten", "ignored", "conflicting"],
+    "event.type": ["roles_generated", "plan_revision_created", "import_previewed", "role_slate_frozen", "run_phase_changed", "role_queued", "role_started", "role_completed", "role_failed", "role_replaced", "degradation_changed", "attention_required", "result_ready", "next_round_created"]
+  },
+  "additions": {}
+}

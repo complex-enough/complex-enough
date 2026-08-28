@@ -1,0 +1,346 @@
+{
+  "schema_version": "1.0",
+  "meeting": {
+    "meeting_id": "meeting-demo-001",
+    "objective": "Review whether the example service is ready for release.",
+    "scope": ["product contract", "operations"],
+    "non_goals": ["GUI implementation"],
+    "authorities": ["specs/example.md", "tests/example"],
+    "terminal_condition": "Close the review with evidence-backed critical coverage.",
+    "baseline": {
+      "repository": "example/repository",
+      "branch": "feature/example",
+      "revision": "abc123"
+    },
+    "status": "active",
+    "current_round_id": "round-demo-001"
+  },
+  "rounds": [
+    {
+      "round_id": "round-demo-001",
+      "sequence": 1,
+      "mode": "review",
+      "stage": "review",
+      "agenda": "Assess release readiness from product-contract and operating-risk perspectives.",
+      "previous_round_id": null,
+      "supersedes_round_id": null,
+      "handoff": [],
+      "state": "completed",
+      "state_version": 9,
+      "active_plan_revision_id": "planrev-demo-002",
+      "frozen_plan_revision_id": "planrev-demo-002",
+      "frozen_plan_digest": "sha256:87b722331cc40aafd473c9d207db6784aafde4b1692bd5bd6fe3cadeb06ffc1a",
+      "panel_run_id": "run-demo-001",
+      "close_gate": "go",
+      "attention": null,
+      "allowed_actions": ["create_next_round"]
+    }
+  ],
+  "risk_surfaces": [
+    {
+      "risk_surface_id": "risk-product-contract",
+      "round_id": "round-demo-001",
+      "name": "Product contract",
+      "decision_question": "Does the public behavior match the accepted product contract?",
+      "required_evidence": ["Contract clauses and reproducible behavior"],
+      "critical": true
+    },
+    {
+      "risk_surface_id": "risk-operations",
+      "round_id": "round-demo-001",
+      "name": "Operational recovery",
+      "decision_question": "Can operators detect and safely recover expected failures?",
+      "required_evidence": ["Failure handling and recovery checks"],
+      "critical": false
+    }
+  ],
+  "role_revisions": [
+    {
+      "role_revision_id": "rolerev-product-001",
+      "role_id": "role-product",
+      "round_id": "round-demo-001",
+      "revision": 1,
+      "source": "main_generated",
+      "source_artifact_id": null,
+      "derived_from_role_revision_ids": [],
+      "name": "Product contract reviewer",
+      "department": "Product governance",
+      "lens_question": "Does observable behavior satisfy the accepted contract?",
+      "selection_reason": "The release gate depends on a critical public product contract.",
+      "risk_surface_ids": ["risk-product-contract"],
+      "responsibilities": ["Trace contract requirements to reproducible evidence"],
+      "explicitly_excluded": ["Operational staffing decisions"],
+      "required_evidence": ["Contract locators", "Reproducible checks"],
+      "expected_deliverables": ["Evidence-backed readiness findings"],
+      "authority_limits": ["Cannot change product scope or release authority"],
+      "execution_constraints": ["Read only", "Return public rationale only"],
+      "mode_constraints": ["review"],
+      "stage_constraints": ["review"],
+      "optional_instructions": null,
+      "provenance": {
+        "kind": "main_generated",
+        "claimed_provider": null,
+        "source_reference": null,
+        "source_digest": null
+      },
+      "digest": "sha256:33a9a9740e4da374c00b698dda539b632242ab4cf954804d44fd9f115fb9ab4e"
+    },
+    {
+      "role_revision_id": "rolerev-operations-001",
+      "role_id": "role-operations",
+      "round_id": "round-demo-001",
+      "revision": 1,
+      "source": "main_generated",
+      "source_artifact_id": null,
+      "derived_from_role_revision_ids": [],
+      "name": "Operations reviewer",
+      "department": "Platform operations",
+      "lens_question": "Are failure detection and recovery operationally safe?",
+      "selection_reason": "The service needs a distinct operational consequence lens.",
+      "risk_surface_ids": ["risk-operations"],
+      "responsibilities": ["Inspect failure detection and recovery evidence"],
+      "explicitly_excluded": ["Product-priority decisions"],
+      "required_evidence": ["Failure-path checks", "Recovery procedure"],
+      "expected_deliverables": ["Operational risks and recovery findings"],
+      "authority_limits": ["Cannot change product scope or invoke external systems"],
+      "execution_constraints": ["Read only", "Return public rationale only"],
+      "mode_constraints": ["review"],
+      "stage_constraints": ["review"],
+      "optional_instructions": null,
+      "provenance": {
+        "kind": "main_generated",
+        "claimed_provider": null,
+        "source_reference": null,
+        "source_digest": null
+      },
+      "digest": "sha256:6d2001994f97c1b3b672127dceb8590a87d15a57d2a1a9cde2a366d9a3483e43"
+    },
+    {
+      "role_revision_id": "rolerev-operations-002",
+      "role_id": "role-operations",
+      "round_id": "round-demo-001",
+      "revision": 2,
+      "source": "imported",
+      "source_artifact_id": "source-operations-001",
+      "derived_from_role_revision_ids": ["rolerev-operations-001"],
+      "name": "Incident recovery reviewer",
+      "department": "Platform operations",
+      "lens_question": "Can an operator detect, contain, and recover each material failure?",
+      "selection_reason": "The imported role sharpens the main-generated operations lens without changing its authority.",
+      "risk_surface_ids": ["risk-operations"],
+      "responsibilities": ["Inspect detection, containment, recovery, and audit evidence"],
+      "explicitly_excluded": ["Product-priority decisions", "Live external operations"],
+      "required_evidence": ["Failure-path checks", "Recovery procedure", "Audit evidence"],
+      "expected_deliverables": ["Operational risks and recovery findings"],
+      "authority_limits": ["Cannot change product scope or invoke external systems"],
+      "execution_constraints": ["Read only", "Return public rationale only"],
+      "mode_constraints": ["review"],
+      "stage_constraints": ["review"],
+      "optional_instructions": "Challenge recovery claims with reproducible evidence.",
+      "provenance": {
+        "kind": "external_prompt",
+        "claimed_provider": "Claude",
+        "source_reference": "user-provided prompt",
+        "source_digest": "sha256:b1a83004a2b0691f3f2e36832032c2cb9ec081e1c3025169e581d359d7877e90"
+      },
+      "digest": "sha256:6deff8d50aac382dbcebfef2a6b2224d154684ea425abd97d61032e45114000e"
+    }
+  ],
+  "plan_revisions": [
+    {
+      "plan_revision_id": "planrev-demo-001",
+      "round_id": "round-demo-001",
+      "revision": 1,
+      "parent_plan_revision_id": null,
+      "operation": "generate",
+      "created_by": "main",
+      "role_bindings": [
+        {
+          "role_id": "role-product",
+          "role_revision_id": "rolerev-product-001",
+          "role_digest": "sha256:33a9a9740e4da374c00b698dda539b632242ab4cf954804d44fd9f115fb9ab4e"
+        },
+        {
+          "role_id": "role-operations",
+          "role_revision_id": "rolerev-operations-001",
+          "role_digest": "sha256:6d2001994f97c1b3b672127dceb8590a87d15a57d2a1a9cde2a366d9a3483e43"
+        }
+      ],
+      "removed_role_ids": [],
+      "coverage": [
+        {
+          "risk_surface_id": "risk-product-contract",
+          "role_ids": ["role-product"],
+          "status": "assigned"
+        },
+        {
+          "risk_surface_id": "risk-operations",
+          "role_ids": ["role-operations"],
+          "status": "assigned"
+        }
+      ],
+      "warnings": [],
+      "acknowledged_warning_ids": [],
+      "created_at": null,
+      "digest": "sha256:92b0f9efd53603406a3040a8a1dbc3a797c6a8e9e8dd372fe4f15e0d4316a598"
+    },
+    {
+      "plan_revision_id": "planrev-demo-002",
+      "round_id": "round-demo-001",
+      "revision": 2,
+      "parent_plan_revision_id": "planrev-demo-001",
+      "operation": "import_replace",
+      "created_by": "user",
+      "role_bindings": [
+        {
+          "role_id": "role-product",
+          "role_revision_id": "rolerev-product-001",
+          "role_digest": "sha256:33a9a9740e4da374c00b698dda539b632242ab4cf954804d44fd9f115fb9ab4e"
+        },
+        {
+          "role_id": "role-operations",
+          "role_revision_id": "rolerev-operations-002",
+          "role_digest": "sha256:6deff8d50aac382dbcebfef2a6b2224d154684ea425abd97d61032e45114000e"
+        }
+      ],
+      "removed_role_ids": [],
+      "coverage": [
+        {
+          "risk_surface_id": "risk-product-contract",
+          "role_ids": ["role-product"],
+          "status": "assigned"
+        },
+        {
+          "risk_surface_id": "risk-operations",
+          "role_ids": ["role-operations"],
+          "status": "assigned"
+        }
+      ],
+      "warnings": [
+        {
+          "warning_id": "warning-import-origin",
+          "code": "UNVERIFIABLE_ORIGIN",
+          "severity": "warning",
+          "message": "The external provider label is user-declared provenance.",
+          "role_ids": ["role-operations"],
+          "risk_surface_ids": []
+        }
+      ],
+      "acknowledged_warning_ids": ["warning-import-origin"],
+      "created_at": null,
+      "digest": "sha256:87b722331cc40aafd473c9d207db6784aafde4b1692bd5bd6fe3cadeb06ffc1a"
+    }
+  ],
+  "source_artifacts": [
+    {
+      "source_artifact_id": "source-operations-001",
+      "round_id": "round-demo-001",
+      "origin": "external_prompt",
+      "claimed_provider": "Claude",
+      "source_reference": "user-provided prompt",
+      "raw_digest": "sha256:b1a83004a2b0691f3f2e36832032c2cb9ec081e1c3025169e581d359d7877e90",
+      "source_text": "Act as an incident recovery reviewer. Require detection, containment, recovery, and audit evidence.",
+      "retention": "draft_only",
+      "imported_at": null
+    }
+  ],
+  "import_previews": [
+    {
+      "import_preview_id": "import-operations-001",
+      "round_id": "round-demo-001",
+      "source_artifact_id": "source-operations-001",
+      "operation": "import_replace",
+      "target_role_id": "role-operations",
+      "status": "applied",
+      "field_changes": [
+        {
+          "field": "lens_question",
+          "disposition": "rewritten",
+          "rationale": "Normalized the external persona into an evidence-focused role question."
+        }
+      ],
+      "warning_codes": ["UNVERIFIABLE_ORIGIN"],
+      "result_role_revision_id": "rolerev-operations-002"
+    }
+  ],
+  "events": [
+    {
+      "event_id": "event-demo-001",
+      "meeting_id": "meeting-demo-001",
+      "round_id": "round-demo-001",
+      "sequence": 1,
+      "type": "roles_generated",
+      "state_version": 1,
+      "plan_revision_id": "planrev-demo-001",
+      "role_revision_id": null,
+      "perspective_id": null,
+      "detail": "Main generated the complete default role slate.",
+      "occurred_at": null
+    },
+    {
+      "event_id": "event-demo-002",
+      "meeting_id": "meeting-demo-001",
+      "round_id": "round-demo-001",
+      "sequence": 2,
+      "type": "import_previewed",
+      "state_version": 2,
+      "plan_revision_id": "planrev-demo-001",
+      "role_revision_id": "rolerev-operations-002",
+      "perspective_id": null,
+      "detail": "External prompt was normalized for preview.",
+      "occurred_at": null
+    },
+    {
+      "event_id": "event-demo-003",
+      "meeting_id": "meeting-demo-001",
+      "round_id": "round-demo-001",
+      "sequence": 3,
+      "type": "plan_revision_created",
+      "state_version": 2,
+      "plan_revision_id": "planrev-demo-002",
+      "role_revision_id": "rolerev-operations-002",
+      "perspective_id": null,
+      "detail": "The imported role replaced the operations role in a new plan revision.",
+      "occurred_at": null
+    },
+    {
+      "event_id": "event-demo-004",
+      "meeting_id": "meeting-demo-001",
+      "round_id": "round-demo-001",
+      "sequence": 4,
+      "type": "role_slate_frozen",
+      "state_version": 3,
+      "plan_revision_id": "planrev-demo-002",
+      "role_revision_id": null,
+      "perspective_id": null,
+      "detail": "User confirmed the exact plan revision and digest.",
+      "occurred_at": null
+    },
+    {
+      "event_id": "event-demo-005",
+      "meeting_id": "meeting-demo-001",
+      "round_id": "round-demo-001",
+      "sequence": 5,
+      "type": "run_phase_changed",
+      "state_version": 4,
+      "plan_revision_id": "planrev-demo-002",
+      "role_revision_id": null,
+      "perspective_id": null,
+      "detail": "Independent opening started.",
+      "occurred_at": null
+    },
+    {
+      "event_id": "event-demo-006",
+      "meeting_id": "meeting-demo-001",
+      "round_id": "round-demo-001",
+      "sequence": 6,
+      "type": "result_ready",
+      "state_version": 9,
+      "plan_revision_id": "planrev-demo-002",
+      "role_revision_id": null,
+      "perspective_id": null,
+      "detail": "The round closed with an evidence-backed result.",
+      "occurred_at": null
+    }
+  ]
+}

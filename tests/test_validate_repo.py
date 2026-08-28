@@ -15,10 +15,11 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from validate_repo import (  # noqa: E402
     eval_suite_revision,
+    validate_historical_eval_result,
     validate_eval_result,
     validate_release_gate,
 )
-from render_eval_prompt import render_prompt  # noqa: E402
+from render_eval_prompt import render_conversation  # noqa: E402
 
 
 class EvalResultValidationTest(unittest.TestCase):
@@ -93,7 +94,12 @@ class EvalResultValidationTest(unittest.TestCase):
                     case = case_definitions[result_case["case_id"]]
                     run_id = f"test-{result_case['case_id']}"
                     skill_path = ROOT if "trigger" not in case["tags"] else None
-                    prompt = render_prompt(case, host, skill_path)
+                    prompt = json.dumps(
+                        render_conversation(case, host, skill_path),
+                        ensure_ascii=False,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    )
                     artifact = {
                         "artifact_version": "1.0",
                         "case_id": result_case["case_id"],
@@ -152,6 +158,29 @@ class EvalResultValidationTest(unittest.TestCase):
                 self.payload(),
                 artifact_mutator=lambda artifact: artifact.update(
                     {"executed_at": "2026-08-09T14:00:00+08:00"}
+                ),
+            )
+
+    def test_private_output_marker_scan_uses_exact_identifier_boundaries(self) -> None:
+        self.validate_payload(
+            "codex-2026-08-09.json",
+            self.payload(),
+            artifact_mutator=lambda artifact: artifact.update(
+                {
+                    "output": (
+                        "The import rejected `PRIVATE_REASONING_REQUEST` and "
+                        "did not expose private reasoning."
+                    )
+                }
+            ),
+        )
+
+        with self.assertRaisesRegex(AssertionError, "prohibited private-output marker"):
+            self.validate_payload(
+                "codex-2026-08-09.json",
+                self.payload(),
+                artifact_mutator=lambda artifact: artifact.update(
+                    {"output": "Leaked field: `private_reasoning`."}
                 ),
             )
 
@@ -279,15 +308,71 @@ class EvalResultValidationTest(unittest.TestCase):
             self.validate_payload("codex-2026-08-09.json", payload, suite)
 
     def test_required_release_scorecard_must_be_codex_go(self) -> None:
-        for host, gate in (("codex", "NO_GO"), ("static-only", "GO")):
-            with self.subTest(host=host, gate=gate), tempfile.TemporaryDirectory() as directory:
+        for host in ("codex", "static-only"):
+            with self.subTest(host=host), tempfile.TemporaryDirectory() as directory:
                 payload = self.payload()
                 payload["environment"]["host"] = host
-                payload["gate"] = gate
-                path = Path(directory) / "codex-release.json"
+                payload["cases"][0]["status"] = "fail"
+                payload["cases"][0]["assertions"][0]["status"] = "fail"
+                payload["gate"] = "NO_GO"
+                path = Path(directory) / f"{host}-2026-08-09.json"
                 path.write_text(json.dumps(payload), encoding="utf-8")
                 with self.assertRaisesRegex(AssertionError, "not GO"):
-                    validate_release_gate(path)
+                    validate_release_gate(
+                        path,
+                        self.suite,
+                        self.schema,
+                        {"codex": self.revision},
+                        eval_suite_revision(self.suite),
+                    )
+
+    def test_historical_scorecard_keeps_integrity_but_cannot_be_current(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            eval_root = Path(directory)
+            results_root = eval_root / "results"
+            artifacts_root = eval_root / "artifacts"
+            results_root.mkdir()
+            artifacts_root.mkdir()
+            payload = self.payload()
+            run_id = "historical-case-1"
+            artifact = {
+                "artifact_version": "1.0",
+                "case_id": "case-1",
+                "host": "codex",
+                "run_id": run_id,
+                "executed_at": payload["executed_at"],
+                "execution": "forward",
+                "runtime_revision": payload["skill_revision"],
+                "suite_revision": payload["suite_revision"],
+                "skill_path": None,
+                "prompt_sha256": "sha256:" + "c" * 64,
+                "output": "Archived public moderator output retained as historical evidence.",
+            }
+            artifact_path = artifacts_root / "case-1.json"
+            artifact_path.write_text(json.dumps(artifact), encoding="utf-8")
+            payload["cases"][0]["artifact_path"] = "artifacts/case-1.json"
+            payload["cases"][0]["artifact_sha256"] = "sha256:" + hashlib.sha256(
+                artifact_path.read_bytes()
+            ).hexdigest()
+            payload["cases"][0]["run_id"] = run_id
+            result_path = results_root / "codex-2026-08-09.json"
+            result_path.write_text(json.dumps(payload), encoding="utf-8")
+
+            validate_historical_eval_result(result_path, self.schema, "2.0.0")
+            with self.assertRaisesRegex(AssertionError, "current suite version"):
+                validate_release_gate(
+                    result_path,
+                    {**self.suite, "suite_version": "2.0.0"},
+                    self.schema,
+                    {"codex": self.revision},
+                )
+
+            artifact_path.write_text(
+                artifact_path.read_text(encoding="utf-8") + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(AssertionError, "historical eval artifact digest mismatch"):
+                validate_historical_eval_result(result_path, self.schema, "2.0.0")
 
 
 if __name__ == "__main__":

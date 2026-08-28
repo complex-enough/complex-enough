@@ -25,9 +25,17 @@ CORE_RUNTIME_FILES = [
     Path("references/panelist-protocol.md"),
     Path("references/authority-and-fallback.md"),
     Path("references/model-and-execution-policy.md"),
+    Path("references/meeting-lifecycle.md"),
+    Path("references/role-definition-and-import.md"),
+    Path("references/meeting-plan-contract.md"),
     Path("references/panel-output-contract.md"),
+    Path("schemas/meeting-plan.schema.json"),
+    Path("schemas/stable-meeting-plan-enums.v1.json"),
     Path("schemas/panel-output.schema.json"),
     Path("schemas/stable-enums.v1.json"),
+    Path("scripts/validate_meeting_plan.py"),
+    Path("scripts/validate_panel_output.py"),
+    Path("scripts/validate_meeting_bundle.py"),
 ]
 PLATFORM_FILES = {
     "codex": [Path("agents/openai.yaml")],

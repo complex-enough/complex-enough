@@ -15,8 +15,10 @@ import yaml
 
 from jsonschema import Draft202012Validator, FormatChecker
 
-from validate_panel_output import validate
-from render_eval_prompt import render_prompt
+from validate_meeting_bundle import validate_bundle
+from validate_meeting_plan import validate as validate_meeting_plan
+from validate_panel_output import validate as validate_panel_output
+from render_eval_prompt import render_conversation
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,9 +30,17 @@ CORE_RUNTIME_FILES = [
     "references/panelist-protocol.md",
     "references/authority-and-fallback.md",
     "references/model-and-execution-policy.md",
+    "references/meeting-lifecycle.md",
+    "references/role-definition-and-import.md",
+    "references/meeting-plan-contract.md",
     "references/panel-output-contract.md",
+    "schemas/meeting-plan.schema.json",
+    "schemas/stable-meeting-plan-enums.v1.json",
     "schemas/panel-output.schema.json",
     "schemas/stable-enums.v1.json",
+    "scripts/validate_meeting_plan.py",
+    "scripts/validate_panel_output.py",
+    "scripts/validate_meeting_bundle.py",
 ]
 HOST_RUNTIME_FILES = {
     "codex": ["agents/openai.yaml"],
@@ -38,6 +48,8 @@ HOST_RUNTIME_FILES = {
 }
 EVAL_HARNESS_FILES = [
     "scripts/render_eval_prompt.py",
+    "evals/archive_public_turns.py",
+    "evals/run_codex_forward.py",
     "schemas/eval-result.schema.json",
     "schemas/eval-artifact.schema.json",
 ]
@@ -63,6 +75,11 @@ REQUIRED_CASE_TAGS = {
     "trigger",
     "platform",
     "portable",
+    "meeting",
+    "role_review",
+    "role_import",
+    "external_prompt",
+    "freeze",
 }
 REQUIRED_FILES = [
     "SKILL.md",
@@ -73,11 +90,19 @@ REQUIRED_FILES = [
     "references/panelist-protocol.md",
     "references/authority-and-fallback.md",
     "references/model-and-execution-policy.md",
+    "references/meeting-lifecycle.md",
+    "references/role-definition-and-import.md",
+    "references/meeting-plan-contract.md",
     "references/panel-output-contract.md",
+    "schemas/meeting-plan.schema.json",
+    "schemas/stable-meeting-plan-enums.v1.json",
     "schemas/panel-output.schema.json",
     "schemas/eval-artifact.schema.json",
     "schemas/eval-result.schema.json",
     "schemas/stable-enums.v1.json",
+    "scripts/validate_meeting_plan.py",
+    "scripts/validate_panel_output.py",
+    "scripts/validate_meeting_bundle.py",
     "evals/cases.json",
     "evals/results/codex-2026-08-10.json",
     "README.md",
@@ -86,9 +111,38 @@ REQUIRED_FILES = [
     "CLAUDE.md",
 ]
 
+PROHIBITED_PRIVATE_OUTPUT_IDENTIFIERS = (
+    "chain_of_thought",
+    "hidden_reasoning",
+    "private_reasoning",
+    "raw_panelist_report",
+    "raw_transcript",
+    "scratch_work",
+    "thought_trace",
+)
+
 
 def fail(message: str) -> None:
     raise AssertionError(message)
+
+
+def _contains_prohibited_private_output_marker(output: str) -> bool:
+    """Detect exact private-output identifiers without rejecting public error codes.
+
+    Public safety responses may contain longer stable codes such as
+    ``PRIVATE_REASONING_REQUEST``. Treating prohibited identifiers as arbitrary
+    substrings would reject the audit evidence that the unsafe request was
+    blocked. Underscore-aware token boundaries still reject the private field
+    identifiers themselves.
+    """
+    lowered_output = output.lower()
+    return any(
+        re.search(
+            rf"(?<![a-z0-9_]){re.escape(marker)}(?![a-z0-9_])",
+            lowered_output,
+        )
+        for marker in PROHIBITED_PRIVATE_OUTPUT_IDENTIFIERS
+    )
 
 
 def validate_skill() -> None:
@@ -136,6 +190,13 @@ def validate_evals() -> None:
     for case in cases:
         if not case["assertions"]:
             fail(f"eval case {case['id']} has no assertions")
+        followups = case.get("followups", [])
+        if not isinstance(followups, list) or not all(
+            isinstance(turn, str) and turn.strip() for turn in followups
+        ):
+            fail(f"eval case {case['id']} has invalid followups")
+        if case["mode"] is not None and not followups:
+            fail(f"meeting eval case {case['id']} has no confirmation followup")
         for relative in case["fixtures"]:
             fixture = ROOT / "evals" / relative
             if not fixture.is_file():
@@ -191,6 +252,13 @@ def _parsed_datetime(value: str) -> datetime:
     if parsed.tzinfo is None:
         fail("eval timestamps must include a timezone")
     return parsed
+
+
+def _semantic_version(value: str) -> tuple[int, int, int]:
+    match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", value)
+    if not match:
+        fail(f"eval suite version is not semantic x.y.z: {value!r}")
+    return tuple(int(part) for part in match.groups())
 
 
 def _sha256_file(path: Path) -> str:
@@ -262,25 +330,211 @@ def validate_eval_artifact(
         )
 
     skill_path = Path(artifact["skill_path"]) if artifact["skill_path"] else None
-    rendered_prompt = render_prompt(case_definition, expected_host, skill_path)
+    rendered_prompt = json.dumps(
+        render_conversation(case_definition, expected_host, skill_path),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
     prompt_digest = "sha256:" + hashlib.sha256(
         rendered_prompt.encode("utf-8")
     ).hexdigest()
     if artifact["prompt_sha256"] != prompt_digest:
         fail(f"eval artifact prompt digest mismatch for {result_case['case_id']}")
 
-    prohibited_markers = (
-        "chain_of_thought",
-        "hidden_reasoning",
-        "private_reasoning",
-        "raw_panelist_report",
-        "raw_transcript",
-        "scratch_work",
-        "thought_trace",
-    )
-    lowered_output = artifact["output"].lower()
-    if any(marker in lowered_output for marker in prohibited_markers):
+    if _contains_prohibited_private_output_marker(artifact["output"]):
         fail(f"eval artifact {relative} contains a prohibited private-output marker")
+
+
+def validate_historical_eval_artifact(
+    *,
+    result_path: Path,
+    result_case: dict,
+    expected_host: str,
+    expected_runtime_revision: str,
+    expected_suite_revision: str,
+    result_executed_at: datetime,
+) -> None:
+    """Verify archived artifact integrity without treating it as current evidence.
+
+    Historical suite and prompt bytes are not release authority for the current
+    candidate. The artifact remains useful as an auditable record, so retain the
+    digest, schema, metadata, timestamp, and public-output checks that can be
+    verified from the sealed scorecard itself.
+    """
+    relative = result_case.get("artifact_path")
+    expected_digest = result_case.get("artifact_sha256")
+    run_id = result_case.get("run_id")
+    if not relative or not expected_digest or not run_id:
+        fail(f"passing historical case {result_case['case_id']} has no captured artifact")
+
+    eval_root = result_path.parent.parent.resolve()
+    artifact_path = (eval_root / relative).resolve()
+    try:
+        artifact_path.relative_to(eval_root)
+    except ValueError:
+        fail(f"historical eval artifact escapes eval root: {relative}")
+    if not artifact_path.is_file() or artifact_path.is_symlink():
+        fail(f"missing or unsafe historical eval artifact: {relative}")
+    if _sha256_file(artifact_path) != expected_digest:
+        fail(f"historical eval artifact digest mismatch for {result_case['case_id']}")
+
+    artifact_schema = json.loads(
+        (ROOT / "schemas" / "eval-artifact.schema.json").read_text(encoding="utf-8")
+    )
+    artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
+    artifact_errors = sorted(
+        Draft202012Validator(
+            artifact_schema, format_checker=FormatChecker()
+        ).iter_errors(artifact),
+        key=lambda error: list(error.path),
+    )
+    if artifact_errors:
+        rendered = "; ".join(error.message for error in artifact_errors)
+        fail(f"invalid historical eval artifact {relative}: {rendered}")
+    expected_fields = {
+        "case_id": result_case["case_id"],
+        "host": expected_host,
+        "run_id": run_id,
+        "execution": result_case["execution"],
+        "runtime_revision": expected_runtime_revision,
+        "suite_revision": expected_suite_revision,
+    }
+    for field, expected in expected_fields.items():
+        if artifact[field] != expected:
+            fail(
+                f"historical eval artifact {relative} has "
+                f"{field}={artifact[field]!r}, expected {expected!r}"
+            )
+    if _parsed_datetime(artifact["executed_at"]) > result_executed_at:
+        fail(
+            f"historical eval artifact {relative} was executed after its "
+            "enclosing scorecard execution"
+        )
+
+    if _contains_prohibited_private_output_marker(artifact["output"]):
+        fail(f"historical eval artifact {relative} contains a prohibited private-output marker")
+
+
+def validate_historical_eval_result(
+    result_path: Path,
+    schema: dict,
+    current_suite_version: str,
+) -> None:
+    """Validate archived evidence while explicitly excluding it from release."""
+    validator = Draft202012Validator(schema, format_checker=FormatChecker())
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+    errors = sorted(validator.iter_errors(result), key=lambda error: list(error.path))
+    if errors:
+        rendered = "; ".join(error.message for error in errors)
+        fail(f"invalid historical eval result {result_path.name}: {rendered}")
+    if result["suite_version"] == current_suite_version:
+        fail(f"eval result {result_path.name} is current, not historical")
+    if _semantic_version(result["suite_version"]) >= _semantic_version(current_suite_version):
+        fail(
+            f"eval result {result_path.name} claims non-historical suite version "
+            f"{result['suite_version']}"
+        )
+
+    filename_hosts = {
+        "codex-": "codex",
+        "claude-code-": "claude-code",
+        "static-only-": "static-only",
+    }
+    expected_host = next(
+        (host for prefix, host in filename_hosts.items() if result_path.name.startswith(prefix)),
+        None,
+    )
+    if expected_host is None:
+        fail(f"historical eval result {result_path.name} must use a host-prefixed filename")
+    if result["environment"]["host"] != expected_host:
+        fail(f"historical eval result {result_path.name} claims the wrong host")
+
+    executed_at = _parsed_datetime(result["executed_at"])
+    verified_at = _parsed_datetime(result["verified_at"])
+    if verified_at < executed_at:
+        fail(f"historical eval result {result_path.name} was verified before it was executed")
+    now = datetime.now(timezone.utc)
+    if executed_at.astimezone(timezone.utc) > now or verified_at.astimezone(timezone.utc) > now:
+        fail(f"historical eval result {result_path.name} has a future timestamp")
+    filename_date_match = re.match(
+        r"^(?:codex|claude-code|static-only)-(\d{4}-\d{2}-\d{2})\.json$",
+        result_path.name,
+    )
+    if not filename_date_match or executed_at.date().isoformat() != filename_date_match.group(1):
+        fail(
+            f"historical eval result {result_path.name} execution date "
+            "does not match its filename"
+        )
+
+    result_case_ids = [case["case_id"] for case in result["cases"]]
+    if len(result_case_ids) != len(set(result_case_ids)):
+        fail(f"historical eval result {result_path.name} has duplicate case ids")
+    for result_case in result["cases"]:
+        assertion_statuses = [item["status"] for item in result_case["assertions"]]
+        expected_status = (
+            "fail"
+            if "fail" in assertion_statuses
+            else "pass"
+            if assertion_statuses and set(assertion_statuses) == {"pass"}
+            else "not_run"
+        )
+        if result_case["status"] != expected_status:
+            fail(
+                f"historical eval result {result_path.name} has inconsistent status "
+                f"for {result_case['case_id']}"
+            )
+        if result_case["status"] == "not_run" and result_case["execution"] != "not_run":
+            fail(
+                f"historical eval result {result_path.name} must mark unrun case "
+                f"execution for {result_case['case_id']}"
+            )
+        if result_case["status"] != "not_run" and result_case["execution"] == "not_run":
+            fail(
+                f"historical eval result {result_path.name} cannot pass an unrun case "
+                f"{result_case['case_id']}"
+            )
+        if expected_host in {"codex", "claude-code"} and result_case["status"] == "pass":
+            if result_case["execution"] not in {"forward", "simulated_failure"}:
+                fail(
+                    f"historical behavioral eval result {result_path.name} uses "
+                    f"non-behavioral execution for {result_case['case_id']}"
+                )
+            validate_historical_eval_artifact(
+                result_path=result_path,
+                result_case=result_case,
+                expected_host=expected_host,
+                expected_runtime_revision=result["skill_revision"],
+                expected_suite_revision=result["suite_revision"],
+                result_executed_at=executed_at,
+            )
+
+    simulated_failure = any(
+        case["execution"] == "simulated_failure" for case in result["cases"]
+    )
+    declared_failure_injection = result["environment"]["failure_injection"]
+    if simulated_failure and declared_failure_injection not in {"simulated", "mixed"}:
+        fail(
+            f"historical eval result {result_path.name} does not disclose its "
+            "simulated failure execution"
+        )
+    if not simulated_failure and declared_failure_injection in {"simulated", "mixed"}:
+        fail(
+            f"historical eval result {result_path.name} declares simulated failure "
+            "without a simulated execution"
+        )
+
+    if expected_host in {"codex", "claude-code"}:
+        expected_gate = (
+            "GO" if all(case["status"] == "pass" for case in result["cases"]) else "NO_GO"
+        )
+        if result["gate"] != expected_gate:
+            fail(
+                f"historical eval result {result_path.name} has gate "
+                f"{result['gate']}, expected {expected_gate}"
+            )
+    elif result["gate"] != "NO_GO":
+        fail(f"historical static-only eval result {result_path.name} cannot claim GO")
 
 
 def validate_eval_result(
@@ -413,25 +667,76 @@ def validate_eval_result(
         fail(f"static-only eval result {result_path.name} cannot claim GO")
 
 
-def validate_eval_results() -> None:
+def validate_eval_results() -> list[Path]:
     suite = json.loads((ROOT / "evals" / "cases.json").read_text(encoding="utf-8"))
     schema = json.loads((ROOT / "schemas" / "eval-result.schema.json").read_text(encoding="utf-8"))
     expected_revisions = {host: runtime_revision(host) for host in HOST_RUNTIME_FILES}
     expected_suite_revision = eval_suite_revision(suite, ROOT / "evals", ROOT)
+    current_results: list[Path] = []
     for result_path in sorted((ROOT / "evals" / "results").glob("*.json")):
-        validate_eval_result(
-            result_path,
-            suite,
-            schema,
-            expected_revisions,
-            expected_suite_revision,
+        result = json.loads(result_path.read_text(encoding="utf-8"))
+        if not isinstance(result, dict):
+            fail(f"invalid eval result {result_path.name}: root must be an object")
+        if result.get("suite_version") == suite["suite_version"]:
+            validate_eval_result(
+                result_path,
+                suite,
+                schema,
+                expected_revisions,
+                expected_suite_revision,
+            )
+            current_results.append(result_path)
+        else:
+            validate_historical_eval_result(
+                result_path,
+                schema,
+                suite["suite_version"],
+            )
+    return current_results
+
+
+def validate_release_gate(
+    result_path: Path,
+    suite: dict | None = None,
+    schema: dict | None = None,
+    expected_runtime_revisions: dict[str, str] | None = None,
+    expected_suite_revision: str | None = None,
+) -> None:
+    if not result_path.is_file():
+        fail(f"missing required Codex release scorecard: {result_path.name}")
+    if suite is None:
+        suite = json.loads((ROOT / "evals" / "cases.json").read_text(encoding="utf-8"))
+    if schema is None:
+        schema = json.loads(
+            (ROOT / "schemas" / "eval-result.schema.json").read_text(encoding="utf-8")
         )
-
-
-def validate_release_gate(result_path: Path) -> None:
+    if expected_runtime_revisions is None:
+        expected_runtime_revisions = {
+            host: runtime_revision(host) for host in HOST_RUNTIME_FILES
+        }
+    if expected_suite_revision is None:
+        expected_suite_revision = eval_suite_revision(suite, ROOT / "evals", ROOT)
+    validate_eval_result(
+        result_path,
+        suite,
+        schema,
+        expected_runtime_revisions,
+        expected_suite_revision,
+    )
     result = json.loads(result_path.read_text(encoding="utf-8"))
     if result.get("environment", {}).get("host") != "codex" or result.get("gate") != "GO":
         fail(f"required Codex release scorecard is not GO: {result_path.name}")
+
+
+def validate_current_release_gate(current_results: list[Path]) -> None:
+    codex_go_results = []
+    for result_path in current_results:
+        result = json.loads(result_path.read_text(encoding="utf-8"))
+        if result.get("environment", {}).get("host") == "codex" and result.get("gate") == "GO":
+            codex_go_results.append(result_path)
+    if not codex_go_results:
+        fail("no current Codex GO scorecard exists for the meeting-core runtime")
+    validate_release_gate(max(codex_go_results, key=lambda path: path.name))
 
 
 def validate_stable_enums() -> None:
@@ -468,9 +773,11 @@ def main() -> int:
         validate_skill()
         validate_openai_yaml()
         validate_evals()
-        validate_eval_results()
-        validate_release_gate(ROOT / "evals" / "results" / "codex-2026-08-10.json")
+        current_results = validate_eval_results()
         validate_stable_enums()
+        Draft202012Validator.check_schema(
+            json.loads((ROOT / "schemas" / "meeting-plan.schema.json").read_text(encoding="utf-8"))
+        )
         Draft202012Validator.check_schema(
             json.loads((ROOT / "schemas" / "panel-output.schema.json").read_text(encoding="utf-8"))
         )
@@ -483,10 +790,24 @@ def main() -> int:
         for fixture in (
             ROOT / "tests" / "fixtures" / "output-v1.0.json",
             ROOT / "tests" / "fixtures" / "output-v1.1.json",
+            ROOT / "tests" / "fixtures" / "output-v1.2.json",
         ):
-            errors = validate(fixture)
+            errors = validate_panel_output(fixture)
             if errors:
                 fail(f"invalid contract fixture {fixture.name}: {'; '.join(errors)}")
+        meeting_fixture = ROOT / "tests" / "fixtures" / "meeting-plan-v1.0.json"
+        meeting_errors = validate_meeting_plan(meeting_fixture)
+        if meeting_errors:
+            fail(
+                "invalid contract fixture meeting-plan-v1.0.json: "
+                + "; ".join(meeting_errors)
+            )
+        bundle_errors = validate_bundle(
+            meeting_fixture,
+            ROOT / "tests" / "fixtures" / "output-v1.2.json",
+        )
+        if bundle_errors:
+            fail("invalid meeting bundle fixture: " + "; ".join(bundle_errors))
         completed = subprocess.run(
             [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"],
             cwd=ROOT,
@@ -494,6 +815,7 @@ def main() -> int:
         )
         if completed.returncode:
             fail("unit tests failed")
+        validate_current_release_gate(current_results)
     except (AssertionError, KeyError, TypeError, ValueError, json.JSONDecodeError, yaml.YAMLError) as error:
         print(f"validation failed: {error}", file=sys.stderr)
         return 1

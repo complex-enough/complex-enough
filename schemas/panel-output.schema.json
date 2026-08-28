@@ -9,8 +9,9 @@
   "properties": {
     "schema_version": {
       "type": "string",
-      "enum": ["1.0", "1.1"]
+      "enum": ["1.0", "1.1", "1.2"]
     },
+    "meeting": {"$ref": "#/$defs/meetingReference"},
     "run": {"$ref": "#/$defs/run"},
     "orchestration": {"$ref": "#/$defs/orchestration"},
     "perspectives": {
@@ -37,11 +38,15 @@
       "if": {"properties": {"schema_version": {"const": "1.0"}}},
       "then": {
         "properties": {
+          "meeting": false,
           "orchestration": false,
           "coverage": false,
           "perspectives": {
             "items": {
               "properties": {
+                "round_id": false,
+                "role_id": false,
+                "role_revision_id": false,
                 "stage": false,
                 "executor": false,
                 "failure": false,
@@ -49,8 +54,18 @@
               }
             }
           },
-          "items": {"items": {"properties": {"stage": false}}},
-          "decisions": {"items": {"properties": {"stage": false}}}
+          "items": {
+            "items": {
+              "properties": {
+                "round_id": false,
+                "risk_surface_ids": false,
+                "stage": false
+              }
+            }
+          },
+          "decisions": {
+            "items": {"properties": {"round_id": false, "stage": false}}
+          }
         }
       }
     },
@@ -59,8 +74,58 @@
       "then": {
         "required": ["orchestration", "coverage"],
         "properties": {
+          "meeting": false,
           "perspectives": {
-            "items": {"required": ["executor"]}
+            "items": {
+              "required": ["executor"],
+              "properties": {
+                "round_id": false,
+                "role_id": false,
+                "role_revision_id": false
+              }
+            }
+          },
+          "items": {
+            "items": {
+              "properties": {
+                "round_id": false,
+                "risk_surface_ids": false
+              }
+            }
+          },
+          "decisions": {"items": {"properties": {"round_id": false}}},
+          "coverage": {
+            "items": {
+              "properties": {
+                "round_id": false,
+                "risk_surface_id": false,
+                "planned_role_ids": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "1.2"}}},
+      "then": {
+        "required": ["meeting", "orchestration", "coverage"],
+        "properties": {
+          "perspectives": {
+            "items": {
+              "required": ["round_id", "role_id", "role_revision_id", "executor"]
+            }
+          },
+          "items": {
+            "items": {"required": ["round_id", "risk_surface_ids"]}
+          },
+          "decisions": {
+            "items": {"required": ["round_id"]}
+          },
+          "coverage": {
+            "items": {
+              "required": ["round_id", "risk_surface_id", "planned_role_ids"]
+            }
           }
         }
       }
@@ -116,6 +181,25 @@
         "revision": {"$ref": "#/$defs/nullableString"}
       }
     },
+    "meetingReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meeting_id",
+        "round_id",
+        "plan_revision_id",
+        "frozen_plan_digest"
+      ],
+      "properties": {
+        "meeting_id": {"type": "string", "pattern": "^meeting-[A-Za-z0-9._-]+$"},
+        "round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+        "plan_revision_id": {"type": "string", "pattern": "^planrev-[A-Za-z0-9._-]+$"},
+        "frozen_plan_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
     "run": {
       "type": "object",
       "additionalProperties": false,
@@ -148,6 +232,9 @@
       "required": ["perspective_id", "name", "lens", "selection_reason", "status"],
       "properties": {
         "perspective_id": {"type": "string", "minLength": 1},
+        "round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+        "role_id": {"type": "string", "pattern": "^role-[A-Za-z0-9._-]+$"},
+        "role_revision_id": {"type": "string", "pattern": "^rolerev-[A-Za-z0-9._-]+$"},
         "name": {"type": "string", "minLength": 1},
         "lens": {"type": "string", "minLength": 1},
         "selection_reason": {"type": "string", "minLength": 1},
@@ -206,6 +293,12 @@
       "properties": {
         "item_id": {"type": "string", "minLength": 1},
         "perspective_id": {"type": "string", "minLength": 1},
+        "round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+        "risk_surface_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^risk-[A-Za-z0-9._-]+$"},
+          "uniqueItems": true
+        },
         "stage": {"$ref": "#/$defs/stage"},
         "kind": {"type": "string", "enum": ["idea", "option", "risk", "finding", "question"]},
         "severity": {
@@ -244,6 +337,7 @@
       "required": ["decision_id", "source_item_ids", "status", "rationale", "resulting_change"],
       "properties": {
         "decision_id": {"type": "string", "minLength": 1},
+        "round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
         "source_item_ids": {
           "type": "array",
           "items": {"type": "string"},
@@ -260,10 +354,17 @@
       "additionalProperties": false,
       "required": ["risk_surface", "lens", "critical", "status", "evidence_item_ids"],
       "properties": {
+        "round_id": {"type": "string", "pattern": "^round-[A-Za-z0-9._-]+$"},
+        "risk_surface_id": {"type": "string", "pattern": "^risk-[A-Za-z0-9._-]+$"},
         "risk_surface": {"type": "string", "minLength": 1},
         "lens": {"type": "string", "minLength": 1},
         "critical": {"type": "boolean"},
         "status": {"type": "string", "enum": ["covered", "partially_covered", "uncovered"]},
+        "planned_role_ids": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^role-[A-Za-z0-9._-]+$"},
+          "uniqueItems": true
+        },
         "evidence_item_ids": {
           "type": "array",
           "items": {"type": "string"},

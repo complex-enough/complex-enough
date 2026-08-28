@@ -78,6 +78,11 @@ def _version_tuple(value: Any) -> tuple[int, int] | None:
     return int(parts[0]), int(parts[1])
 
 
+def _schema_minor_at_least(payload: dict[str, Any], minor: int) -> bool:
+    version = _version_tuple(payload.get("schema_version"))
+    return version is not None and version[0] == 1 and version[1] >= minor
+
+
 def _schema_value(schema: dict[str, Any], path: tuple[str, ...]) -> Any:
     value: Any = schema
     for part in path:
@@ -239,6 +244,93 @@ def semantic_errors(payload: dict[str, Any]) -> list[str]:
     perspective_by_id = {entry["perspective_id"]: entry for entry in perspectives}
     item_by_id = {entry["item_id"]: entry for entry in items}
 
+    if payload.get("schema_version") == "1.2":
+        meeting = payload.get("meeting", {})
+        meeting_round_id = meeting.get("round_id")
+        if run_mode := payload.get("run", {}).get("mode"):
+            if run_mode == "full_cycle":
+                errors.append(
+                    "schema 1.2 is a closed-round result; full_cycle must emit one result per stage round"
+                )
+        role_revision_by_role: dict[str, str] = {}
+        role_by_perspective: dict[str, str] = {}
+        for perspective in perspectives:
+            perspective_id = perspective["perspective_id"]
+            role_id = perspective.get("role_id")
+            role_revision_id = perspective.get("role_revision_id")
+            role_by_perspective[perspective_id] = role_id
+            if perspective.get("round_id") != meeting_round_id:
+                errors.append(
+                    f"perspective {perspective_id} does not belong to meeting round {meeting_round_id}"
+                )
+            prior_revision = role_revision_by_role.setdefault(role_id, role_revision_id)
+            if prior_revision != role_revision_id:
+                errors.append(
+                    f"role {role_id} uses multiple frozen revisions in one round"
+                )
+        for perspective in perspectives:
+            replacement_id = perspective.get("replacement_perspective_id")
+            if perspective.get("status") != "replaced" or not replacement_id:
+                continue
+            replacement = perspective_by_id.get(replacement_id)
+            if replacement is not None and (
+                replacement.get("role_id") != perspective.get("role_id")
+                or replacement.get("role_revision_id")
+                != perspective.get("role_revision_id")
+            ):
+                errors.append(
+                    f"replacement {replacement_id} does not preserve frozen role revision from "
+                    f"{perspective['perspective_id']}"
+                )
+
+        for item in items:
+            perspective = perspective_by_id.get(item["perspective_id"])
+            if item.get("round_id") != meeting_round_id:
+                errors.append(
+                    f"item {item['item_id']} does not belong to meeting round {meeting_round_id}"
+                )
+            if perspective is not None and item.get("round_id") != perspective.get("round_id"):
+                errors.append(
+                    f"item {item['item_id']} round does not match its perspective"
+                )
+        for decision in decisions:
+            if decision.get("round_id") != meeting_round_id:
+                errors.append(
+                    f"decision {decision['decision_id']} does not belong to meeting round {meeting_round_id}"
+                )
+            source_rounds = {
+                item_by_id[item_id].get("round_id")
+                for item_id in decision["source_item_ids"]
+                if item_id in item_by_id
+            }
+            if source_rounds - {meeting_round_id}:
+                errors.append(
+                    f"decision {decision['decision_id']} cites an item from another round"
+                )
+        coverage_ids = [entry.get("risk_surface_id") for entry in coverage]
+        for duplicate in sorted(_duplicates(coverage_ids)):
+            errors.append(f"duplicate risk_surface_id: {duplicate}")
+        for entry in coverage:
+            risk_surface_id = entry.get("risk_surface_id")
+            if entry.get("round_id") != meeting_round_id:
+                errors.append(
+                    f"coverage {risk_surface_id} does not belong to meeting round {meeting_round_id}"
+                )
+            planned_roles = set(entry.get("planned_role_ids", []))
+            for item_id in entry["evidence_item_ids"]:
+                item = item_by_id.get(item_id)
+                if item is None:
+                    continue
+                if risk_surface_id not in item.get("risk_surface_ids", []):
+                    errors.append(
+                        f"coverage {risk_surface_id} cites item {item_id} that does not claim that risk surface"
+                    )
+                evidence_role = role_by_perspective.get(item["perspective_id"])
+                if evidence_role not in planned_roles:
+                    errors.append(
+                        f"coverage {risk_surface_id} cites item {item_id} from unplanned role {evidence_role}"
+                    )
+
     for item in items:
         if item["perspective_id"] not in perspective_set:
             errors.append(
@@ -390,11 +482,11 @@ def semantic_errors(payload: dict[str, Any]) -> list[str]:
             perspective["perspective_id"]: perspective.get("executor")
             for perspective in perspectives
         }
-        if payload.get("schema_version") == "1.1":
+        if _schema_minor_at_least(payload, 1):
             for perspective_id, executor in executors.items():
                 if executor is None:
                     errors.append(
-                        f"schema 1.1 perspective {perspective_id} has no executor"
+                        f"schema {payload.get('schema_version')} perspective {perspective_id} has no executor"
                     )
 
         if execution in {"single_session_fallback", "mixed"} and not degraded:
@@ -522,7 +614,7 @@ def semantic_errors(payload: dict[str, Any]) -> list[str]:
             errors.append("gate is go without any perspective")
         if not items:
             errors.append("gate is go without any public item")
-        if payload.get("schema_version") == "1.1" and not coverage:
+        if _schema_minor_at_least(payload, 1) and not coverage:
             errors.append("gate is go without declared risk-surface coverage")
         unresolved = set(payload["gate"]["unresolved_item_ids"])
         for item in items:

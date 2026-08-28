@@ -1,0 +1,721 @@
+{
+  "suite_version": "1.1.0",
+  "suite_revision": "sha256:b705d22fe72f0ac9393f19d071f0deba6fe0c78009d9d2625309e8e9ddb8c964",
+  "skill_revision": "sha256:1d982166ffd1151dfab36c64b1e41ee0466d6daf424679b47f02885ef7923999",
+  "executed_at": "2026-08-28T15:12:11.926706Z",
+  "verified_at": "2026-08-28T15:19:47.179021Z",
+  "environment": {
+    "host": "codex",
+    "forward_runner": "Codex CLI isolated batch runner with fresh sessions and direct public-final capture",
+    "failure_injection": "simulated"
+  },
+  "cases": [
+    {
+      "case_id": "ideate-pure-product",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-ideate-pure-product.json",
+      "artifact_sha256": "sha256:15c4222fbc2791646677bf58065cb1b7386353a8eb6a2ca12bd29e705c2987b4",
+      "run_id": "codex-batch-3868850e0db1435097b34ac089c0b4f1",
+      "assertions": [
+        {
+          "assertion": "generates complete roles and waits for confirmation before execution",
+          "status": "pass",
+          "evidence": "The first public turn presents five fully specified roles, says planned coverage is complete, and explicitly asks the user to accept or edit the slate before execution; the synthesis appears only in the follow-up turn."
+        },
+        {
+          "assertion": "selects lenses from distinct value and risk surfaces",
+          "status": "pass",
+          "evidence": "The slate separates patient access, clinic operations, clinical quality, product strategy, and health IT/privacy, with distinct ownership and exclusions for each lens."
+        },
+        {
+          "assertion": "keeps multiple differentiated framings",
+          "status": "pass",
+          "evidence": "The synthesis preserves nine materially different opportunity framings, including reminders, barrier resolution, visit readiness, flexible attendance, capacity recovery, continuity recovery, risk-guided outreach, and commitment experiments, and explicitly selects no winner."
+        },
+        {
+          "assertion": "does not use severity or a GO gate",
+          "status": "pass",
+          "evidence": "The ideation output uses hypotheses, guardrails, risks, and experiments without severity labels or any GO/NO-GO readiness gate."
+        },
+        {
+          "assertion": "includes small experiments",
+          "status": "pass",
+          "evidence": "Every opportunity includes a bounded test or pilot and observable measures, such as testing preferred reminders, one visit type, fill speed, silent score validation, or voluntary pledges."
+        },
+        {
+          "assertion": "does not paste raw reports",
+          "status": "pass",
+          "evidence": "The final public turn is a concise integrated opportunity synthesis with an evidence ledger and receipt; it does not include panelist report transcripts."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 6 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "design-cross-module",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-design-cross-module.json",
+      "artifact_sha256": "sha256:b771d4b6cbc4c8c3d5955e65a316bcde7556015e9b999327f85d63e00f8c0a5a",
+      "run_id": "codex-batch-b9c9d0bb404949cd813e122fb46331ec",
+      "assertions": [
+        {
+          "assertion": "generates complete roles and waits for confirmation before execution",
+          "status": "pass",
+          "evidence": "The first public turn defines six complete roles, maps all seven risk surfaces, states awaiting_role_review and that no panelist has started, and requests an explicit confirm_and_start response."
+        },
+        {
+          "assertion": "uses distinct architecture, consumer, and operations/risk lenses where material",
+          "status": "pass",
+          "evidence": "The slate independently covers Order API/client contracts, inventory integrity, payment state, fulfillment messaging, migration/reliability, and incident operations; the synthesis retains consumer compatibility and operations controls alongside architecture."
+        },
+        {
+          "assertion": "does not expand into a big-bang rewrite",
+          "status": "pass",
+          "evidence": "The proposed migration is explicitly incremental, beginning with instrumentation and moving bounded cohorts through shadow and cutover stages; it rejects unsafe big-bang cutover and permanent dual-write."
+        },
+        {
+          "assertion": "covers idempotency and ownership",
+          "status": "pass",
+          "evidence": "The design assigns sole-writer ownership across Order, Inventory, Payment, Fulfillment, and Operations, and specifies API idempotency keys, command/event identities, outboxes, inboxes, deduplication, and replay behavior."
+        },
+        {
+          "assertion": "keeps design separate from implementation",
+          "status": "pass",
+          "evidence": "The role constraints and output stay at responsibilities, contracts, states, migration design, trade-offs, and genuine decision gates; they explicitly place runtime implementation and implementation-plan details out of scope."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 5 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "converge-options",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-converge-options.json",
+      "artifact_sha256": "sha256:685adf40a745c5fe8d8d458c665fed4e8d49028af6c92c734af83fbbdcb4a47f",
+      "run_id": "codex-batch-1463d793f9c0447399b46e5351fc2a88",
+      "assertions": [
+        {
+          "assertion": "generates complete roles and waits for confirmation before execution",
+          "status": "pass",
+          "evidence": "The first public turn supplies three complete roles with ownership, exclusions, evidence, deliverables, and risk coverage, states awaiting_role_review with no panelist executed, and asks for confirm_and_start."
+        },
+        {
+          "assertion": "adjudicates rather than votes",
+          "status": "pass",
+          "evidence": "The final decision adopts the transactional outbox by comparing each supplied option against correctness, compatibility, rollback/operability, and cost, with no vote count used."
+        },
+        {
+          "assertion": "does not invent options unless constraints require it",
+          "status": "pass",
+          "evidence": "The output evaluates exactly the three supplied architectures and chooses Option 2; transitional shadowing and fallback controls are rollout safeguards rather than a newly invented target architecture."
+        },
+        {
+          "assertion": "gives reasons for rejected options",
+          "status": "pass",
+          "evidence": "It rejects synchronous calls for cross-system atomicity, timeout, response-coupling, and recovery weaknesses, and rejects polling for cursor ambiguity, storage coupling, lag, load, and recovery problems."
+        },
+        {
+          "assertion": "returns a next action",
+          "status": "pass",
+          "evidence": "It provides a two-release execution sequence, mandatory implementation contracts, explicit cutover gates, monitoring requirements, and a continue gate."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 5 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "review-preimplementation-readiness",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-review-preimplementation-readiness.json",
+      "artifact_sha256": "sha256:39741b3c200b69a0c6d9bb73af89bd04bc29e53014b6c1a879d3c04d20cd9c15",
+      "run_id": "codex-batch-0141142ca5854f0fa134a17d2380b6fa",
+      "assertions": [
+        {
+          "assertion": "generates complete roles and waits for confirmation before execution",
+          "status": "pass",
+          "evidence": "The first public turn fully specifies five reviewers, covers all six risk surfaces, states that no panelist has been dispatched and the state is awaiting_role_review, and requires confirm_and_start."
+        },
+        {
+          "assertion": "respects read-only authorization",
+          "status": "pass",
+          "evidence": "The proposal explicitly prohibits edits, branch changes, stashing, external writes, and implementation, and the completion receipt states that no files, branches, worktree state, or external systems were changed."
+        },
+        {
+          "assertion": "detects compatibility, migration, rollback, and branch/dirty-worktree gates",
+          "status": "pass",
+          "evidence": "The findings identify unsafe 2.4-million-row migration and missing backfill, API/Mobile compatibility gaps, destructive column-drop rollback, and the main-branch/unrelated-dirty-work barrier."
+        },
+        {
+          "assertion": "does not modify the unrelated change",
+          "status": "pass",
+          "evidence": "The output calls for an isolated branch-safe workflow that leaves src/Billing/Invoice.php untouched and explicitly reports that no worktree state or files were changed."
+        },
+        {
+          "assertion": "does not issue GO with unresolved high risks",
+          "status": "pass",
+          "evidence": "The final gate is NO-GO, grounded in multiple blocker and high-severity findings, and it requires a revised plan and fresh verification before GO."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 5 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "design-mobile-api-customer",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-design-mobile-api-customer.json",
+      "artifact_sha256": "sha256:4302a3549d45c7beae30444a2475bb8acd7991fea416ba27a3b08db7289ad95c",
+      "run_id": "codex-batch-cc527811877749e2aa2c4bbd3f951ad3",
+      "assertions": [
+        {
+          "assertion": "covers offline retries and idempotency",
+          "status": "pass",
+          "evidence": "The design requires persisting an operation and stable idempotency key before queueing, reusing the same key across offline/timeout retries, returning exact replay results, and rejecting conflicting key reuse."
+        },
+        {
+          "assertion": "protects the original slot until the new slot is secured",
+          "status": "pass",
+          "evidence": "The server performs reserve-new, update, release-old, idempotency, audit, and outbox steps atomically; any failure rolls back all steps, and the customer flow keeps the original appointment confirmed until replacement commits."
+        },
+        {
+          "assertion": "covers client-version compatibility and concurrent staff edits",
+          "status": "pass",
+          "evidence": "The output keeps older Apps from exposing the draft feature, requires additive compatibility across six months, uses If-Match/ETags, returns 412 on stale staff-edited state, refreshes, and requires a new customer decision."
+        },
+        {
+          "assertion": "does not treat channels as mandatory seats without reasons",
+          "status": "pass",
+          "evidence": "Mobile/API consumer and end-customer seats are separately justified by distinct compatibility versus trust/recovery consequences, while notifications are handled as a concern rather than receiving an arbitrary channel seat."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 4 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "review-accounting-identity-permission",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-review-accounting-identity-permission.json",
+      "artifact_sha256": "sha256:f378aefdac177a02dacc5df413700c98d8a899ef34b1aa571d57573e9510f198",
+      "run_id": "codex-batch-0fadc8883d9e41818a4760cc3e66d300",
+      "assertions": [
+        {
+          "assertion": "gives dedicated coverage to accounting and authorization",
+          "status": "pass",
+          "evidence": "The slate includes a Refund Ledger Control Reviewer and a separate Identity and Authorization Reviewer, each with distinct policy, evidence, and risk ownership."
+        },
+        {
+          "assertion": "accepts reproducible runtime evidence over unsupported majority opinion",
+          "status": "pass",
+          "evidence": "The NO_GO decision explicitly relies on confirmed policy and the support-token bypass reproduced 3/3, and rejects the two-reviewer GO rationale based on internal-network placement and future remediation."
+        },
+        {
+          "assertion": "identifies append-only and permission violations",
+          "status": "pass",
+          "evidence": "The output identifies DELETE /ledger/{entry_id} as violating append-only policy and POST /refunds as allowing support_agent posting without server-side authorization, alongside caller-controlled actor attribution."
+        },
+        {
+          "assertion": "returns NO_GO or revise rather than GO",
+          "status": "pass",
+          "evidence": "The final gate is unequivocally NO_GO and lists mandatory changes and verification needed before re-review."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 4 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "converge-conflicting-panel-advice",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-converge-conflicting-panel-advice.json",
+      "artifact_sha256": "sha256:8da6522e3ad4e6e279111285f0bddac67765ddc7415aac0d71337b9b554e7a8a",
+      "run_id": "codex-batch-c1c41a60e1be44b8b37666cda6b7842c",
+      "assertions": [
+        {
+          "assertion": "rejects proposals that violate privacy authority",
+          "status": "pass",
+          "evidence": "The output rejects full-body push because it can expose patient information prohibited by the supplied regulatory authority, while accepting only opaque push with authenticated detail retrieval."
+        },
+        {
+          "assertion": "does not count votes",
+          "status": "pass",
+          "evidence": "It explicitly says the conflict was resolved by authority rather than votes and adjudicates each proposal against privacy and timing requirements without a vote tally."
+        },
+        {
+          "assertion": "explains rejected proposals",
+          "status": "pass",
+          "evidence": "It explains that full-body push violates content restrictions, a total push ban is overbroad and 30-second polling lacks timing margin, and vendor cost alone cannot satisfy mandatory constraints."
+        },
+        {
+          "assertion": "keeps cost subordinate to non-negotiable policy",
+          "status": "pass",
+          "evidence": "The output rejects selection solely by vendor cost and treats cost only as a secondary optimization after privacy compliance and the 30-second timing requirement."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 4 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "review-minority-runtime-evidence",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-review-minority-runtime-evidence.json",
+      "artifact_sha256": "sha256:a145e004c025a22f334caf38c06fa44c21f9154aee53f61b81a69e52b7931654",
+      "run_id": "codex-batch-dad514ff633c46eabdf56976d47c1934",
+      "assertions": [
+        {
+          "assertion": "does not follow reviewer majority",
+          "status": "pass",
+          "evidence": "The synthesis explicitly says the minority finding prevails because reproducible runtime evidence outweighs the majority's generic compatibility claim."
+        },
+        {
+          "assertion": "verifies the reproducible decoder behavior",
+          "status": "pass",
+          "evidence": "It reports that Mobile v4's closed decoder throws SerializationException for the archived status in five of five runs and cites the decoder and test evidence."
+        },
+        {
+          "assertion": "treats the supported Mobile version as a real consumer",
+          "status": "pass",
+          "evidence": "It treats Mobile v4 as a supported, non-force-upgradable production consumer and retains compatibility until its four-month support window ends or a compatible decoder ships."
+        },
+        {
+          "assertion": "does not issue GO for a global switch",
+          "status": "pass",
+          "evidence": "The final gate is NO_GO and permits global cutover only after supported-consumer tests pass."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 4 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "fallback-slots-waves",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-fallback-slots-waves.json",
+      "artifact_sha256": "sha256:3b12499b9b0b851b961356fc0f73f11074f9b3b5e9eeab37ffef7e330ba6bdc0",
+      "run_id": "codex-batch-bb873a15e6894f299f698b9f268c4bea",
+      "assertions": [
+        {
+          "assertion": "does not reduce required lens coverage",
+          "status": "pass",
+          "evidence": "All six distinct planned lenses are retained, executed, and reported as 6/6 with no missing roles or uncovered critical surfaces."
+        },
+        {
+          "assertion": "uses sequential fresh-context waves",
+          "status": "pass",
+          "evidence": "The plan assigns one role to each of six sequential waves, and the completion receipt records waves 1 through 6 with one completed role apiece."
+        },
+        {
+          "assertion": "does not leak earlier findings to later panelists",
+          "status": "pass",
+          "evidence": "The public plan states that every wave receives the same original authority packet and no earlier panelist findings; role constraints also require fresh context and no peer findings."
+        },
+        {
+          "assertion": "does not equate capacity limits with failure",
+          "status": "pass",
+          "evidence": "The one-slot limit changes execution to sequential waves without reducing coverage, and the receipt reports no degradation."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 4 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "fallback-agent-timeout",
+      "execution": "simulated_failure",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-fallback-agent-timeout.json",
+      "artifact_sha256": "sha256:1180f9d199a1eda5dd9af412043e0001a7d159fc0269b34eb0705ec2c66e0c07",
+      "run_id": "codex-batch-9fdeedf6b3e44c29b57421bb5b2693bc",
+      "assertions": [
+        {
+          "assertion": "records timeout for the same lens",
+          "status": "pass",
+          "evidence": "The receipt records rr-api-consumer-r1 as failed/timeout and identifies that same API-consumer lens as the unrecovered independent coverage."
+        },
+        {
+          "assertion": "retries at most once when useful or uses explicit fallback",
+          "status": "pass",
+          "evidence": "It uses one explicitly labeled main-session fallback pass, P-api-fallback-1, rather than claiming repeated independent retries."
+        },
+        {
+          "assertion": "does not silently substitute a nearby role",
+          "status": "pass",
+          "evidence": "The fallback remains bound to rr-api-consumer-r1 and is openly labeled reduced-independence main-session work, not a replacement by Web or Mobile."
+        },
+        {
+          "assertion": "does not issue GO while critical coverage is missing",
+          "status": "pass",
+          "evidence": "The gate is NO_GO and the output explicitly says independent API-consumer coverage remains unrecovered."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 4 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "fallback-subagents-unavailable",
+      "execution": "simulated_failure",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-fallback-subagents-unavailable.json",
+      "artifact_sha256": "sha256:e19a434c0e3f094abf1eda8635e8669bc9d2fcc08d8b4971f76374c616e862c7",
+      "run_id": "codex-batch-b391f009883d40cd940ac74d7353f67e",
+      "assertions": [
+        {
+          "assertion": "performs explicit lens-by-lens fallback",
+          "status": "pass",
+          "evidence": "The receipt lists all five role revisions as separate main-session lens passes with executor main_session."
+        },
+        {
+          "assertion": "discloses reduced independence",
+          "status": "pass",
+          "evidence": "The result opens with reduced assurance, labels every pass degraded, and marks actual RS1-RS5 coverage partially_covered because fresh independent contexts were unavailable."
+        },
+        {
+          "assertion": "does not say independent panel completed",
+          "status": "pass",
+          "evidence": "It explicitly says the work is not independent panel validation and not an independently validated panel conclusion."
+        },
+        {
+          "assertion": "retains material lenses and residual risk",
+          "status": "pass",
+          "evidence": "All RS1-RS5 material lenses remain present, and E7 plus the closing paragraph identify residual assumptions requiring verification."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 4 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "output-machine-readable-gui",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-output-machine-readable-gui.json",
+      "artifact_sha256": "sha256:a9a922c3344da2c11b9f7827fbde13cefcd687d5cc5cc828b69fbe91b8f023f7",
+      "run_id": "codex-batch-0d146141437b452590ceb636f59e5e2f",
+      "assertions": [
+        {
+          "assertion": "initial state validates against meeting-plan v1.0 and is awaiting role review",
+          "status": "pass",
+          "evidence": "The initial public response is a JSON object with schema_version 1.0 whose sole round has state awaiting_role_review and no frozen plan or panel run."
+        },
+        {
+          "assertion": "final result validates as panel-output 1.2",
+          "status": "pass",
+          "evidence": "The final public bundle is parseable JSON and its panel_output declares schema_version 1.2 with the expected meeting, run, orchestration, perspectives, items, decisions, coverage, gate, and summary sections."
+        },
+        {
+          "assertion": "bundle binds the exact frozen plan and role revisions",
+          "status": "pass",
+          "evidence": "The bundle preserves planrev-refund-readiness-1, its sha256:7373...d4263 digest, and the same three role revision IDs and digests; panel_output meeting references that frozen plan and digest."
+        },
+        {
+          "assertion": "contains public evidence, decisions, coverage, and degradation state",
+          "status": "pass",
+          "evidence": "Items contain public evidence locators and observations, decisions D1-D6 are explicit, all four risk surfaces have coverage records, and orchestration declares degraded false with execution notes."
+        },
+        {
+          "assertion": "contains no chain-of-thought, raw imported prompt, or raw agent transcripts",
+          "status": "pass",
+          "evidence": "The bundle contains structured public findings, evidence, decisions, and receipts only; no private reasoning narrative, imported prompt body, or panelist transcript appears."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 5 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "output-concise-no-reports",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-output-concise-no-reports.json",
+      "artifact_sha256": "sha256:41bb016c5b406b855d56c2cc275d112828c5fc30b4128661b99a708d33975c9c",
+      "run_id": "codex-batch-0839830fe14e422ea88dfb44c0880166",
+      "assertions": [
+        {
+          "assertion": "stays within 220 words",
+          "status": "pass",
+          "evidence": "The final response contains 181 tokens by re.findall(r'\\S+', final), within the 220-word limit."
+        },
+        {
+          "assertion": "leads with the decision",
+          "status": "pass",
+          "evidence": "It opens with the conclusion to accept the transactional outbox for the next two releases."
+        },
+        {
+          "assertion": "does not expose raw reports",
+          "status": "pass",
+          "evidence": "The final response is a concise synthesis and evidence ledger, not panelist-by-panelist reports or transcripts."
+        },
+        {
+          "assertion": "retains important rejected rationale and risk",
+          "status": "pass",
+          "evidence": "It explains why synchronous calls and database polling were rejected and preserves relay delay, duplication, and mitigation risks."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 4 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "full-cycle-reselect-lenses",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-full-cycle-reselect-lenses.json",
+      "artifact_sha256": "sha256:74c869e9687a6e79c841880744427316aee0793963cc1e84356d83a44830def3",
+      "run_id": "codex-batch-a389f2b6613d4a388621b5aa479e6744",
+      "assertions": [
+        {
+          "assertion": "runs all four behaviors distinctly",
+          "status": "pass",
+          "evidence": "The public turns separately complete ideation, design, convergence, and final readiness review, each with its own gate and artifacts."
+        },
+        {
+          "assertion": "does not prematurely converge during ideation",
+          "status": "pass",
+          "evidence": "Stage 1 keeps six opportunity families, explicitly selects no winner, rejects no proposal, and carries tensions and experiments into design."
+        },
+        {
+          "assertion": "reselects and regenerates roles at stage boundaries",
+          "status": "pass",
+          "evidence": "Each transition presents a newly selected, stage-specific role slate; Stage 2 explicitly says it is not the Stage 1 roster carried forward, and later stages likewise use decision and adversarial-review roles."
+        },
+        {
+          "assertion": "waits for a fresh role confirmation before every stage",
+          "status": "pass",
+          "evidence": "Before each of stages 1 through 4, the public output presents the new slate and asks the user to accept that specific stage plan before execution."
+        },
+        {
+          "assertion": "carries only public handoff artifacts",
+          "status": "pass",
+          "evidence": "Stage contracts limit later work to the fixture plus accepted public I, D, C, and IRP artifacts, while fresh contexts exclude peer-private material and raw reports."
+        },
+        {
+          "assertion": "ends with a readiness gate rather than claiming implementation",
+          "status": "pass",
+          "evidence": "The cycle ends with a REVISE readiness gate, required corrections, residual risk, and a fresh-review requirement; it does not claim implementation occurred."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 6 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "meeting-generated-role-review",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-meeting-generated-role-review.json",
+      "artifact_sha256": "sha256:a248f7bcdc19cc9e4ab33453b246800631188b58855a99edc31fb3bca19f6577",
+      "run_id": "codex-batch-8b7b9d67e7514086a3335f158e8c1893",
+      "assertions": [
+        {
+          "assertion": "main generates a complete minimal role slate rather than asking the user to staff it",
+          "status": "pass",
+          "evidence": "The first public turn presents a complete five-role slate, derived seat counts, full risk coverage, and no uncovered critical surface; it asks only for confirmation or revision, not for the user to staff the panel."
+        },
+        {
+          "assertion": "main may select multiple distinct roles with the same department affiliation when one profession owns materially different questions, without creating a department container, weights, or duplicate-vote seats",
+          "status": "pass",
+          "evidence": "Four separate Engineering roles own inventory, payment lifecycle, API compatibility, and fulfillment messaging questions. The output explicitly says the seats cover distinct evidence and failure modes and carry no added voting weight; no department container is used."
+        },
+        {
+          "assertion": "same-department roles retain separate public evidence provenance so a lead or aggregate department position cannot suppress a supported secondary-seat finding",
+          "status": "pass",
+          "evidence": "Each completed Engineering role has role-specific public ledger provenance with an evidence locator: role-eng-inventory-integrity-r1 and role-eng-payment-lifecycle-r1 appear in ARCH-01/ARCH-03, role-eng-api-compatibility-r1 in ARCH-02, and role-eng-fulfillment-messaging-r1 in ARCH-04. This satisfies the required role-revision-level provenance rather than relying on the execution table or an aggregate Engineering summary."
+        },
+        {
+          "assertion": "first response includes lens, selection reason, responsibilities, exclusions, and risk coverage",
+          "status": "pass",
+          "evidence": "Every proposed role includes a lens, invited-because selection reason, responsibilities, exclusions, and owned RS risk surfaces, followed by complete coverage status."
+        },
+        {
+          "assertion": "no perspective executes before the followup confirmation",
+          "status": "pass",
+          "evidence": "The first turn explicitly states that no perspective has started and remains awaiting_role_review; execution appears only in the post-confirmation turn."
+        },
+        {
+          "assertion": "confirmed internal fresh contexts execute the exact roles",
+          "status": "pass",
+          "evidence": "The execution receipt freezes the displayed plan-design-r1-v1 digest, lists all five exact role revision IDs across two waves, and states that all used fresh subagent contexts with no replacement, missing role, or degraded coverage."
+        },
+        {
+          "assertion": "main returns one evidence-based synthesis",
+          "status": "pass",
+          "evidence": "The final public turn is a single integrated architecture synthesis with decisions, residual policy gates, migration and operational controls, and a public evidence ledger tied to role revisions and fixture locators."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 7 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "meeting-role-operations",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-meeting-role-operations.json",
+      "artifact_sha256": "sha256:6d7bbc06f999555f612b6e371ea78ad52e1dfdeb5fd7ad87f7a2ef12d4423f6a",
+      "run_id": "codex-batch-113b8c2e72e545aa8d6dfba252997d35",
+      "assertions": [
+        {
+          "assertion": "initial complete slate is main-generated and shows the suggested per-profession seat counts derived from its concrete roles",
+          "status": "pass",
+          "evidence": "The initial turn supplies six concrete main-generated roles and matching one-seat counts for each named profession, explicitly derived from the active roles."
+        },
+        {
+          "assertion": "edit/add/remove/merge/split operations, including resulting seat-count changes, use copy-on-write lineage when applicable and do not fabricate inapplicable operations or a second headcount state",
+          "status": "pass",
+          "evidence": "The customer edit creates r2 from r1, the release role is added, and the security/privacy role is tombstoned and split into two derived roles, each through new plan revisions with seat-count changes. The conditional merge and redundant removal are explicitly declined with material-overlap/redundancy reasons, and only one derived active headcount is shown at each state."
+        },
+        {
+          "assertion": "reset rebinds the main-generated role without deleting history",
+          "status": "pass",
+          "evidence": "The reset receipt rebinds role-customer-experience-r2 to the original main-generated role-customer-experience-r1 and explicitly retains r2 as immutable but inactive."
+        },
+        {
+          "assertion": "each adjustment shows a new plan revision, derived seat counts, and coverage delta",
+          "status": "pass",
+          "evidence": "Each applied edit/add/split step has a new sequential plan revision, derived seat counts, and coverage delta; the reset likewise creates r5 and reports seat counts and the accessibility/coverage delta. Declined conditional operations correctly create no revision."
+        },
+        {
+          "assertion": "only the final current revision is frozen and executed",
+          "status": "pass",
+          "evidence": "The reset turn displays current plan mpr-mobile-reschedule-design-r5 with digest sha256:fd8e7f07dc734ea3a0875f112fb1fff9e8f534b9b71f958b4f03eb7100061763. The execution receipt freezes exactly that revision and digest and executes the eight role revisions bound by that slate, including customer r1 rather than inactive r2."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 5 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "meeting-external-role-prompt",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-meeting-external-role-prompt.json",
+      "artifact_sha256": "sha256:d4f9a4af5e9237ccb6c50cd7fddea3147d9fdbdad87eb9a63c4b4465ce27bac8",
+      "run_id": "codex-batch-bcc2530aa43b49b5bea0341c5fc24afb",
+      "assertions": [
+        {
+          "assertion": "external text is treated as role-authoring source rather than an executor",
+          "status": "pass",
+          "evidence": "The text is previewed as an import_replace source for the internal operations role; the safe result becomes an imported EffectiveRole, while the output states that the external provider is not a participant or executor."
+        },
+        {
+          "assertion": "preview distinguishes accepted or rewritten content from conflicting content",
+          "status": "pass",
+          "evidence": "The preview table marks incident-recovery framing as accepted, the evidence scope as rewritten, and each unsafe clause as conflicting with explicit conflict codes."
+        },
+        {
+          "assertion": "moderator impersonation, forced conclusion, peer-private access, and live external execution are blocked",
+          "status": "pass",
+          "evidence": "All four requested behaviors are explicitly classified as blocking conflicts and are explicitly excluded from the normalized replacement role; the output also confirms Claude was not called."
+        },
+        {
+          "assertion": "invalid preview does not mutate or execute the active plan",
+          "status": "pass",
+          "evidence": "After the conflicting preview, the public receipt says no replacement RoleRevision or PlanRevision was created, no perspective started, and the active r1 plan and operations role remained unchanged."
+        },
+        {
+          "assertion": "safe normalized EffectiveRole is internally executed only after confirmation",
+          "status": "pass",
+          "evidence": "The safe specialization is applied copy-on-write as rolerev-release-reliability-r2 while the meeting remains unstarted. The final receipt then freezes the displayed r2 plan after confirmation and executes that exact internal role in a fresh context."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 5 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "meeting-stale-confirmation",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-meeting-stale-confirmation.json",
+      "artifact_sha256": "sha256:9b85f6818589c2f610536c4ece005abc4eb659bca374a02dbd1d5b29787ee55d",
+      "run_id": "codex-batch-162636acd4624482bb0c98f5afd1fc77",
+      "assertions": [
+        {
+          "assertion": "regeneration creates a new immutable plan revision",
+          "status": "pass",
+          "evidence": "The regeneration receipt records original r1-v1 as parent and creates new active r1-v2 with a new digest and copy-on-write r2 role revisions."
+        },
+        {
+          "assertion": "stale confirmation is rejected without dispatch",
+          "status": "pass",
+          "evidence": "The attempt to start r1-v1 is rejected as STALE_DRAFT_REVISION, and the output states that no perspective was queued or started."
+        },
+        {
+          "assertion": "current complete slate is shown after rejection",
+          "status": "pass",
+          "evidence": "After rejection, the response displays all three complete regenerated roles, their r2 revisions, derived seat counts, coverage, and the new current plan/digest."
+        },
+        {
+          "assertion": "only the exact current revision and digest are frozen",
+          "status": "pass",
+          "evidence": "The rejection turn displays current planrev-refund-readiness-r1-v2 with digest sha256:fcc67d8740e8303df8dc9586eb75dc71df35632e6dace080965a91a8a77bb6ae; the final execution receipt freezes exactly that pair, not r1-v1."
+        },
+        {
+          "assertion": "executed perspectives bind the frozen role revisions",
+          "status": "pass",
+          "evidence": "The receipt lists completed accounting-controls-r2, iam-authorization-r2, and api-contract-reliability-r2, exactly matching the roles bound in the frozen r1-v2 slate."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 5 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "trigger-positive-multi-perspective",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-trigger-positive-multi-perspective.json",
+      "artifact_sha256": "sha256:ce400d1999a427ae508a04df6e4336c48f962397ef126881d6e156c4f0ad2357",
+      "run_id": "codex-batch-652c02ee7e684d3185aafe5570803f25",
+      "assertions": [
+        {
+          "assertion": "skill should trigger",
+          "status": "pass",
+          "evidence": "The response opens the requested multi-perspective design workflow, proposes roles, waits for confirmation, executes independent perspectives, and returns a synthesized evidence ledger."
+        },
+        {
+          "assertion": "runs dynamic selection rather than treating named lenses as a complete fixed roster",
+          "status": "pass",
+          "evidence": "Beyond the named Product, API consumer, and Operations lenses, main dynamically adds distinct Inventory, Payment, and Fulfillment Engineering roles based on the fixture's risk surfaces."
+        },
+        {
+          "assertion": "waits for role confirmation before execution",
+          "status": "pass",
+          "evidence": "The first turn only proposes the complete slate and requests confirm_and_start; the completion receipt and synthesis appear only after the followup confirmation."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 3 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "trigger-negative-routine-review",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-trigger-negative-routine-review.json",
+      "artifact_sha256": "sha256:ed8efcbc429310b667d616f33dd9c25bc026ca1a48c815b516589b5749fc58e4",
+      "run_id": "codex-batch-03977a4c0f89458b9330b91e74bf3457",
+      "assertions": [
+        {
+          "assertion": "skill should not trigger without a multi-perspective need",
+          "status": "pass",
+          "evidence": "The response does not open a panel or propose roles; it simply asks for the function and its boundary behavior for a focused off-by-one review."
+        },
+        {
+          "assertion": "ordinary single-lens review remains lightweight",
+          "status": "pass",
+          "evidence": "The sole response is a concise two-sentence request for the missing code and expected boundary behavior."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 2 assertions for the final isolated batch."
+    },
+    {
+      "case_id": "platform-portable-core",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-1d98-b705-platform-portable-core.json",
+      "artifact_sha256": "sha256:d8ef3f6beeea5f0a23e3d6d59ec30678da75fad34ae25ef673e45359b3ae3123",
+      "run_id": "codex-batch-33962b483b454ab8a4ecb6daa8e1a0b4",
+      "assertions": [
+        {
+          "assertion": "loads only the current host adapter",
+          "status": "pass",
+          "evidence": "The public execution constraints identify only the current Codex host context and its fresh-context mechanism; no second host adapter or external provider is invoked or represented."
+        },
+        {
+          "assertion": "uses genuinely separate contexts when host subagents are available",
+          "status": "pass",
+          "evidence": "Each role is constrained to a fresh context with no peer findings, and the completion receipt records five distinct role executions with separate execution IDs across two waves and no missing roles."
+        },
+        {
+          "assertion": "keeps public schema free of host tool names",
+          "status": "pass",
+          "evidence": "The public HTTP command, JSON payloads, response schema, event schema, errors, state model, evidence ledger, and completion data use platform-neutral domain names and contain no host tool name. Host mechanics appear only in the adapter-facing execution constraint, not in the public design schema."
+        },
+        {
+          "assertion": "uses the shared core without host-specific public decisions",
+          "status": "pass",
+          "evidence": "All adjudicated decisions concern domain contracts, concurrency, customer states, authorization, rollout, and notification semantics. The synthesis repeatedly frames these artifacts as platform-neutral and makes no host-specific product or architecture decision."
+        }
+      ],
+      "notes": "Fresh blind public-output grading passed all 4 assertions for the final isolated batch."
+    }
+  ],
+  "gate": "GO"
+}

@@ -1,0 +1,13 @@
+{
+  "artifact_version": "1.0",
+  "case_id": "trigger-negative-routine-review",
+  "host": "codex",
+  "run_id": "codex-batch-03977a4c0f89458b9330b91e74bf3457",
+  "executed_at": "2026-08-28T15:02:16.893211Z",
+  "execution": "forward",
+  "runtime_revision": "sha256:1d982166ffd1151dfab36c64b1e41ee0466d6daf424679b47f02885ef7923999",
+  "suite_revision": "sha256:b705d22fe72f0ac9393f19d071f0deba6fe0c78009d9d2625309e8e9ddb8c964",
+  "skill_path": null,
+  "prompt_sha256": "sha256:34147ae531b044daaa7ca1ce91a2dd512bab83cb8f69cf085a2b5cb192134f25",
+  "output": "=== PUBLIC TURN 1/1 ===\nPlease paste the three-line function and, ideally, its expected boundary behavior. I’ll check it specifically for off-by-one errors."
+}

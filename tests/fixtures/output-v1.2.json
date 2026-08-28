@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.2",
+  "meeting": {
+    "meeting_id": "meeting-demo-001",
+    "round_id": "round-demo-001",
+    "plan_revision_id": "planrev-demo-002",
+    "frozen_plan_digest": "sha256:87b722331cc40aafd473c9d207db6784aafde4b1692bd5bd6fe3cadeb06ffc1a"
+  },
+  "run": {
+    "run_id": "run-demo-001",
+    "mode": "review",
+    "objective": "Review whether the example service is ready for release.",
+    "scope": ["product contract", "operations"],
+    "non_goals": ["GUI implementation"],
+    "authorities": ["specs/example.md", "tests/example"],
+    "baseline": {
+      "repository": "example/repository",
+      "branch": "feature/example",
+      "revision": "abc123"
+    },
+    "started_at": null,
+    "completed_at": null
+  },
+  "orchestration": {
+    "execution": "subagents",
+    "degraded": false,
+    "waves": [["P1", "P2"]],
+    "notes": []
+  },
+  "perspectives": [
+    {
+      "perspective_id": "P1",
+      "round_id": "round-demo-001",
+      "role_id": "role-product",
+      "role_revision_id": "rolerev-product-001",
+      "name": "Product contract reviewer",
+      "lens": "Does observable behavior satisfy the accepted contract?",
+      "selection_reason": "The release gate depends on a critical public product contract.",
+      "stage": "review",
+      "executor": "subagent",
+      "status": "completed",
+      "failure": null,
+      "replacement_perspective_id": null
+    },
+    {
+      "perspective_id": "P2",
+      "round_id": "round-demo-001",
+      "role_id": "role-operations",
+      "role_revision_id": "rolerev-operations-002",
+      "name": "Incident recovery reviewer",
+      "lens": "Can an operator detect, contain, and recover each material failure?",
+      "selection_reason": "The imported role sharpens the main-generated operations lens without changing its authority.",
+      "stage": "review",
+      "executor": "subagent",
+      "status": "completed",
+      "failure": null,
+      "replacement_perspective_id": null
+    }
+  ],
+  "items": [
+    {
+      "item_id": "I1",
+      "perspective_id": "P1",
+      "round_id": "round-demo-001",
+      "risk_surface_ids": ["risk-product-contract"],
+      "stage": "review",
+      "kind": "finding",
+      "severity": "low",
+      "statement": "The public behavior matches the reviewed contract examples.",
+      "evidence": [
+        {
+          "source": "tests/example",
+          "locator": "contract examples",
+          "observation": "All accepted contract examples pass reproducibly."
+        }
+      ],
+      "impact": "The critical product-contract surface has reproducible evidence.",
+      "proposal": null,
+      "confidence": "high"
+    },
+    {
+      "item_id": "I2",
+      "perspective_id": "P2",
+      "round_id": "round-demo-001",
+      "risk_surface_ids": ["risk-operations"],
+      "stage": "review",
+      "kind": "finding",
+      "severity": "low",
+      "statement": "The documented recovery exercise completes without external mutation.",
+      "evidence": [
+        {
+          "source": "tests/example",
+          "locator": "recovery exercise",
+          "observation": "Detection, containment, recovery, and audit checks pass."
+        }
+      ],
+      "impact": "The planned operations lens has evidence for its assigned surface.",
+      "proposal": null,
+      "confidence": "high"
+    }
+  ],
+  "decisions": [
+    {
+      "decision_id": "D1",
+      "round_id": "round-demo-001",
+      "source_item_ids": ["I1", "I2"],
+      "stage": "review",
+      "status": "accepted",
+      "rationale": "Both planned surfaces have reproducible evidence from their frozen roles.",
+      "resulting_change": "Close the review as ready."
+    }
+  ],
+  "coverage": [
+    {
+      "round_id": "round-demo-001",
+      "risk_surface_id": "risk-product-contract",
+      "risk_surface": "Product contract",
+      "lens": "Product contract reviewer",
+      "critical": true,
+      "status": "covered",
+      "planned_role_ids": ["role-product"],
+      "evidence_item_ids": ["I1"]
+    },
+    {
+      "round_id": "round-demo-001",
+      "risk_surface_id": "risk-operations",
+      "risk_surface": "Operational recovery",
+      "lens": "Incident recovery reviewer",
+      "critical": false,
+      "status": "covered",
+      "planned_role_ids": ["role-operations"],
+      "evidence_item_ids": ["I2"]
+    }
+  ],
+  "gate": {
+    "state": "go",
+    "rationale": "Every frozen critical surface has evidence-backed coverage.",
+    "unresolved_item_ids": [],
+    "next_step": "Close the round and retain the public result."
+  },
+  "summary": {
+    "headline": "The reviewed example is ready.",
+    "accepted_changes": [],
+    "remaining_risks": [],
+    "needs_user_decision": []
+  }
+}

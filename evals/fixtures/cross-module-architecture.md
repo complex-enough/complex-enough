@@ -8,6 +8,8 @@ The product accepts customer orders through Web and Mobile clients. Current beha
 - Mobile clients retry `POST /orders` after a 10-second timeout; the API has no idempotency key.
 - Operations can manually edit order status in the database during incidents.
 
+Organization context: Inventory integrity, payment integration, API/client compatibility, and fulfillment messaging specialists all belong to the broader Engineering department. They remain distinct professional specialties and may expose materially different evidence or failure modes. Operations is a separate department.
+
 Proposed phase scope: define boundaries, data ownership, API/event contracts, state transitions, and a safe incremental migration. Runtime implementation is out of scope.
 
 Constraints:

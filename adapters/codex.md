@@ -10,8 +10,11 @@ Use this adapter only in Codex hosts.
 
 ## Fresh independent contexts
 
+- Do not call `spawn_agent` until the main-generated role slate has been shown to the user and the current revision/digest has been confirmed and frozen.
+- Yield the role-slate checkpoint as the main session's final response and end that assistant turn. Commentary is not a checkpoint. Do not spawn, pre-spawn, queue, or run panelists in the same turn that proposes or revises roles.
+- Accept freeze/start only from a subsequent user-authored turn. A role adjustment creates a new revision; deliver it as another final response and do not treat the adjustment message as permission to execute that new or a stale proposal.
 - Spawn each panelist with a new context; use `fork_turns: "none"` when the host exposes that control.
-- Put the complete task-local authority packet and unique lens in the initial message.
+- Put the complete task-local authority packet and exact frozen EffectiveRole in the initial message, including role/revision identity and digest.
 - Do not use a full-history fork: it can leak moderator preferences, earlier findings, or evaluator criteria.
 - Tell panelists they are not alone in the workspace, must preserve other work, and must not spawn nested agents unless explicitly authorized.
 
@@ -32,5 +35,8 @@ Use this adapter only in Codex hosts.
 ## Output metadata
 
 - `perspective.executor` is `subagent` for successful child contexts and `main_session` for fallback passes.
+- Retry/replacement creates a new `perspective_id` but preserves the frozen `role_id` and `role_revision_id`.
 - Use `orchestration.execution=waves` when more than one child wave was required.
+- In the public completion receipt, state the frozen plan revision/digest and map every planned `role_revision_id` to its executed attempt, wave, and degradation outcome; retain role-level public evidence attribution in the synthesis.
+- When machine state is requested, retain the public meeting-plan snapshot across turns and bind panel-output 1.2 to its frozen revision/digest. Do not persist raw subagent messages.
 - Codex UI metadata lives in `agents/openai.yaml`; it does not alter the stable public result schema.

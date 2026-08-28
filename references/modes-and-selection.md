@@ -69,10 +69,14 @@ Run `ideate -> design -> converge -> review` only when the user requested end-to
 At each stage boundary:
 
 1. Close and persist only public stage artifacts and decisions.
-2. Recompute risk surfaces and lens coverage.
-3. Start new panelists with fresh contexts and stage-specific instructions.
-4. Do not expose prior raw panelist reports; provide only the authority packet and accepted public artifacts.
-5. Stop when authorization ends or a genuine decision gate blocks the next stage.
+2. Classify handoff items as `carry_forward`, `deferred`, `excluded`, or `needs_user_decision`.
+3. Open a new meeting round, recompute risk surfaces, and generate a complete new role slate.
+4. Let the user accept or adjust that finished proposal, then freeze it before dispatch.
+5. Start new panelists with fresh contexts and stage-specific instructions.
+6. Do not expose prior raw panelist reports; provide only the authority packet and accepted public artifacts.
+7. Stop when authorization ends or a genuine decision gate blocks the next stage.
+
+The role-slate checkpoint occurs in every mode, not only `full_cycle`. It confirms who will execute the current round; it is not a vote and is not a `needs_user_decision` product escalation.
 
 ## Perspective selection algorithm
 
@@ -90,5 +94,9 @@ Use these tests:
 5. **Marginal-value test:** Is the expected new information worth its latency and cost?
 
 Merge lenses that fail the first three tests. Add lenses that pass the fourth. Stop when all material risks have accountable coverage and remaining candidates fail the fifth.
+
+After selection, main converts every chosen lens into a complete RoleDefinition and presents the whole main-generated slate. User customization happens only after that proposal exists. A prior-round role has no automatic seat in the next round.
+
+Treat `department` as a professional-affiliation label, not a grouping entity, leader-mediated reporting layer, or weight layer. A profession may contribute several roles in the same round when each passes the distinct-question or distinct-evidence tests—for example, two Engineering roles may separately own inventory integrity and event-delivery recovery. Keep their `role_id`, lens, evidence duties, risk ownership, and public provenance distinct. Never add same-department seats merely to create apparent consensus; multiple seats deepen coverage and do not multiply decision authority. Do not pre-collapse their results into a department position: a secondary seat's reproducible evidence must reach main even when a nominal lead or same-department majority disagrees.
 
 Do not infer that every delivery channel needs a seat. For example, include Mobile App, API consumer, and end customer separately only when their contracts, release constraints, or failure experiences differ materially.
