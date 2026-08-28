@@ -85,15 +85,39 @@ Build a table internally with these columns:
 | Risk surface | Decision question | Needed evidence | Candidate lens | Distinct from | Criticality | Cost |
 | --- | --- | --- | --- | --- | --- | --- |
 
+Before turning candidate lenses into seats, choose one role-splitting complexity range:
+
+| Range | Use when | Role-granularity behavior |
+| --- | --- | --- |
+| `lightweight` | The change is bounded, locally reversible, low-coupling, and has no high-consequence authority, data, financial, safety, migration, public-contract, or operating-risk trigger. One or few actual user surfaces may still exist. | Prefer a domain/product/implementation generalist plus only evidence-distinct user or specialist lenses. Architecture, security, privacy, reliability, testing, and rollout remain explicit duties on a capable generalist unless one requires distinct evidence. |
+| `standard` | Multiple actual user surfaces, shared state, concurrency, or an external integration creates material coordination risk, but failures remain recoverable and no critical trigger requires separately accountable specialist evidence. | Split actual-user lenses when their goals, permissions, or failure consequences differ. Add professional seats only for distinct questions/evidence; keep generic architecture/security/reliability checklists combined where practical. |
+| `critical` | A material financial/accounting, identity/authorization, sensitive or regulated data, irreversible-data/migration, safety, external/public contract, or high-consequence reliability/security failure needs specialist evidence or authority. Conflicting authority can also trigger this range. | Give every triggered critical surface a dedicated accountable specialist when another role cannot produce the required evidence. Still merge unrelated or overlapping roles and do not create a fixed roster. |
+
+These are calibration ranges, not panel-size buckets. Do not define a minimum, maximum, or fixed role list for any range. A single critical trigger can justify `critical`; several ordinary surfaces do not. Conversely, the mere presence of data, an API, authentication, architecture, or security hygiene does not create a dedicated specialist seat. State the selected range and concise evidence-backed reasons in the role proposal. The user may request another range; recompute risks, granularity, coverage, and the whole slate rather than changing a scalar label while keeping contradictory roles.
+
+For each risk, distinguish **ownership** from a **dedicated seat**. Every material risk needs an owner. A dedicated specialist is warranted only when its question, evidence source, authority, or consequence is materially distinct and the range supports that split. This keeps a lightweight CSV import from automatically receiving separate architecture and security seats while still requiring safe parsing, authorization, and recovery duties.
+
 Use these tests:
 
 1. **Distinct-question test:** Would this lens ask a question no selected lens owns?
 2. **Distinct-evidence test:** Can this lens inspect evidence or consequences others are unlikely to cover?
 3. **Stakeholder-impact test:** Can this stakeholder experience a materially different failure or value outcome?
-4. **High-risk ownership test:** Does a material accounting, identity, authorization, migration, irreversible-data, security, or external-contract risk lack a dedicated owner?
+4. **High-risk ownership test:** Does a material accounting, identity, authorization, migration, irreversible-data, security, privacy, safety, reliability, or external-contract risk lack explicit ownership, and does its evidence/consequence require a dedicated specialist under the selected range?
 5. **Marginal-value test:** Is the expected new information worth its latency and cost?
 
-Merge lenses that fail the first three tests. Add lenses that pass the fourth. Stop when all material risks have accountable coverage and remaining candidates fail the fifth.
+Merge lenses that fail the first three tests. Assign every fourth-test risk, but create a separate seat only when generalist ownership would leave a distinct evidence or authority gap. Stop when all material risks have accountable coverage and remaining candidates fail the fifth.
+
+## Actual-user lenses
+
+Do not treat a product, UX, architecture, or operations professional as actual-user evidence. For user-facing `design` work:
+
+1. Identify actual customer/operator surfaces whose goals, permissions, information, or failure consequences differ materially.
+2. Merge surfaces when the same task and consequence can be represented by one lens; never add one seat merely because another UI channel exists.
+3. In each selected user lens's independent opening, request goals, necessary information, likely misunderstandings, unacceptable failures, and minimum success conditions without showing proposed UI.
+4. After professional openings, main normalizes only the relevant public UI/UX claims and evidence locators into a bounded packet.
+5. Ask the same frozen user role to critique understandability, operability, false-success cues, unsafe shortcuts, and recovery. Do not send raw reports.
+
+Label these as simulated actual-user lenses. They can expose task-model and operability gaps, but they do not prove prevalence, accessibility performance, or real user preference; preserve genuine research as a follow-up when material.
 
 After selection, main converts every chosen lens into a complete RoleDefinition and presents the whole main-generated slate. User customization happens only after that proposal exists. A prior-round role has no automatic seat in the next round.
 

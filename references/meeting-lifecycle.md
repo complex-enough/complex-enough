@@ -25,10 +25,11 @@ generating_roles
 For each round or full-cycle stage:
 
 1. Recompute the authority packet and risk-surface map from the current objective and accepted public handoff.
-2. Select the smallest sufficient set of distinct professional lenses. The same department label may appear on several roles when their questions, evidence, and risk ownership are materially different.
-3. Generate a complete RoleDefinition for every selected perspective seat. `department` remains a descriptive label; do not create a department container, department vote, numeric department weight, or duplicate seat for influence. The number of generated roles with a given label is main's concrete seat-count recommendation. Do not ask the user to staff a blank panel.
-4. Create a new immutable plan revision that binds the exact role revisions, planned coverage, warnings, and digest.
-5. Enter `awaiting_role_review` only after the complete proposal exists.
+2. Select `lightweight`, `standard`, or `critical` role-splitting complexity and record the evidence-backed reasons. This is role-granularity guidance, not a headcount bucket.
+3. Select the smallest sufficient set of distinct professional and actual-user lenses. The same department label may appear on several roles when their questions, evidence, and risk ownership are materially different. Do not mistake a professional proxy for actual-user evidence.
+4. Generate a complete RoleDefinition for every selected perspective seat. `department` remains a descriptive label; do not create a department container, department vote, numeric department weight, or duplicate seat for influence. The number of generated roles with a given label is main's concrete seat-count recommendation. Do not ask the user to staff a blank panel.
+5. Create a new immutable plan revision that binds the selected complexity profile, exact role revisions, planned coverage, warnings, and digest.
+6. Enter `awaiting_role_review` only after the complete proposal exists.
 
 Do not silently reuse the prior round's slate. Prior roles can be regenerated when still useful, but the new selection reason and coverage must be current.
 
@@ -39,6 +40,7 @@ Lead with the fact that the role proposal is already complete. In chat, use this
 ```text
 本輪角色已由 main 產生完成：
 
+建議複雜度：<lightweight|standard|critical> — <selection reasons>
 建議席位：<專業 A: N 席；專業 B: M 席；由下列 active roles 推導>
 
 - <部門／角色>：<lens question>
@@ -51,7 +53,7 @@ Coverage / overlap / import warnings: <none or concise list>
 Plan revision: <id>
 Plan digest: <digest when the host can compute it>
 
-你可以直接開始；也可以調整某專業的席位數，或修改、新增、移除、合併、拆分、重設角色，
+你可以直接開始；也可以調整複雜度、某專業的席位數，或修改、新增、移除、合併、拆分、重設角色，
 或貼入外部工具產生的角色定位內容。外部內容只用來調整角色，
 最終仍由 skill 內部 fresh context 執行。
 ```
@@ -69,6 +71,8 @@ The checkpoint is a hard turn boundary:
 Wait for that subsequent user response. Do not dispatch a panelist from an unfrozen slate. A user response that edits or imports content creates a new draft; show the resulting role/coverage diff as the final response of that assistant turn, end the turn, and wait again on the new revision.
 
 A requested seat-count change is role editing, not scalar metadata. For an increase, create or split into roles with materially distinct lenses and evidence duties; decline a requested duplicate seat that has no marginal information value. For a decrease, remove or merge concrete roles and show whose lens, evidence provenance, and risk coverage would be lost or combined. After the operations, recompute the displayed per-affiliation counts from active bindings. Never persist an independent count that can drift from the role slate.
+
+A requested complexity-range change is a slate recomputation, not a label edit. Re-run calibration and role selection, create a new `regenerate` PlanRevision that binds the new complexity profile and complete role slate, and show role/coverage/cost deltas. The recomputation may retain the same roles only when main explicitly concludes they remain the smallest sufficient coverage under the new range. Preserve compatible user-edited/imported roles unchanged; show every main-generated addition/rebinding and every removal, and never silently discard customization. Do not keep a critical-style specialist slate while relabeling it `lightweight`, or delete a critical evidence owner merely to match the requested range.
 
 ## 3. Apply adjustments copy-on-write
 
@@ -88,6 +92,7 @@ Treat a message containing several role operations as an ordered batch, not as o
 
 - the requested operation and whether it was applied or declined;
 - parent and new `plan_revision_id` plus the new digest when applied;
+- the selected complexity range, reasons, and any range change;
 - created, rebound, tombstoned, or derived role-revision lineage;
 - the applied revision's per-affiliation seat counts, derived from its active role bindings rather than independent headcount state; enumerate every label and numeric count even when the result is unchanged;
 - the coverage delta from that operation alone, including newly assigned, newly uncovered, and still-uncovered risks;

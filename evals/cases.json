@@ -1,5 +1,5 @@
 {
-  "suite_version": "1.1.0",
+  "suite_version": "1.2.0",
   "skill": "orchestrate-multi-perspective-panel",
   "target_platforms": ["codex", "claude-code"],
   "cases": [
@@ -121,7 +121,7 @@
       "fixtures": ["fixtures/accounting-identity-permission.md"],
       "capability": "subagents_available",
       "followups": ["Use the exact proposed revision and digest, freeze it, start the round, and return the final machine-readable bundle."],
-      "assertions": ["initial state validates against meeting-plan v1.0 and is awaiting role review", "final result validates as panel-output 1.2", "bundle binds the exact frozen plan and role revisions", "contains public evidence, decisions, coverage, and degradation state", "contains no chain-of-thought, raw imported prompt, or raw agent transcripts"]
+      "assertions": ["initial state validates against meeting-plan v1.1, binds the complexity profile, and is awaiting role review", "final result validates as panel-output 1.2", "bundle binds the exact frozen plan and role revisions", "contains public evidence, decisions, coverage, and degradation state", "contains no chain-of-thought, raw imported prompt, or raw agent transcripts"]
     },
     {
       "id": "output-concise-no-reports",
@@ -182,6 +182,36 @@
       "capability": "subagents_available",
       "followups": ["Regenerate the role slate, but then start using the original plan revision and digest instead of the new one.", "Use the current regenerated revision and digest and start."],
       "assertions": ["regeneration creates a new immutable plan revision", "stale confirmation is rejected without dispatch", "current complete slate is shown after rejection", "only the exact current revision and digest are frozen", "executed perspectives bind the frozen role revisions"]
+    },
+    {
+      "id": "meeting-complexity-lightweight",
+      "mode": "design",
+      "tags": ["meeting", "complexity", "lightweight", "actual_user"],
+      "request": "Open a multi-perspective design meeting for a small CRM contact CSV import. One workspace administrator uses an existing synchronous admin screen to upload, map, preview validation errors, confirm, and safely retry. Existing contact validation remains authoritative. Background jobs, external providers, regulated data, and irreversible migration are out of scope. Generate the complete initial role proposal and wait before starting.",
+      "fixtures": [],
+      "capability": "subagents_available",
+      "followups": ["Use the exact displayed slate and start this round."],
+      "assertions": ["proposes lightweight complexity with public reasons", "combines ordinary architecture, security, reliability, and data-integrity duties instead of automatically creating dedicated specialist seats", "includes an actual workspace-administrator lens separately from professional evidence and labels it simulated rather than user research", "shows derived seat counts without a fixed roster or headcount state", "waits for user confirmation before executing the exact displayed perspectives"]
+    },
+    {
+      "id": "meeting-complexity-standard",
+      "mode": "design",
+      "tags": ["meeting", "complexity", "standard", "shared_state", "actual_user"],
+      "request": "Open a multi-perspective design meeting for waitlist auto-fill used by a public customer, a frontline scheduling operator, and a CMS operator. A cancellation can offer one released slot for a limited time while manual bookings and blocks race with it. Cover customer messages, operator visibility, shared capacity truth, timeout/retry, and recovery. Generate the complete initial role proposal and wait before starting.",
+      "fixtures": [],
+      "capability": "subagents_available",
+      "followups": ["Use the exact displayed slate and start this round."],
+      "assertions": ["proposes standard complexity with public reasons tied to multiple users, shared state, concurrency, or integration", "separates materially different customer, frontline, and CMS task lenses from professional proxies", "creates dedicated professional seats only for distinct evidence, authority, or failure consequences and does not automatically add a security seat", "discloses that simulated-user lenses are not user research", "waits for user confirmation before executing the exact displayed perspectives"]
+    },
+    {
+      "id": "meeting-complexity-critical",
+      "mode": "design",
+      "tags": ["meeting", "complexity", "critical", "identity", "financial", "migration"],
+      "request": "Open a multi-perspective design meeting for an irreversible production migration that consolidates customer identities across tenants, rewrites authentication subject identifiers, rekeys encrypted sensitive profile data, and backfills financial-ledger ownership references. Preserve auditability, legal retention, authorization boundaries, ledger reconciliation, rollback or abort semantics, and public API compatibility. Generate the complete initial role proposal and wait before starting.",
+      "fixtures": [],
+      "capability": "subagents_available",
+      "followups": ["Use the exact displayed slate and start this round."],
+      "assertions": ["proposes critical complexity with public high-consequence reasons", "dedicates evidence-distinct coverage to identity and authorization, financial-ledger reconciliation, sensitive-data cryptography or privacy, and irreversible migration recovery", "does not treat critical as a fixed roster, vote weight, or permission to weaken evidence and authorization", "shows the complete digest-bound proposal and derived affiliation counts", "waits for user confirmation before executing the exact displayed perspectives"]
     },
     {
       "id": "trigger-positive-multi-perspective",

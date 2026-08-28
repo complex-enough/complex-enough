@@ -4,7 +4,7 @@ Load this contract when a host, persistence layer, eval harness, or future GUI n
 
 The normative files are:
 
-- [../schemas/meeting-plan.schema.json](../schemas/meeting-plan.schema.json): editable planning/control state, schema `1.0`.
+- [../schemas/meeting-plan.schema.json](../schemas/meeting-plan.schema.json): editable planning/control state; producers use schema `1.1`, while `1.0` remains compatible input.
 - [../schemas/stable-meeting-plan-enums.v1.json](../schemas/stable-meeting-plan-enums.v1.json): v1 wire-enum lock.
 - [../schemas/panel-output.schema.json](../schemas/panel-output.schema.json): closed-round result; producers now emit `1.2` when binding a frozen meeting plan.
 
@@ -17,6 +17,7 @@ The contracts contain public state and concise rationale only. Never add hidden 
 - Meeting and ordered MeetingRounds;
 - risk-surface definitions;
 - immutable RoleRevisions and PlanRevisions;
+- each PlanRevision's `lightweight`, `standard`, or `critical` role-splitting complexity profile and public selection reasons;
 - user operations, removed-role history, planned coverage, warnings, and acknowledgements;
 - external prompt source/provenance and normalization previews;
 - frozen revision/digest, public lifecycle state, allowed actions, attention, and events.
@@ -48,6 +49,24 @@ There is intentionally no Department entity, leader-mediated department result, 
 
 There is also no independent headcount field. The recommended/current count for an affiliation is always derived by grouping the active `role_bindings` through their bound RoleRevisions' `department` labels. A user count adjustment is represented by ordinary copy-on-write role operations and a new PlanRevision, so count, executable roles, coverage, lineage, and digest cannot diverge.
 
+## Complexity profile
+
+Meeting-plan `1.1` requires every PlanRevision to bind:
+
+```json
+{
+  "complexity_profile": {
+    "range": "lightweight | standard | critical",
+    "selection_reasons": ["public, evidence-backed reasons"],
+    "user_adjusted": false
+  }
+}
+```
+
+The range calibrates role granularity, not risk acceptance, model strength, voting weight, or headcount. It has no fixed roster or numeric seat bounds. `lightweight` normally combines architecture, security, and reliability duties into a capable generalist; `standard` splits only evidence-distinct professional and actual-user lenses; `critical` gives material high-consequence surfaces dedicated specialist ownership when their evidence or authority cannot safely be combined.
+
+Changing the range creates a new PlanRevision with `operation=regenerate` and a recomputed complete slate. A recomputation may validly retain the same roles when the new calibration independently reaches the same coverage decision, but it must publish that no-role-change result instead of editing a label in place. Existing user-edited or imported roles may remain unchanged when still compatible; main-generated additions/rebindings and every removal must be shown explicitly, so recalibration never silently discards customization. The profile is digest-bound with that exact slate. A user-requested range sets `user_adjusted=true`; main must still disclose uncovered critical evidence and cannot weaken safety or review `GO` requirements.
+
 ## Canonical digests
 
 For a RoleRevision or PlanRevision:
@@ -74,6 +93,7 @@ python3 scripts/validate_meeting_plan.py path/to/meeting-plan.json --print-compu
 
 - Plan and role revisions are immutable.
 - Every role operation creates a new linear PlanRevision for that round.
+- Every PlanRevision in schema `1.1` binds its role-splitting complexity profile; range and role changes are reviewed together.
 - The declared operation must match the parent diff; `removed_role_ids` records roles newly removed by that revision and cannot also appear in active bindings.
 - Revision 1 must be a complete main-generated slate.
 - The active plan must be the latest revision.
@@ -124,5 +144,7 @@ Use `major.minor` strings. Within major v1:
 - no field or enum removal, rename, reorder, localization, or meaning change;
 - optional fields or enum values require a newer minor plus lock metadata and compatibility tests;
 - breaking validity or meaning requires a new major.
+
+Meeting-plan `1.1` adds `complexity_profile` to PlanRevision and the three stable range values. `1.0` payloads remain valid without that field; a payload must not back-label the new field as `1.0`.
 
 Producers use the newest supported minor. Same-major consumers should tolerate unknown additive fields/values with safe fallbacks; strict producer validators remain exact.

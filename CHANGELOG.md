@@ -6,6 +6,11 @@ All notable changes are documented here. Repository releases use Semantic Versio
 
 ### Added
 
+- `lightweight`, `standard`, and `critical` role-splitting complexity ranges that calibrate specialist-seat granularity without creating fixed rosters or headcount buckets.
+- Simulated actual-user lenses with unanchored task openings and bounded public UI/UX critique, explicitly separated from professional proxies and real user research.
+- `meeting-plan` schema `1.1` with a digest-bound PlanRevision `complexity_profile`; schema `1.0` remains compatible legacy input.
+- Neutral proposal-only forward cases for `lightweight`, `standard`, and `critical` calibration, including actual-user/professional separation and no automatic specialist seats.
+
 - Boss-led meeting rounds in which main generates the complete role slate before a required user review/freeze checkpoint.
 - Copy-on-write role and plan revisions for edit, add, remove, merge, split, reset, and external-prompt import operations.
 - External prompt normalization with public field diffs, blocking authority/invariant conflicts, acknowledgeable warnings, and internal-only execution.
@@ -15,16 +20,19 @@ All notable changes are documented here. Repository releases use Semantic Versio
 - Multi-turn eval rendering and neutral generated-role, role-operation, import-conflict, stale-confirmation, and per-stage reselection cases.
 - Historical scorecard integrity validation that preserves older evidence without allowing it to release a changed suite/runtime.
 - A public evidence ledger that maps consequential findings, decisions, rejections, and residual risks to exact role revisions and evidence locators, preserving supported secondary-seat evidence.
-- A current Codex v1.1 behavioral `GO` scorecard with 21 isolated cases, 49 public turns, 95 independently graded assertions, and digest-bound per-case artifacts.
+- A Codex v1.1 behavioral `GO` scorecard for the preceding meeting-core runtime with 21 isolated cases, 49 public turns, 95 independently graded assertions, and digest-bound per-case artifacts; it remains historical evidence after the role-complexity runtime change.
 
 ### Changed
+
+- Material architecture, security, privacy, reliability, and similar concerns require explicit ownership but no longer automatically create dedicated specialist seats; the selected range and distinct evidence/consequence determine splitting.
+- Role proposals and mutation receipts now show the selected complexity range and reasons, and a user-requested range change recomputes the whole slate rather than relabeling an unchanged roster.
 
 - Role review is now a hard conversation-turn barrier: main must end the proposal/revision turn with the complete slate, and only a subsequent user-authored turn may confirm, freeze, and start; commentary and same-turn autonomous continuation cannot dispatch perspectives.
 - An unambiguous one-action confirmation of the already displayed current role slate now acknowledges its visible non-blocking warnings, avoiding a redundant chat gate while preserving blocking-conflict and critical-coverage safeguards.
 - Every narrow-mode round and full-cycle stage now regenerates roles and waits for user confirmation before internal fresh-context execution.
 - Retry/replacement preserves the exact frozen role revision; capacity affects waves only.
 - Installed runtime manifest now includes meeting lifecycle/import contracts, schemas, and deterministic contract validators.
-- GUI implementation remains the next phase; its meeting-core entry gate is now satisfied by the fresh 2026-08-28 behavioral release scorecard.
+- GUI implementation remains the next phase; the role-complexity runtime now requires a fresh behavioral release scorecard before the GUI entry gate is considered current.
 - Blocker/high discovery rounds now close `revise`/`no_go`; corrections are verified in a new reviewed and frozen round instead of rewriting the original finding into `go`.
 - Meeting structure remains two-level: main binds distinct professional perspective roles directly. `department` is only an affiliation label, so one profession may contribute several evidence-distinct seats without a Department entity, compound weights, leader-mediated aggregation, or extra voting power; supported secondary-seat evidence remains visible to main.
 - Main proposes per-profession participation counts through the concrete role slate, and users adjust them through copy-on-write role operations; displayed counts are derived from active bindings rather than a second headcount source.

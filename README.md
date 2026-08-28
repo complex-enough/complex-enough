@@ -7,7 +7,8 @@ The panel is not a fixed roster and is not a voting mechanism. External ChatGPT/
 Maintainer docs:
 
 - [多視角編排邏輯現況評估與發展建議](docs/current-multi-perspective-logic-assessment.zh-TW.md)
-- [老闆召集式多視角會議核心設計](docs/boss-led-meeting-core-design.zh-TW.md) — release-validated meeting core and GUI entry contract
+- [老闆召集式多視角會議核心設計](docs/boss-led-meeting-core-design.zh-TW.md) — meeting-core design and GUI entry contract
+- [Meeting core planning quality comparison](docs/evaluations/meeting-core-quality-comparison.md) — ordinary-session versus meeting-skill blind comparison
 
 ## Architecture
 
@@ -38,13 +39,15 @@ tests/                                Schema compatibility and semantic invarian
 
 | Host | Packaging | Behavioral status |
 | --- | --- | --- |
-| Codex | `SKILL.md`, references/schemas/scripts, Codex adapter, `agents/openai.yaml` | Meeting core is release-validated by the current v1.1 multi-turn `GO` scorecard: 21/21 cases and 95/95 independently graded assertions |
+| Codex | `SKILL.md`, references/schemas/scripts, Codex adapter, `agents/openai.yaml` | Current range-calibrated runtime passes deterministic/structural validation; fresh behavioral release scorecard pending |
 | Claude Code | Same core plus Claude Code adapter; no OpenAI UI metadata required | Structurally compatible; behavioral forward tests still required in a Claude runtime |
-| GUI/API | `meeting-plan` v1.0 plus `panel-output` v1.2; no GUI runtime dependency | Control/result contracts implemented; GUI implementation deferred |
+| GUI/API | `meeting-plan` v1.1 plus `panel-output` v1.2; no GUI runtime dependency | Control/result contracts implemented; GUI implementation deferred |
 
 ## Dynamic perspective selection
 
-For each task, the moderator maps delivery surfaces, stakeholders, failure modes, irreversible decisions, evidence gaps, and cost. A lens is included only when it asks a distinct material question, brings distinct evidence, or owns a material stakeholder consequence. Overlapping roles are merged; high-risk accounting, identity, authorization, migration, security, irreversible-data, and external-contract concerns receive dedicated ownership when material.
+For each task, the moderator maps delivery surfaces, stakeholders, failure modes, irreversible decisions, evidence gaps, and cost. Before splitting seats it publishes a `lightweight`, `standard`, or `critical` complexity range. The range controls role granularity, not risk acceptance or a fixed headcount: lightweight work combines ordinary architecture/security/reliability duties into a capable generalist, standard work splits only evidence-distinct lenses, and critical work uses dedicated specialists for high-consequence evidence that cannot safely be combined.
+
+A lens is included only when it asks a distinct material question, brings distinct evidence, or owns a material stakeholder consequence. Overlapping roles are merged. User-facing design also distinguishes actual customer/operator lenses from professional proxies: selected user roles state unanchored task needs first, then critique bounded public UI/UX claims. These are explicitly simulated lenses, not a substitute for real user research.
 
 The model stays two-level: a MeetingRound directly binds professional perspective roles. `department` is only a descriptive affiliation label, so main may generate multiple roles from one profession when they own distinct questions or evidence. There is no Department entity, leader-mediated department result, or compound weighting layer. This avoids weight distortion and preserves a secondary seat's evidence instead of letting a department lead collapse it into one position; extra same-department seats still never count as extra votes.
 
@@ -62,7 +65,7 @@ Main converts the selected lenses into a complete role slate and waits for user 
 
 ## Public GUI/API contract
 
-`meeting-plan` v1.0 records the editable main-generated role proposal, copy-on-write adjustments/imports, planned coverage, warnings, frozen revision/digest, lifecycle, and public events. `panel-output` v1.2 remains the closed-round result and adds immutable meeting/round/role/risk provenance to the v1.1 evidence, adjudication, coverage, degradation, gate, and summary shape. Panel-output v1.0/v1.1 remain valid legacy results.
+`meeting-plan` v1.1 records the editable main-generated role proposal, digest-bound complexity profile, copy-on-write adjustments/imports, planned coverage, warnings, frozen revision/digest, lifecycle, and public events. Meeting-plan v1.0 remains valid legacy input without the complexity profile. `panel-output` v1.2 remains the closed-round result and adds immutable meeting/round/role/risk provenance to the v1.1 evidence, adjudication, coverage, degradation, gate, and summary shape. Panel-output v1.0/v1.1 remain valid legacy results.
 
 Both contracts explicitly exclude hidden chain-of-thought, private scratch work, raw internal messages, and panelist transcripts. Normal panel results also exclude raw imported role prompts. Consumers should reject unknown major versions, ignore unknown same-major additions, and render unknown enum values with a safe fallback. See [references/meeting-plan-contract.md](references/meeting-plan-contract.md) and [references/panel-output-contract.md](references/panel-output-contract.md).
 
@@ -144,7 +147,7 @@ python3 scripts/render_eval_prompt.py ideate-pure-product \
 
 Trigger cases omit `--skill-path` and render only the natural user request plus fixture, so discovery is observed without being named or primed. Send later `--turn N` messages only after the prior public response. Run each case in a fresh context; do not pass assertions, future turns, prior results, or intended fixes. Version only public main-session responses as a digest-bound artifact; never persist raw panelist reports or private reasoning. See [evals/README.md](evals/README.md).
 
-The Codex `1.0.0` scorecard at [evals/results/codex-2026-08-10.json](evals/results/codex-2026-08-10.json) remains historical evidence for the pre-meeting runtime. The current meeting core is validated by the `1.1.0` [2026-08-28 Codex scorecard](evals/results/codex-2026-08-28.json): all 21 isolated multi-turn cases and all 95 assertions passed fresh blind public-output grading, including generated-first roles, adjustments/import, stale freeze protection, exact role execution and provenance, fallback, full-cycle reselection, trigger boundaries, and the v1.2 bundle. Claude Code remains structural-only until its separate host scorecard passes.
+The Codex `1.0.0` scorecard at [evals/results/codex-2026-08-10.json](evals/results/codex-2026-08-10.json) remains historical evidence for the pre-meeting runtime. The `1.1.0` [2026-08-28 Codex scorecard](evals/results/codex-2026-08-28.json) is historical evidence for the preceding boss-led meeting runtime: all 21 isolated multi-turn cases and all 95 assertions passed fresh blind public-output grading. The 2026-08-29 complexity-range change modifies runtime bytes, so it requires a fresh bound scorecard before release or global installation. Claude Code remains structural-only until its separate host scorecard passes.
 
 Repository validation keeps the historical scorecard integrity-checked but excludes it from release. A release `GO` is accepted only after full revalidation against the current suite digest, current runtime digest, complete current case set, and bound public artifacts.
 

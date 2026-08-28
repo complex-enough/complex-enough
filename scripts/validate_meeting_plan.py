@@ -65,6 +65,13 @@ PROHIBITED_KEYS = {
 }
 ENUM_PATHS = {
     "schema_version": ("properties", "schema_version", "enum"),
+    "complexity.range": (
+        "$defs",
+        "complexityProfile",
+        "properties",
+        "range",
+        "enum",
+    ),
     "meeting.status": ("$defs", "meeting", "properties", "status", "enum"),
     "round.mode": ("$defs", "round", "properties", "mode", "enum"),
     "stage": ("$defs", "stage", "enum"),
@@ -255,6 +262,9 @@ def _plan_operation_errors(
         if previous_bindings[role_id]["role_revision_id"]
         != current_bindings[role_id]["role_revision_id"]
     }
+    complexity_changed = previous.get("complexity_profile") != current.get(
+        "complexity_profile"
+    )
     if set(current["removed_role_ids"]) != removed:
         errors.append(
             f"plan {plan_id} removed_role_ids do not match its parent diff"
@@ -271,10 +281,14 @@ def _plan_operation_errors(
     if operation == "generate":
         errors.append(f"plan {plan_id} cannot use generate after revision 1")
     elif operation == "regenerate":
-        if not (added or removed or changed):
-            errors.append(f"plan {plan_id} regenerate operation has no role diff")
-        if sources(current_roles) - {"main_generated"}:
-            errors.append(f"plan {plan_id} regenerated slate is not fully main-generated")
+        if not (added or removed or changed or complexity_changed):
+            errors.append(
+                f"plan {plan_id} regenerate operation has no role or complexity diff"
+            )
+        if sources(added | changed) - {"main_generated"}:
+            errors.append(
+                f"plan {plan_id} regenerated role changes are not main-generated"
+            )
     elif operation == "edit":
         if added or removed or not changed:
             errors.append(f"plan {plan_id} edit operation has an invalid role diff")
@@ -355,6 +369,27 @@ def semantic_errors(payload: dict[str, Any]) -> list[str]:
     sources = payload["source_artifacts"]
     imports = payload["import_previews"]
     events = payload["events"]
+    schema_version = payload["schema_version"]
+
+    for plan in plans:
+        has_profile = "complexity_profile" in plan
+        if schema_version == "1.0" and has_profile:
+            errors.append(
+                f"meeting-plan 1.0 plan {plan['plan_revision_id']} cannot declare complexity_profile"
+            )
+        if schema_version == "1.1" and not has_profile:
+            errors.append(
+                f"meeting-plan 1.1 plan {plan['plan_revision_id']} requires complexity_profile"
+            )
+        if (
+            schema_version == "1.1"
+            and plan["operation"] == "generate"
+            and has_profile
+            and plan["complexity_profile"]["user_adjusted"]
+        ):
+            errors.append(
+                f"meeting-plan 1.1 generated plan {plan['plan_revision_id']} cannot start user_adjusted"
+            )
 
     round_by_id = _index(rounds, "round_id", "round_id", errors)
     risk_by_id = _index(risks, "risk_surface_id", "risk_surface_id", errors)
@@ -666,6 +701,23 @@ def semantic_errors(payload: dict[str, Any]) -> list[str]:
             errors.extend(
                 _plan_operation_errors(previous, current, role_by_revision)
             )
+            previous_profile = previous.get("complexity_profile")
+            current_profile = current.get("complexity_profile")
+            if (
+                previous_profile is not None
+                and current_profile is not None
+                and previous_profile["range"] != current_profile["range"]
+            ):
+                if current["operation"] != "regenerate":
+                    errors.append(
+                        f"plan {current['plan_revision_id']} complexity range change requires regenerate"
+                    )
+                if current["created_by"] == "user" and not current_profile[
+                    "user_adjusted"
+                ]:
+                    errors.append(
+                        f"plan {current['plan_revision_id']} user-requested complexity range change requires user_adjusted"
+                    )
         round_entry = round_by_id.get(round_id)
         if round_entry and round_entry["active_plan_revision_id"] != ordered[-1]["plan_revision_id"]:
             errors.append(f"round {round_id} active plan is not its latest revision")

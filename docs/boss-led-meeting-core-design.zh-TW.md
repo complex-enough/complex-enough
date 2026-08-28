@@ -1,19 +1,19 @@
 # 老闆召集式多視角會議核心設計
 
 - 決策日期：2026-08-26
-- 實作更新：2026-08-28
-- 文件狀態：`release_validated`
-- runtime 狀態：portable instructions、contracts、validators 與 deterministic tests 已實作；Codex v1.1 fresh behavioral release scorecard 為 `GO`
+- 實作更新：2026-08-29
+- 文件狀態：`implementation_validated_behavioral_release_pending`
+- runtime 狀態：portable instructions、contracts、validators 與 deterministic tests 已實作；2026-08-29 range-calibrated runtime 尚待 fresh behavioral release scorecard
 - 依據：使用者確認的產品主軸、現行 repo 契約與四個 fresh-context 設計視角
-- 下一階段：進入 GUI 產品與實作階段；Claude Code 仍需獨立 behavioral scorecard
+- 下一階段：完成 current-runtime Codex behavioral release scorecard 後進入 GUI 產品與實作階段；Claude Code 仍需獨立 behavioral scorecard
 
 ## 文件邊界
 
-這份文件先定義下一版 skill 的目標行為，並作為 meeting-core 的產品／架構基線。2026-08-28 已完成 Codex release validation；GUI 尚未實作。
+這份文件定義 skill 的目標行為，並作為 meeting-core 的產品／架構基線。2026-08-28 的上一版 runtime 已完成 Codex release validation；2026-08-29 加入角色拆分 range 後，deterministic validation 已更新，fresh behavioral release validation 尚待完成。GUI 尚未實作。
 
-先前對話曾人工模擬「main 先產生角色卡、使用者確認後才開會」的流程，用途是 dogfood 互動模型。該次模擬本身仍不是實作證據；後續 runtime instructions、meeting-plan v1.0、panel-output v1.2、semantic/bundle validators 與 deterministic tests 才是目前的 implementation evidence。
+先前對話曾人工模擬「main 先產生角色卡、使用者確認後才開會」的流程，用途是 dogfood 互動模型。該次模擬本身仍不是實作證據；後續 runtime instructions、meeting-plan v1.1、panel-output v1.2、semantic/bundle validators 與 deterministic tests 才是目前的 implementation evidence。
 
-目前已驗證的 runtime 仍以 [`SKILL.md`](../SKILL.md)、[`references/`](../references/)、[`schemas/meeting-plan.schema.json`](../schemas/meeting-plan.schema.json)、[`schemas/panel-output.schema.json`](../schemas/panel-output.schema.json) 與 validators/tests 為準。Codex v1.1 [release scorecard](../evals/results/codex-2026-08-28.json) 已通過 21/21 cases、49 個公開回合與 95/95 fresh blind assertions，因此 meeting core 已滿足 GUI entry gate；這不代表 GUI 已實作，也不代表 Claude Code 已取得 behavioral pass。原始現況與缺口見[多視角編排邏輯現況評估](current-multi-perspective-logic-assessment.zh-TW.md)。
+目前 runtime 以 [`SKILL.md`](../SKILL.md)、[`references/`](../references/)、[`schemas/meeting-plan.schema.json`](../schemas/meeting-plan.schema.json)、[`schemas/panel-output.schema.json`](../schemas/panel-output.schema.json) 與 validators/tests 為準。Codex v1.1 [2026-08-28 scorecard](../evals/results/codex-2026-08-28.json) 已通過 21/21 cases、49 個公開回合與 95/95 fresh blind assertions，但只綁定 range 變更前的 runtime；目前作為歷史證據，不再滿足 current-runtime release gate。三案規劃品質比較見[Meeting core planning quality comparison](evaluations/meeting-core-quality-comparison.md)。
 
 ### 目前實作狀態
 
@@ -22,13 +22,15 @@
 | main-generated-first role slate 與每輪 review/freeze runtime | 已寫入 portable skill instructions |
 | 角色 edit/add/remove/merge/split/reset/import 語意 | 已寫入 runtime reference 與 meeting-plan contract |
 | 外部 prompt normalization／conflict governance | 已寫入 runtime reference 與 schema/validator invariants |
-| meeting-plan v1.0、panel-output v1.2、bundle validation | 已實作並有 positive/negative deterministic tests |
+| meeting-plan v1.1（相容 v1.0）、panel-output v1.2、bundle validation | 已實作並有 positive/negative deterministic tests |
+| 角色拆分複雜度 | `lightweight`／`standard`／`critical` 已寫入 runtime 與 meeting-plan v1.1 |
+| 實際使用者視角 | 與專業複雜度分離；支援 unanchored opening 與 UI claim critique |
 | v1.0/v1.1 panel-output compatibility | deterministic fixtures/tests 通過 |
-| neutral multi-turn eval definitions | 21 cases 已完成 fresh isolated execution，共 49 個公開回合 |
-| Codex meeting-core behavioral status | `GO`；21/21 cases、95/95 fresh blind assertions 通過 |
+| neutral multi-turn eval definitions | current suite 24 cases；上一 runtime 的 21-case suite 已完成 fresh isolated execution，共 49 個公開回合 |
+| Codex meeting-core behavioral status | range 變更前為 `GO`；current runtime fresh release run pending |
 | release scorecard gate | 歷史結果只做封存完整性驗證；current GO 必須重新綁定 current suite/runtime/artifacts |
 | Claude Code behavioral status | structural only |
-| GUI | meeting-core entry gate 已滿足；GUI 尚未實作，維持下一階段 |
+| GUI | current-runtime behavioral gate pending；GUI 尚未實作 |
 
 ## 核心產品定義
 
@@ -206,6 +208,22 @@ main 產生的每個角色至少包含：
 - 使用者要求增加人數時，main 以 `add`／`split` 產生不同 lens 的完整角色；若沒有新增資訊價值，應說明並拒絕複製席位。
 - 使用者要求減少人數時，main 以 `remove`／`merge` 處理，逐步顯示 lineage、coverage delta，以及可能消失或被合併的次席證據來源。
 - 每次人數調整都會建立新的 PlanRevision、重算 digest 並再次等待確認；人數本身不形成第三層 entity 或權重。
+
+### 角色拆分複雜度三段
+
+Main 在產生角色前先提出一個角色拆分 range；它回答的是「這次要把專業責任拆多細」，不是案件風險分數、固定人數級距或既定 roster。
+
+| Range | 適用情境 | 角色拆分原則 |
+| --- | --- | --- |
+| `lightweight` | 邊界清楚、局部、可逆、低耦合，且沒有高後果風險 | 一般架構、資安、可靠性責任由能勝任的 generalist 一併承擔，不自動各設一席 |
+| `standard` | 橫跨多種使用者、共享狀態、併發或外部整合 | 只拆出證據來源、權威或失敗後果確實不同的角色；專家席位需要具體理由 |
+| `critical` | 財務／帳務、身份權限、敏感或受規管資料、不可逆 migration、安全、公開契約或高後果可靠性 | 無法安全合併的高後果證據由專門角色負責，但仍不以職稱湊固定名單 |
+
+- Range 不改變 evidence、authority、safety 或 review gate；`lightweight` 不是降低標準。
+- 使用者可以改 range。Main 必須重新計算完整 slate、coverage 與成本差異，建立新的 PlanRevision；不能只改標籤而保留原席位。
+- 一個任務提到 API、資料或基本 auth hygiene，本身不足以自動邀請架構師或資安專家；應先判斷是否真的需要不同 evidence owner。
+- 實際使用者 coverage 是另一個維度。跨多種操作目標、權限或失敗後果的 UI，即使是 `lightweight`，仍可需要多個精簡的 actual-user lenses；反之 `critical` backend work 不必硬加無關的使用者角色。
+- 模擬 actual-user lens 先在未看設計解法時提出目標、資訊需求、可能誤解與不可接受失敗，再對已公開的 UI claims 做 bounded critique。其結果不可宣稱為真正使用者研究。
 
 ### 使用者操作
 
@@ -399,6 +417,7 @@ v1.0/v1.1 payload 必須繼續通過且被視為沒有 meeting-plan provenance �
 
 - meeting objective、scope、authority summary；
 - current round/state/state version；
+- main 建議的 complexity range、selection reasons 與是否由使用者調整；
 - main-generated roles 與 selection rationale；
 - active PlanRevision 與 prior diff；
 - role coverage、overlap、drift 與 import warnings；
@@ -413,7 +432,7 @@ Refresh 後必須能靠 public query state 完整重建畫面，不依賴重播 
 ### Commands
 
 - `create_meeting`
-- `regenerate_roles`
+- `regenerate_roles`（可帶 requested complexity range；必須回傳完整 slate／coverage／cost delta）
 - `edit_role`
 - `add_role`
 - `remove_role`
@@ -463,9 +482,9 @@ Domain codes 保持穩定且不本地化；GUI 用 structured parameters 產生 
 
 ### GUI 功能區，不預設視覺版型
 
-1. Meeting brief：目標、scope、authority、mode。
-2. Department proposal：main-generated role cards、邀請理由、coverage。
-3. Role adjustment：edit/add/remove/merge/split/reset/import preview。
+1. Meeting brief：目標、scope、authority、mode，以及 main 建議的 complexity range 與理由。
+2. Role proposal：main-generated role cards、邀請理由、coverage，以及依 active roles 衍生的各專業席位數；department 只作分組標籤。
+3. Role adjustment：調整 range 或 edit/add/remove/merge/split/reset/import preview；range 改變時顯示完整 slate／coverage／cost delta。
 4. Confirm and start：revision/digest、critical warnings、one-click start。
 5. Meeting room：phase、waves、role progress、degradation、attention。
 6. Decision board：summary/gate、accepted changes、risks、user decisions、evidence drill-down。
@@ -480,7 +499,7 @@ Domain codes 保持穩定且不本地化；GUI 用 structured parameters 產生 
 | `references/panelist-protocol.md` | 擴充 RoleDefinition、EffectiveRole 與 ExecutionEnvelope |
 | `references/authority-and-fallback.md` | freeze、coverage acceptance、post-freeze change、round recovery |
 | adapters | host-specific confirmation/yield、resume、events、fresh dispatch mapping |
-| new meeting-plan schema | draft/revision/import/freeze/control state |
+| meeting-plan 1.1 schema | draft/revision/import/freeze/control state，以及 digest-bound complexity profile；保留 1.0 input 相容性 |
 | panel-output 1.2 | additive meeting/round/role provenance references |
 | validators | meeting-plan、v1.2、bundle cross-document invariants |
 | tests/evals | multi-turn confirmation、import、freeze、GUI state、compatibility |
@@ -491,21 +510,22 @@ Domain codes 保持穩定且不本地化；GUI 用 structured parameters 產生 
 Meeting core 只有在下列條件都通過後才算完成，才能把狀態升級為 GUI-ready：
 
 1. Main 在每輪先產生完整角色 slate；沒有要求使用者從空白開始。
-2. 使用者不修改即可一鍵確認，也能 edit/add/remove/merge/split/reset/import。
+2. Main 顯示建議的 complexity range 與理由；使用者不修改即可一鍵確認，也能調整 range 或 edit/add/remove/merge/split/reset/import。
 3. 外部 prompt 只改角色層，不能變成 external executor 或覆蓋 invariants。
 4. 所有修改建立 immutable revision，stale confirm 與 digest tampering 被拒絕。
 5. Freeze 後角色不可原地修改；retry 使用相同 role revision。
 6. Independent opening 不看 peer findings；deliberation 只交換 public claims/evidence。
 7. Critical coverage loss 有警示、acknowledgement 與 gate effect。
-8. Meeting-plan、panel-output 1.2 與 bundle validators 通過 positive/negative fixtures。
+8. Meeting-plan 1.1、panel-output 1.2 與 bundle validators 通過 positive/negative fixtures，meeting-plan 1.0 保持相容。
 9. v1.0/v1.1 fixtures 與 consumers 保持相容。
 10. Neutral multi-turn eval 覆蓋 generated-first、全部 role operations、external prompt import、freeze、waves/fallback、next round reselection。
 11. Fresh forward eval 證明 role review/freeze 不是人工模擬，且 final execution 使用使用者確認的 exact digest。
 12. `python3 scripts/validate_repo.py` 與 Skill Creator validation 全數通過。
+13. Neutral range cases 證明 bounded work 不自動加入架構／資安／可靠性專席，standard work 只拆 evidence-distinct lenses，critical work才為無法安全合併的高後果證據配置 specialists。
 
 ## 進入 GUI 的 gate
 
-GUI 不應直接建立在目前只描述 final result 的 v1.1 schema 上。下一階段開始 GUI 前，至少要有：
+GUI 不應直接建立在只描述 final result 的 panel-output schema 上。下一階段開始 GUI 前，至少要有：
 
 - 已實作並 forward-tested 的 meeting lifecycle；
 - meeting-plan v1 schema 與 validator；

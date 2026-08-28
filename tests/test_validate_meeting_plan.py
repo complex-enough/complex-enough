@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from validate_meeting_plan import (  # noqa: E402
+    _plan_operation_errors,
     canonical_digest,
     raw_text_digest,
     semantic_errors,
@@ -71,6 +72,139 @@ class MeetingPlanValidationTest(unittest.TestCase):
 
     def test_v10_fixture_is_valid(self) -> None:
         self.assertEqual(validate(self.fixture_path), [])
+
+    def test_v11_requires_and_accepts_digest_bound_complexity_profiles(self) -> None:
+        payload = copy.deepcopy(self.fixture)
+        payload["schema_version"] = "1.1"
+        for plan in payload["plan_revisions"]:
+            plan["complexity_profile"] = {
+                "range": "standard",
+                "selection_reasons": [
+                    "The review spans a public contract and operational recovery."
+                ],
+                "user_adjusted": False,
+            }
+        self.restamp(payload)
+        self.assertEqual(self.validate_payload(payload), [])
+
+        missing = copy.deepcopy(payload)
+        missing["plan_revisions"][0].pop("complexity_profile")
+        self.restamp(missing)
+        self.assertIn(
+            "meeting-plan 1.1 plan planrev-demo-001 requires complexity_profile",
+            semantic_errors(missing),
+        )
+
+    def test_v10_rejects_back_labeled_complexity_profile(self) -> None:
+        payload = copy.deepcopy(self.fixture)
+        payload["plan_revisions"][0]["complexity_profile"] = {
+            "range": "lightweight",
+            "selection_reasons": ["The task is local and reversible."],
+            "user_adjusted": False,
+        }
+        self.restamp(payload)
+        self.assertIn(
+            "meeting-plan 1.0 plan planrev-demo-001 cannot declare complexity_profile",
+            semantic_errors(payload),
+        )
+
+    def test_complexity_profile_is_part_of_the_plan_digest(self) -> None:
+        payload = copy.deepcopy(self.fixture)
+        payload["schema_version"] = "1.1"
+        for plan in payload["plan_revisions"]:
+            plan["complexity_profile"] = {
+                "range": "standard",
+                "selection_reasons": ["Shared state needs coordinated evidence."],
+                "user_adjusted": False,
+            }
+        self.restamp(payload)
+        payload["plan_revisions"][1]["complexity_profile"]["range"] = "critical"
+        self.assertIn(
+            "plan planrev-demo-002 digest mismatch",
+            semantic_errors(payload),
+        )
+
+    def test_complexity_range_change_is_a_real_regeneration(self) -> None:
+        payload = copy.deepcopy(self.fixture)
+        payload["schema_version"] = "1.1"
+        for plan in payload["plan_revisions"]:
+            plan["complexity_profile"] = {
+                "range": "standard",
+                "selection_reasons": ["Shared state needs coordinated evidence."],
+                "user_adjusted": False,
+            }
+
+        changed = payload["plan_revisions"][1]
+        changed["complexity_profile"] = {
+            "range": "lightweight",
+            "selection_reasons": ["The user requested a more combined role slate."],
+            "user_adjusted": True,
+        }
+        changed["created_by"] = "user"
+        self.restamp(payload)
+        self.assertIn(
+            "plan planrev-demo-002 complexity range change requires regenerate",
+            semantic_errors(payload),
+        )
+
+        changed["operation"] = "regenerate"
+        changed["role_bindings"][1] = copy.deepcopy(
+            payload["plan_revisions"][0]["role_bindings"][1]
+        )
+        changed["warnings"] = []
+        changed["acknowledged_warning_ids"] = []
+        self.restamp(payload)
+        self.assertEqual(self.validate_payload(payload), [])
+
+        changed["complexity_profile"]["user_adjusted"] = False
+        self.restamp(payload)
+        self.assertIn(
+            "plan planrev-demo-002 user-requested complexity range change requires user_adjusted",
+            semantic_errors(payload),
+        )
+
+    def test_initial_v11_generated_plan_is_not_user_adjusted(self) -> None:
+        payload = copy.deepcopy(self.fixture)
+        payload["schema_version"] = "1.1"
+        for plan in payload["plan_revisions"]:
+            plan["complexity_profile"] = {
+                "range": "standard",
+                "selection_reasons": ["Shared state needs coordinated evidence."],
+                "user_adjusted": False,
+            }
+        payload["plan_revisions"][0]["complexity_profile"]["user_adjusted"] = True
+        self.restamp(payload)
+        self.assertIn(
+            "meeting-plan 1.1 generated plan planrev-demo-001 cannot start user_adjusted",
+            semantic_errors(payload),
+        )
+
+    def test_range_regeneration_can_preserve_unchanged_imported_roles(self) -> None:
+        previous = copy.deepcopy(self.fixture["plan_revisions"][1])
+        previous["complexity_profile"] = {
+            "range": "standard",
+            "selection_reasons": ["Shared state needs coordinated evidence."],
+            "user_adjusted": False,
+        }
+        current = copy.deepcopy(previous)
+        current["plan_revision_id"] = "planrev-demo-003"
+        current["revision"] = 3
+        current["parent_plan_revision_id"] = previous["plan_revision_id"]
+        current["operation"] = "regenerate"
+        current["created_by"] = "user"
+        current["complexity_profile"] = {
+            "range": "lightweight",
+            "selection_reasons": ["The user requested a more combined role slate."],
+            "user_adjusted": True,
+        }
+        role_by_revision = {
+            role["role_revision_id"]: role for role in self.fixture["role_revisions"]
+        }
+
+        self.assertEqual(
+            _plan_operation_errors(previous, current, role_by_revision),
+            [],
+        )
 
     def test_v10_allows_distinct_roles_with_the_same_department_label(self) -> None:
         payload = copy.deepcopy(self.fixture)
@@ -156,7 +290,7 @@ class MeetingPlanValidationTest(unittest.TestCase):
     def test_declared_role_operation_must_match_the_copy_on_write_diff(self) -> None:
         expected_fragments = {
             "generate": "cannot use generate after revision 1",
-            "regenerate": "regenerated slate is not fully main-generated",
+            "regenerate": "regenerated role changes are not main-generated",
             "edit": "does not bind edited roles",
             "add": "add operation has an invalid role diff",
             "remove": "remove operation has an invalid role diff",

@@ -8,6 +8,37 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class RuntimeMeetingContractTest(unittest.TestCase):
+    def test_role_complexity_ranges_calibrate_specialist_splitting(self) -> None:
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        selection = (ROOT / "references" / "modes-and-selection.md").read_text(
+            encoding="utf-8"
+        )
+        lifecycle = (ROOT / "references" / "meeting-lifecycle.md").read_text(
+            encoding="utf-8"
+        )
+
+        for value in ("`lightweight`", "`standard`", "`critical`"):
+            self.assertIn(value, skill)
+            self.assertIn(value, selection)
+        self.assertIn("does not create a dedicated specialist seat", selection)
+        self.assertIn("not panel-size buckets", selection)
+        self.assertIn("requested complexity-range change is a slate recomputation", lifecycle)
+
+    def test_actual_user_lenses_are_not_professional_proxies_or_research(self) -> None:
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        selection = (ROOT / "references" / "modes-and-selection.md").read_text(
+            encoding="utf-8"
+        )
+        panelist = (ROOT / "references" / "panelist-protocol.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("instead of asking a product or architecture expert to impersonate them", skill)
+        self.assertIn("simulated actual-user lenses", selection)
+        self.assertIn("Unanchored opening", panelist)
+        self.assertIn("Public-claim critique", panelist)
+        self.assertIn("do not present simulated-user agreement count as research evidence", panelist)
+
     def test_exact_current_slate_confirmation_is_one_action_warning_acknowledgement(self) -> None:
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         lifecycle = (ROOT / "references" / "meeting-lifecycle.md").read_text(

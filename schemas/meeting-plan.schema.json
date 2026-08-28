@@ -17,7 +17,7 @@
     "events"
   ],
   "properties": {
-    "schema_version": {"type": "string", "enum": ["1.0"]},
+    "schema_version": {"type": "string", "enum": ["1.0", "1.1"]},
     "meeting": {"$ref": "#/$defs/meeting"},
     "rounds": {
       "type": "array",
@@ -445,6 +445,20 @@
         }
       }
     },
+    "complexityProfile": {
+      "description": "Public role-splitting calibration for this exact plan revision. It guides role granularity and never weakens evidence or safety requirements.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["range", "selection_reasons", "user_adjusted"],
+      "properties": {
+        "range": {
+          "type": "string",
+          "enum": ["lightweight", "standard", "critical"]
+        },
+        "selection_reasons": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "user_adjusted": {"type": "boolean"}
+      }
+    },
     "planRevision": {
       "type": "object",
       "additionalProperties": false,
@@ -490,6 +504,7 @@
           ]
         },
         "created_by": {"type": "string", "enum": ["main", "user"]},
+        "complexity_profile": {"$ref": "#/$defs/complexityProfile"},
         "role_bindings": {
           "type": "array",
           "items": {"$ref": "#/$defs/roleBinding"},

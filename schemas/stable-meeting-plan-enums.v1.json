@@ -4,6 +4,7 @@
   "description": "Frozen meeting-plan v1 wire-enum baseline. Values cannot be removed, renamed, localized, reordered, or repurposed within v1.",
   "enums": {
     "schema_version": ["1.0"],
+    "complexity.range": [],
     "meeting.status": ["active", "completed", "cancelled", "failed"],
     "round.mode": ["ideate", "design", "converge", "review", "full_cycle"],
     "stage": ["ideate", "design", "converge", "review", null],
@@ -26,5 +27,14 @@
     "field_change.disposition": ["accepted", "rewritten", "ignored", "conflicting"],
     "event.type": ["roles_generated", "plan_revision_created", "import_previewed", "role_slate_frozen", "run_phase_changed", "role_queued", "role_started", "role_completed", "role_failed", "role_replaced", "degradation_changed", "attention_required", "result_ready", "next_round_created"]
   },
-  "additions": {}
+  "additions": {
+    "schema_version": [
+      {"value": "1.1", "introduced_in": "1.1"}
+    ],
+    "complexity.range": [
+      {"value": "lightweight", "introduced_in": "1.1"},
+      {"value": "standard", "introduced_in": "1.1"},
+      {"value": "critical", "introduced_in": "1.1"}
+    ]
+  }
 }

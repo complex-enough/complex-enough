@@ -62,6 +62,17 @@ The execution envelope contains the authority packet plus this EffectiveRole and
 - Ask for conclusions and concise public rationale, never hidden chain-of-thought.
 - On retry/replacement, preserve `role_id`, `role_revision_id`, role digest, stage, and lens exactly; only `perspective_id` changes.
 
+## Simulated actual-user protocol
+
+Use this only when the frozen slate contains an actual customer/operator lens. The role is a task-consequence simulation, not a real interview, usability study, demographic persona, or statistical sample. State that authority limit in the role packet.
+
+For a user-facing `design` round, execute the same frozen role in two bounded phases:
+
+1. **Unanchored opening:** give only the common authority packet and the user's frozen role. Ask for task goals, information needed before/during/after action, likely misunderstandings, unacceptable failures, and minimum success conditions. Prohibit proposing a complete architecture or seeing peer/UI proposals.
+2. **Public-claim critique:** after professional openings, main creates a short packet of only the UI steps, state labels, visible fields/actions, failure/recovery behavior, claim IDs, and public evidence locators relevant to that user surface. Ask the role to mark each claim `accept`, `revise`, or `question`, explain the operational consequence, and propose the smallest correction.
+
+Do not count the critique as a new role or vote. Preserve the same `role_id` and `role_revision_id`; record a separate attempt/phase identifier when the host can. Do not send raw peer reports, technical scratch work, or unrelated claims. Main adjudicates critiques against authority and evidence; a simulated preference cannot override safety, permissions, or a verified contract.
+
 ## Public response
 
 Request this structure in prose or JSON:
@@ -109,3 +120,5 @@ Apply these rules:
 ## Moderator normalization
 
 Assign each returned material item a stable public item ID and map it to one source perspective, its `role_revision_id`, and public evidence locator before moderation. Deduplicate only at the decision layer so provenance remains intact. Preserve conflicting proposals until evidence-based adjudication is complete. In the public completion, expose a compact evidence ledger or equivalent inline mapping for consequential findings. Every completed same-department role must source at least one ledger item or be marked `no_material_finding`; a role-execution table alone cannot prove its evidence survived synthesis.
+
+When actual-user critique changes a UI/UX claim, keep both the original public claim locator and the critique locator in the issue/ledger entry. Describe the accepted correction in user-facing terms; do not present simulated-user agreement count as research evidence.

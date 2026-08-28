@@ -8,6 +8,8 @@
 
 > 2026-08-28 現況更新：本文主體保留 2026-08-26 的歷史 baseline 與當時缺口。後續 meeting core 已完成 portable runtime、meeting-plan v1.0、panel-output v1.2、semantic/bundle validators 與 105 個 deterministic tests；Codex v1.1 fresh release scorecard 為 `GO`，21/21 cases、49 個公開回合及 95/95 fresh blind assertions 全數通過。這滿足 meeting-core 的 GUI entry gate，但 GUI 尚未實作，Claude Code 仍只有 structural status。
 
+> 2026-08-29 現況更新：三組 ordinary-session／meeting-skill 盲評顯示效益具有條件性，並促成 `lightweight`／`standard`／`critical` 角色拆分 range、actual-user lens protocol 與 meeting-plan v1.1。這些 runtime bytes 尚未由新的完整 release scorecard 綁定，因此 2026-08-28 的 `GO` 現為歷史證據，current-runtime GUI entry gate pending。比較結果見 [meeting-core quality report](evaluations/meeting-core-quality-comparison.md)。
+
 ## 結論
 
 目前的核心方向是成立的，而且成熟度高於一般「叫多個 Agent 各自發言」的做法。它已經形成一條清楚的控制鏈：先界定目標、授權與權威，再依風險面動態選角，以 fresh context 保持獨立，最後由 moderator 依證據裁決，而不是投票。失敗、容量不足、replacement 與 single-session fallback 也都有公開且可驗證的降級語意。
