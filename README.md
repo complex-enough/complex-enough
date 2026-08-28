@@ -9,6 +9,7 @@ Maintainer docs:
 - [多視角編排邏輯現況評估與發展建議](docs/current-multi-perspective-logic-assessment.zh-TW.md)
 - [老闆召集式多視角會議核心設計](docs/boss-led-meeting-core-design.zh-TW.md) — meeting-core design and GUI entry contract
 - [Meeting core 規劃品質對照評估](docs/evaluations/meeting-core-quality-comparison.zh-TW.md)（[English](docs/evaluations/meeting-core-quality-comparison.md)）— 一般 session 與 meeting skill 的盲評比較
+- [Meeting core 3–4 人 compact panel 品質評估](docs/evaluations/meeting-core-compact-panel-comparison.zh-TW.md) — 固定相同 baseline、壓縮席位後的 fresh 盲評
 
 ## Architecture
 

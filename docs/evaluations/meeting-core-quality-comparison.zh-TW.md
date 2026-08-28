@@ -2,6 +2,8 @@
 
 英文原版：[meeting-core-quality-comparison.md](meeting-core-quality-comparison.md)
 
+後續 3–4 人壓縮實驗：[meeting-core-compact-panel-comparison.zh-TW.md](meeting-core-compact-panel-comparison.zh-TW.md)
+
 - 評估日期：2026-08-29
 - 評估範圍：GUI 實作前的規劃品質，不是 implementation 品質
 - 狀態：比較實驗已完成；報告保留正向、中性與負向結果
