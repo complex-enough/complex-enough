@@ -13,7 +13,7 @@
 
 先前對話曾人工模擬「main 先產生角色卡、使用者確認後才開會」的流程，用途是 dogfood 互動模型。該次模擬本身仍不是實作證據；後續 runtime instructions、meeting-plan v1.1、panel-output v1.2、semantic/bundle validators 與 deterministic tests 才是目前的 implementation evidence。
 
-目前 runtime 以 [`SKILL.md`](../SKILL.md)、[`references/`](../references/)、[`schemas/meeting-plan.schema.json`](../schemas/meeting-plan.schema.json)、[`schemas/panel-output.schema.json`](../schemas/panel-output.schema.json) 與 validators/tests 為準。Codex v1.1 [2026-08-28 scorecard](../evals/results/codex-2026-08-28.json) 已通過 21/21 cases、49 個公開回合與 95/95 fresh blind assertions，但只綁定 range 變更前的 runtime；目前作為歷史證據，不再滿足 current-runtime release gate。三案規劃品質比較見[Meeting core planning quality comparison](evaluations/meeting-core-quality-comparison.md)。
+目前 runtime 以 [`SKILL.md`](../SKILL.md)、[`references/`](../references/)、[`schemas/meeting-plan.schema.json`](../schemas/meeting-plan.schema.json)、[`schemas/panel-output.schema.json`](../schemas/panel-output.schema.json) 與 validators/tests 為準。Codex v1.1 [2026-08-28 scorecard](../evals/results/codex-2026-08-28.json) 已通過 21/21 cases、49 個公開回合與 95/95 fresh blind assertions，但只綁定 range 變更前的 runtime；目前作為歷史證據，不再滿足 current-runtime release gate。三案規劃品質比較見[Meeting core 規劃品質對照評估](evaluations/meeting-core-quality-comparison.zh-TW.md)。
 
 ### 目前實作狀態
 

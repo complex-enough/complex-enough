@@ -1,5 +1,7 @@
 # Meeting core planning quality comparison
 
+Traditional Chinese version: [meeting-core-quality-comparison.zh-TW.md](meeting-core-quality-comparison.zh-TW.md)
+
 - Evaluation date: 2026-08-29
 - Scope: pre-GUI planning quality, not implementation quality
 - Status: completed comparative experiment; results include positive, neutral, and negative findings
