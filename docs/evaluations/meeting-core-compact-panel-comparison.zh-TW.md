@@ -75,6 +75,16 @@ Judges 被明確要求不得因篇幅、複雜度、章節數或表面工作量�
 
 以下補齊本輪 11 個角色的 frozen role cards，讓後續能追查「哪個責任被合併」、「哪個使用者視角提出修正」與「是否需要重新拆出 specialist」。
 
+### 任務 1／2／3 角色速查
+
+| 任務 | Plan revision | 人數 | 本案實際使用角色 |
+| --- | --- | ---: | --- |
+| **任務 1：候補名單自動遞補** | `planrev-compact-waitlist-r1` | 4 | `W1` Waitlist Capacity and Service Design Generalist（專業）；`W2` Public Waitlist Customer（終端使用者）；`W3` Frontline Calendar Operator（終端使用者）；`W4` CMS Waitlist Operations Operator（終端使用者） |
+| **任務 2：出貨前修改地址** | `planrev-compact-address-r1` | 4 | `A1` Order Address Change and Fulfillment Design Generalist（專業）；`A2` Purchasing Customer（終端使用者）；`A3` Warehouse/Fulfillment Operator（終端使用者）；`A4` CMS Support/Operations Operator（終端使用者） |
+| **任務 3：CRM CSV 聯絡人匯入** | `planrev-compact-csv-r1` | 3 | `C1` CRM Import Product and Application Generalist（專業）；`C2` Contact Data Correctness and Recovery Reviewer（專業）；`C3` Workspace Admin Import Operator（終端使用者） |
+
+因此三案不是共用一組角色：任務 1 使用 `W1–W4`，任務 2 使用 `A1–A4`，任務 3 使用 `C1–C3`。下方詳細卡片沿用相同編號。
+
 共同條件：
 
 - 三份 slate 都由 Main 完整產生後交由使用者 review；使用者沒有修改角色，也沒有匯入外部 ChatGPT／Claude prompt。
@@ -84,8 +94,9 @@ Judges 被明確要求不得因篇幅、複雜度、章節數或表面工作量�
 - 三案採 chat-only conversation snapshot freeze，沒有建立 durable meeting-plan bundle，因此 plan／role digests 當時沒有 materialize。報告不事後虛構 digest；下列穩定 identity 以實際執行使用的 `role_id`／`role_revision_id` 為準。
 - 下列 `coverage` 代碼是為後續分析新增的 report-local locator，不宣稱是原 frozen plan 的 machine `risk_surface_id`。
 
-### 候補名單：`planrev-compact-waitlist-r1`
+### 任務 1：候補名單自動遞補
 
+- Plan revision：`planrev-compact-waitlist-r1`
 - Mode：`design`
 - Complexity range：`standard`
 - Frozen seats：4
@@ -152,8 +163,9 @@ Judges 被明確要求不得因篇幅、複雜度、章節數或表面工作量�
 - Execution：opening + bounded critique；兩階段皆 `completed`。
 - Material contribution：要求 activation review 顯示每個 effective policy 的 value、source、scope、precedence 與 version；recovery controls 必須 least-privilege、reason-coded、previewable、idempotent，且逐筆呈現 success/skip/conflict/failure。
 
-### 地址變更：`planrev-compact-address-r1`
+### 任務 2：出貨前修改地址
 
+- Plan revision：`planrev-compact-address-r1`
 - Mode：`design`
 - Complexity range：`standard`
 - Frozen seats：4
@@ -220,8 +232,9 @@ Judges 被明確要求不得因篇幅、複雜度、章節數或表面工作量�
 - Execution：opening + bounded critique；兩階段皆 `completed`。
 - Material contribution：要求 CMS 顯示 authoritative/proposed field diff、failure/retry、decision owner、queue/escalation 與 audit；unavailable actions 應顯示 blocking reason；revert 必須建立新 proposal；generic override 在 scope、states、approver/executor 與 evidence 未決前不得出現。
 
-### CSV 匯入：`planrev-compact-csv-r1`
+### 任務 3：CRM CSV 聯絡人匯入
 
+- Plan revision：`planrev-compact-csv-r1`
 - Mode：`design`
 - Complexity range：`lightweight`
 - Frozen seats：3
