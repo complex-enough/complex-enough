@@ -5,6 +5,8 @@
 - 狀態：三案 compact meeting 與 fresh blind review 已完成
 - 前次實驗：[Meeting core 規劃品質對照評估](meeting-core-quality-comparison.zh-TW.md)
 
+> 2026-08-30 後續控制實驗已完成：Compact 對 Large 的同批直接盲評為 9–0；35–38% synthesis compression 仍維持高品質但略輸完整版；actual-user ablation 顯示拆席能提高 finding recall，卻需要 Main 做 authority back-propagation 與 proportionality adjudication。詳見 [Meeting core 後續控制實驗](meeting-core-follow-up-experiments.zh-TW.md)。
+
 ## 結論摘要
 
 把 meeting 的總席位壓到 3–4 人後，三個任務都勝過完全相同的一般-session baseline：
