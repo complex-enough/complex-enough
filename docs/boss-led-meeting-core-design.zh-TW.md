@@ -3,18 +3,18 @@
 - 決策日期：2026-08-26
 - 實作更新：2026-08-29
 - 產品／證據更新：2026-08-31
-- 文件狀態：`implementation_validated_behavioral_release_pending`
-- runtime 狀態：portable instructions、contracts、validators 與 deterministic tests 已實作；2026-08-29 range-calibrated runtime 尚待 fresh behavioral release scorecard
+- 文件狀態：`gui_ready`
+- runtime 狀態：portable instructions、contracts、validators、selective routing 與最低 recovery closure 已實作；116 個 deterministic tests 與 current Codex fresh behavioral release scorecard 均通過
 - 依據：使用者確認的產品主軸、現行 repo 契約與四個 fresh-context 設計視角
-- 下一階段：依六案 Plan-only 結果補入 selective routing 與最低 recovery closure，完成 current-runtime Codex behavioral release scorecard 後進入 GUI 產品與實作階段；Claude Code 仍需獨立 behavioral scorecard
+- 下一階段：進入 GUI 產品與實作階段；Claude Code 仍需獨立 behavioral scorecard
 
 ## 文件邊界
 
-這份文件定義 skill 的目標行為，並作為 meeting-core 的產品／架構基線。2026-08-28 的上一版 runtime 已完成 Codex release validation；2026-08-29 加入角色拆分 range 後，deterministic validation 已更新，fresh behavioral release validation 尚待完成。GUI 尚未實作。
+這份文件定義 skill 的目標行為，並作為 meeting-core 的產品／架構基線。2026-08-28 的上一版 runtime 已完成 Codex release validation；2026-08-29 加入角色拆分 range，2026-08-31 再依六案 Plan-only 結果加入 selective routing 與最低 recovery closure。current runtime 已完成 deterministic 與 fresh Codex behavioral release validation，GUI entry gate 已通過；GUI 尚未實作。
 
 先前對話曾人工模擬「main 先產生角色卡、使用者確認後才開會」的流程，用途是 dogfood 互動模型。該次模擬本身仍不是實作證據；後續 runtime instructions、meeting-plan v1.1、panel-output v1.2、semantic/bundle validators 與 deterministic tests 才是目前的 implementation evidence。
 
-目前 runtime 以 [`SKILL.md`](../SKILL.md)、[`references/`](../references/)、[`schemas/meeting-plan.schema.json`](../schemas/meeting-plan.schema.json)、[`schemas/panel-output.schema.json`](../schemas/panel-output.schema.json) 與 validators/tests 為準。Codex v1.1 [2026-08-28 scorecard](../evals/results/codex-2026-08-28.json) 已通過 21/21 cases、49 個公開回合與 95/95 fresh blind assertions，但只綁定 range 變更前的 runtime；目前作為歷史證據，不再滿足 current-runtime release gate。
+目前 runtime 以 [`SKILL.md`](../SKILL.md)、[`references/`](../references/)、[`schemas/meeting-plan.schema.json`](../schemas/meeting-plan.schema.json)、[`schemas/panel-output.schema.json`](../schemas/panel-output.schema.json) 與 validators/tests 為準。current Codex [2026-08-31 scorecard](../evals/results/codex-2026-08-31.json) 綁定 exact runtime／suite digest，26/26 cases、59 個公開回合與 120/120 assertions 由三位 fresh blind public-output graders 一致判定通過。2026-08-28 scorecard 現為歷史證據。
 
 2026-08-31 的 [使用者驗證 Plan Pilot](evaluations/meeting-core-user-validated-plan-pilot.zh-TW.md) 是 clarified core claim 的第一份直接證據；後續 [Plan-only 六案盲評](evaluations/meeting-core-plan-only-batch6.zh-TW.md) 完成 N-task 方向性驗證。標準 Treatment 在 5/6 任務勝出，13/18 fresh 模擬使用者 evaluator 偏好 Treatment，平均差 `+0.222/5`。最大改善是避免過度設計、狀態清晰與防誤，但 recovery 平均退步，且單人低後果任務出現負向結果。這支持 selective meeting routing，不支持每案必開會或固定更多席位。先前的[規劃品質比較](evaluations/meeting-core-quality-comparison.zh-TW.md)、[Compact panel 實驗](evaluations/meeting-core-compact-panel-comparison.zh-TW.md)及[後續控制實驗](evaluations/meeting-core-follow-up-experiments.zh-TW.md)保留為技術型 meeting 的次要機制證據。
 
@@ -28,12 +28,14 @@
 | meeting-plan v1.1（相容 v1.0）、panel-output v1.2、bundle validation | 已實作並有 positive/negative deterministic tests |
 | 角色拆分複雜度 | `lightweight`／`standard`／`critical` 已寫入 runtime 與 meeting-plan v1.1 |
 | 實際使用者視角 | 與專業複雜度分離；支援 unanchored opening 與 UI claim critique |
+| selective meeting routing | 建立 MeetingRound 前依不同後果、交接、狀態傷害與 evidence／authority 差異判斷；低價值 implicit case 回 ordinary session |
+| 最低 recovery closure | 每個 selected actual-user surface 保留可見現況、安全下一步、authority owner 與成功訊號，或具理由的 inapplicable／authority deferral |
 | v1.0/v1.1 panel-output compatibility | deterministic fixtures/tests 通過 |
-| neutral multi-turn eval definitions | current suite 24 cases；上一 runtime 的 21-case suite 已完成 fresh isolated execution，共 49 個公開回合 |
-| Codex meeting-core behavioral status | range 變更前為 `GO`；current runtime fresh release run pending |
-| release scorecard gate | 歷史結果只做封存完整性驗證；current GO 必須重新綁定 current suite/runtime/artifacts |
+| neutral multi-turn eval definitions | current suite 26 cases；fresh isolated execution 共 59 個公開回合 |
+| Codex meeting-core behavioral status | current runtime `GO`；26/26 cases、120/120 fresh blind assertions 通過 |
+| release scorecard gate | current suite/runtime/artifacts 已由 2026-08-31 scorecard 綁定並通過 |
 | Claude Code behavioral status | structural only |
-| GUI | current-runtime behavioral gate pending；GUI 尚未實作 |
+| GUI | entry gate 已通過；GUI 尚未實作 |
 
 ## 核心產品定義
 
@@ -544,6 +546,8 @@ Meeting core 只有在下列條件都通過後才算完成，才能把狀態升�
 11. Fresh forward eval 證明 role review/freeze 不是人工模擬，且 final execution 使用使用者確認的 exact digest。
 12. `python3 scripts/validate_repo.py` 與 Skill Creator validation 全數通過。
 13. Neutral range cases 證明 bounded work 不自動加入架構／資安／可靠性專席，standard work 只拆 evidence-distinct lenses，critical work才為無法安全合併的高後果證據配置 specialists。
+14. Implicit 低價值、單人、可逆任務在建立 MeetingRound 前回 ordinary session；使用者明示開會時則以最小合理 slate 尊重請求並揭露低邊際價值。
+15. 每個 selected actual-user surface 都有最低 recovery closure，或具 authority owner 的 `authority_deferred`／`inapplicable` 理由；壓縮不得移除恢復路徑。
 
 ## 進入 GUI 的 gate
 

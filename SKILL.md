@@ -19,6 +19,10 @@ Choose exactly one entry mode from the requested outcome:
 
 Infer the narrowest sufficient mode; do not default to `full_cycle`. Read [references/modes-and-selection.md](references/modes-and-selection.md) before generating roles.
 
+Before creating a MeetingRound, assess whether independent perspectives have material expected value. Task size alone is not the test. A meeting is normally warranted when distinct users or operators bear different consequences, a decision/state must cross a handoff, stale or conflicting truth can cause real harm, materially different evidence or authority must be reconciled, or a high-consequence claim needs independent challenge. A single actor using a mature, locally reversible pattern with no material handoff or authority split normally stays in an ordinary session.
+
+When the skill was selected implicitly, or the user asked whether a meeting is worthwhile, route a low-value case back to the ordinary main-session workflow and complete the requested plan/review without creating roles, a PlanRevision, digest, or confirmation checkpoint. State the short reason. When the user explicitly requested a panel or meeting, honor that request but use the smallest legitimate `lightweight` slate, disclose low expected marginal value, and never invent duplicate or fake user lenses to make the meeting look populated. Read the pre-round routing rules in [references/modes-and-selection.md](references/modes-and-selection.md).
+
 Classify the request as read-only or authorized editing/implementation. A meeting never expands authorization. For repository work:
 
 1. Discover the root and read applicable repository/host instructions and authoritative task documents.
@@ -42,6 +46,10 @@ Build a risk-surface map before naming professional perspective seats:
 6. Stop when every material risk has planned ownership and another lens has low expected information value relative to latency/cost.
 
 Treat actual-user coverage separately from professional complexity. When a user-facing design spans materially different operator/customer goals, permissions, or failure consequences, generate the smallest sufficient actual-user lenses instead of asking a product or architecture expert to impersonate them. A simulated user lens is not user research: disclose that limitation. For a design round, let such roles first state unanchored goals, information needs, likely misunderstandings, and unacceptable failures; after professional roles produce public UI/UX claims, send only a bounded claim/evidence packet back for usability and misoperation critique. Read [references/panelist-protocol.md](references/panelist-protocol.md).
+
+Do not automatically pair every actual-user lens with a professional proxy for the same surface. When no separate supplied operational evidence, policy authority, or materially different decision consequence exists, let the smallest domain-professional set own the solution skeleton and let the actual-user role own task-model, operability, and recovery consequences. Add a second professional for that surface only when it contributes distinct evidence or authority that the user simulation cannot supply.
+
+For every selected actual-user surface in a `design` round, preserve a minimum recovery closure through Main synthesis. Cover applicable uncertain submit/save results, return-to-edit or reselect behavior, stale/concurrent/replaced state, post-commit correction/undo or an existing human handoff, the visible authoritative current state, and the success signal. An inapplicable category needs a short reason. A policy-owned category may be deferred only with the existing authority/owner, the safe user-visible state, and an actionable next step. Do not add a technical seat merely to satisfy this closure.
 
 `department` is a descriptive professional-affiliation label on a role, not a separate meeting entity, leader-mediated container, vote, or numeric weight. Main may invite one or several roles with the same department label when they own materially different lens questions, evidence, or risk surfaces. Do not create duplicate seats merely to amplify a department: seat count increases investigation depth, never voting power. Every role reports its public claims/evidence directly to main; do not let a department lead, aggregate score, or pre-synthesis erase a secondary seat's supported minority finding.
 
@@ -137,6 +145,8 @@ If editing is authorized, main owns edits and tests. After a material correction
 4. when the round recorded a blocker/high finding, close it as `revise`/`no_go`, apply the correction, and open a new verification round with a newly reviewed/frozen slate;
 5. otherwise open a new round whenever role semantics or risk ownership must change;
 6. continue until the declared terminal condition is met or a genuine stop condition applies.
+
+Before completing a user-facing `design`, audit every selected actual-user surface against the minimum recovery closure. Retain either a closed public recovery claim or an explicit authority-owned deferral with a safe visible state and next action. If a material recovery path disappeared during claims compression or synthesis, the design remains `revise` rather than silently completing.
 
 For `review`, issue `GO` only when no unresolved blocker/high condition remains, every critical frozen risk surface has evidence-backed actual coverage from its planned role, authorities/consumers are consistent, and execution gates are actionable. Acknowledged uncovered critical coverage remains uncovered and forbids `GO`.
 

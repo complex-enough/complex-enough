@@ -36,6 +36,8 @@ Main is the convener and accountable owner, never a RoleDefinition or perspectiv
 
 Seat count is derived from the active role bindings grouped by `department`. Main proposes it by generating the initial complete slate; users adjust it through role add/split/remove/merge operations. A count increase must create distinct executable roles, while a decrease must expose the exact coverage and provenance consequences. Do not add a parallel `headcount` value to a role or plan.
 
+For an actual-user role in a user-facing `design` round, make recovery an explicit evidence duty and deliverable rather than a generic UX adjective. Its opening and critique must cover applicable unknown-result, return/reselect, stale/concurrent/replaced-state, post-commit correction or existing human-handoff consequences, plus the visible current result and success signal. This does not grant product-policy authority and does not justify a separate technical seat.
+
 ## EffectiveRole compilation
 
 Compile each role with this precedence:

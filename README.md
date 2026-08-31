@@ -43,15 +43,21 @@ tests/                                Schema compatibility and semantic invarian
 
 | Host | Packaging | Behavioral status |
 | --- | --- | --- |
-| Codex | `SKILL.md`, references/schemas/scripts, Codex adapter, `agents/openai.yaml` | Current range-calibrated runtime passes deterministic/structural validation; fresh behavioral release scorecard pending |
+| Codex | `SKILL.md`, references/schemas/scripts, Codex adapter, `agents/openai.yaml` | Current runtime `GO`: 26/26 cases and 120/120 fresh blind assertions passed |
 | Claude Code | Same core plus Claude Code adapter; no OpenAI UI metadata required | Structurally compatible; behavioral forward tests still required in a Claude runtime |
-| GUI/API | `meeting-plan` v1.1 plus `panel-output` v1.2; no GUI runtime dependency | Control/result contracts implemented; GUI implementation deferred |
+| GUI/API | `meeting-plan` v1.1 plus `panel-output` v1.2; no GUI runtime dependency | Entry gate passed; GUI implementation is the next phase |
 
 ## Dynamic perspective selection
+
+Before creating a round, main assesses whether independent perspectives are likely to change the outcome. Single-actor, mature, locally reversible work with no material state/decision handoff normally stays in an ordinary session; task size alone is not the test. An explicit meeting request is still honored with the smallest legitimate lightweight slate and a low-marginal-value disclosure.
 
 For each task, the moderator maps delivery surfaces, stakeholders, failure modes, irreversible decisions, evidence gaps, and cost. Before splitting seats it publishes a `lightweight`, `standard`, or `critical` complexity range. The range controls role granularity, not risk acceptance or a fixed headcount: lightweight work combines ordinary architecture/security/reliability duties into a capable generalist, standard work splits only evidence-distinct lenses, and critical work uses dedicated specialists for high-consequence evidence that cannot safely be combined.
 
 A lens is included only when it asks a distinct material question, brings distinct evidence, or owns a material stakeholder consequence. Overlapping roles are merged. User-facing design also distinguishes actual customer/operator lenses from professional proxies: selected user roles state unanchored task needs first, then critique bounded public UI/UX claims. These are explicitly simulated lenses, not a substitute for real user research.
+
+Actual-user coverage does not create a matching professional proxy by default. Without separate operational evidence or policy authority, the smallest domain-professional set owns the solution skeleton while customer/operator lenses own task, misoperation, and recovery consequences.
+
+For every selected actual-user surface, the final design retains a minimum recovery closure: uncertain results, return/reselection, stale or replaced state, post-commit correction or an existing human handoff, the visible current truth, its authority owner, and the success signal. This is a synthesis requirement, not a reason to add frontend, backend, architecture, or security seats.
 
 The model stays two-level: a MeetingRound directly binds professional perspective roles. `department` is only a descriptive affiliation label, so main may generate multiple roles from one profession when they own distinct questions or evidence. There is no Department entity, leader-mediated department result, or compound weighting layer. This avoids weight distortion and preserves a secondary seat's evidence instead of letting a department lead collapse it into one position; extra same-department seats still never count as extra votes.
 
@@ -151,7 +157,7 @@ python3 scripts/render_eval_prompt.py ideate-pure-product \
 
 Trigger cases omit `--skill-path` and render only the natural user request plus fixture, so discovery is observed without being named or primed. Send later `--turn N` messages only after the prior public response. Run each case in a fresh context; do not pass assertions, future turns, prior results, or intended fixes. Version only public main-session responses as a digest-bound artifact; never persist raw panelist reports or private reasoning. See [evals/README.md](evals/README.md).
 
-The Codex `1.0.0` scorecard at [evals/results/codex-2026-08-10.json](evals/results/codex-2026-08-10.json) remains historical evidence for the pre-meeting runtime. The `1.1.0` [2026-08-28 Codex scorecard](evals/results/codex-2026-08-28.json) is historical evidence for the preceding boss-led meeting runtime: all 21 isolated multi-turn cases and all 95 assertions passed fresh blind public-output grading. The 2026-08-29 complexity-range change modifies runtime bytes, so it requires a fresh bound scorecard before release or global installation. Claude Code remains structural-only until its separate host scorecard passes.
+The Codex `1.0.0` scorecard at [evals/results/codex-2026-08-10.json](evals/results/codex-2026-08-10.json) and the `1.1.0` [2026-08-28 Codex scorecard](evals/results/codex-2026-08-28.json) remain historical evidence. The current [2026-08-31 Codex scorecard](evals/results/codex-2026-08-31.json) binds the exact selective-routing/recovery runtime and suite: all 26 cases, 59 public turns, and 120 assertions passed three fresh blind public-output graders. Claude Code remains structural-only until its separate host scorecard passes.
 
 Repository validation keeps the historical scorecard integrity-checked but excludes it from release. A release `GO` is accepted only after full revalidation against the current suite digest, current runtime digest, complete current case set, and bound public artifacts.
 

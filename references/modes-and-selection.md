@@ -78,6 +78,35 @@ At each stage boundary:
 
 The role-slate checkpoint occurs in every mode, not only `full_cycle`. It confirms who will execute the current round; it is not a vote and is not a `needs_user_decision` product escalation.
 
+## Pre-round meeting-value routing
+
+Run this assessment before creating a MeetingRound or choosing a role-splitting range. Complexity describes how to split a meeting that will occur; it must not be used to justify a meeting whose expected information value is low.
+
+Use these positive signals:
+
+1. Two or more actual users/operators have materially different goals, permissions, information, or failure consequences.
+2. A decision, status, or executable instruction crosses a role or organizational handoff.
+3. Stale, concurrent, replaced, or ambiguously delivered state can create a real operational, physical, financial, safety, or trust consequence.
+4. Materially different evidence or authority must be reconciled.
+5. A high-consequence claim needs independent challenge before commitment.
+
+Use these negative signals:
+
+- one actor owns the whole task and consequence;
+- the interaction follows a mature, locally reversible pattern;
+- no material state/decision handoff or authority split exists;
+- another lens is unlikely to change the Plan enough to justify latency and cost.
+
+Task size is neither a positive nor a negative signal by itself. A small customer-to-operator decision handoff may justify a meeting; a larger but reversible single-user configuration screen may not.
+
+The routing outcomes are workflow recommendations, not public schema enums:
+
+- **ordinary session:** when the skill was selected implicitly or the user asked for a recommendation, explain the low meeting value and continue the ordinary requested work. Do not create a fake MeetingRound, role slate, plan revision/digest, or confirmation gate.
+- **meeting:** when positive signals justify independence, continue to `lightweight`, `standard`, or `critical` calibration.
+- **explicit meeting with low expected value:** honor an explicit panel/meeting request with the smallest legitimate `lightweight` slate, disclose the expected marginal value, and do not manufacture duplicate users or specialists.
+
+This routing decision never weakens authorization, evidence, or safety requirements.
+
 ## Perspective selection algorithm
 
 Build a table internally with these columns:
@@ -111,11 +140,14 @@ Merge lenses that fail the first three tests. Assign every fourth-test risk, but
 
 Do not treat a product, UX, architecture, or operations professional as actual-user evidence. For user-facing `design` work:
 
+Do not mirror every selected actual-user surface with a professional proxy. If no separate operational evidence, policy authority, or materially different decision consequence was supplied for that surface, keep the smallest domain-professional set responsible for the solution skeleton and let the actual-user role own task-model, operability, misoperation, and recovery consequences. Split an additional professional only when it brings evidence or authority the user simulation cannot legitimately provide.
+
 1. Identify actual customer/operator surfaces whose goals, permissions, information, or failure consequences differ materially.
 2. Merge surfaces when the same task and consequence can be represented by one lens; never add one seat merely because another UI channel exists.
 3. In each selected user lens's independent opening, request goals, necessary information, likely misunderstandings, unacceptable failures, and minimum success conditions without showing proposed UI.
 4. After professional openings, main normalizes only the relevant public UI/UX claims and evidence locators into a bounded packet.
 5. Ask the same frozen user role to critique understandability, operability, false-success cues, unsafe shortcuts, and recovery. Do not send raw reports.
+6. Before synthesis closes, require a minimum recovery closure for each selected surface: uncertain result, return/reselect, stale or concurrent state, post-commit correction or existing human handoff, visible authoritative current state, and success signal. Mark a category inapplicable with a reason; defer policy only with an owner, safe visible state, and actionable next step.
 
 Label these as simulated actual-user lenses. They can expose task-model and operability gaps, but they do not prove prevalence, accessibility performance, or real user preference; preserve genuine research as a follow-up when material.
 

@@ -12,7 +12,9 @@
 
 > 2026-08-31 產品與證據更新：核心效果已進一步限縮為「先用 Main＋領域專業＋End user 改善使用者任務與 UIUX Plan，再交給普通 Agent 進入 Spec／implementation」。第一個 plan-only Pilot 由三位 fresh 模擬租戶一致選擇 Treatment，平均高 `+0.604/5`；流程 gate 通過，但單案只屬方向性訊號，仍待 N-task 驗證。詳見 [Meeting core 使用者驗證 Plan Pilot](evaluations/meeting-core-user-validated-plan-pilot.zh-TW.md)。先前 technical plan／spec 實驗保留為次要機制證據。
 
-> 2026-08-31 N-task 更新：六案 plan-only 批次已完成。標準 Treatment 在 5/6 任務勝出，18 位 fresh 模擬使用者 evaluator 中 13 位偏好 Treatment，平均差 `+0.222/5`；最大改善是避免過度設計 `+0.583`，但 recovery 平均退步 `-0.194`。結果支持依使用面、交接與狀態後果動態 routing，不支持每案必開會或更多席位必然更好。詳見 [Meeting core Plan-only 六案盲評](evaluations/meeting-core-plan-only-batch6.zh-TW.md)。GUI 前仍須先更新 selective routing／recovery closure 並完成 current-runtime behavioral release validation。
+> 2026-08-31 N-task 更新：六案 plan-only 批次已完成。標準 Treatment 在 5/6 任務勝出，18 位 fresh 模擬使用者 evaluator 中 13 位偏好 Treatment，平均差 `+0.222/5`；最大改善是避免過度設計 `+0.583`，但 recovery 平均退步 `-0.194`。結果支持依使用面、交接與狀態後果動態 routing，不支持每案必開會或更多席位必然更好。詳見 [Meeting core Plan-only 六案盲評](evaluations/meeting-core-plan-only-batch6.zh-TW.md)。selective routing 與最低 recovery closure 已寫入 runtime；GUI 前仍須完成 current-runtime behavioral release validation。
+
+> 2026-08-31 release 更新：selective routing 與最低 recovery closure 的 current runtime 已完成 116 個 deterministic tests，並由 [Codex current scorecard](../evals/results/codex-2026-08-31.json) 綁定 exact runtime／suite digest。26/26 neutral cases 共 59 個公開回合，120/120 assertions 經三位 fresh blind public-output graders 一致通過，release gate 為 `GO`。GUI entry gate 已滿足，GUI 尚未實作；Claude Code 仍只有 structural status。
 
 ## 結論
 

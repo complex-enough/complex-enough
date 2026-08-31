@@ -1,0 +1,13 @@
+{
+  "artifact_version": "1.0",
+  "case_id": "trigger-negative-routine-review",
+  "host": "codex",
+  "run_id": "codex-meeting-core-current2-a-WS4tNf-8259679bb83f4e299f57eb119694b2f5",
+  "executed_at": "2026-08-31T08:16:01.489310Z",
+  "execution": "forward",
+  "runtime_revision": "sha256:c0975717d09343fc13ce28a1e39319436acf8600ae32e35acc3815fc19cfec3e",
+  "suite_revision": "sha256:e30599245cfbae3778b2f28eead99b03c36bce9a9bf140823ee405dc0fad2029",
+  "skill_path": null,
+  "prompt_sha256": "sha256:34147ae531b044daaa7ca1ce91a2dd512bab83cb8f69cf085a2b5cb192134f25",
+  "output": "=== PUBLIC TURN 1/1 ===\nPlease paste the three-line function; it wasn’t included. If possible, also state the expected behavior at the minimum and maximum boundaries."
+}

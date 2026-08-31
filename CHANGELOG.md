@@ -6,6 +6,10 @@ All notable changes are documented here. Repository releases use Semantic Versio
 
 ### Added
 
+- A pre-round selective-routing gate that keeps low-value single-actor reversible work in an ordinary session unless the user explicitly requests a meeting.
+- A minimum actual-user recovery closure covering unknown results, return/reselection, stale or replaced state, post-commit correction or human handoff, visible current truth, authority owner, and success signal.
+- Neutral forward cases for ordinary-session routing, explicit low-value lightweight meetings, and customer-to-operator recovery closure.
+- A current Codex behavioral `GO` scorecard with 26 isolated cases, 59 public turns, 120 assertions unanimously passed by three fresh blind public-output graders, and digest-bound per-case artifacts.
 - `lightweight`, `standard`, and `critical` role-splitting complexity ranges that calibrate specialist-seat granularity without creating fixed rosters or headcount buckets.
 - Simulated actual-user lenses with unanchored task openings and bounded public UI/UX critique, explicitly separated from professional proxies and real user research.
 - `meeting-plan` schema `1.1` with a digest-bound PlanRevision `complexity_profile`; schema `1.0` remains compatible legacy input.
@@ -24,6 +28,10 @@ All notable changes are documented here. Repository releases use Semantic Versio
 
 ### Changed
 
+- Task size no longer acts as a meeting-value proxy: distinct consequences, state/decision handoffs, authority/evidence differences, and real stale-state harm drive routing and user-seat splitting.
+- Actual-user surfaces no longer receive mirrored professional proxies unless those seats contribute separate supplied evidence, policy authority, or materially different consequences.
+- Main synthesis may compress wording but must retain each selected actual-user surface's recovery state, safe action, authority owner, and success signal or an explicit authority-owned deferral.
+- The full-cycle forward conversation now resolves its genuine convergence product gate in a separate user turn before generating and confirming the readiness-review slate.
 - Material architecture, security, privacy, reliability, and similar concerns require explicit ownership but no longer automatically create dedicated specialist seats; the selected range and distinct evidence/consequence determine splitting.
 - Role proposals and mutation receipts now show the selected complexity range and reasons, and a user-requested range change recomputes the whole slate rather than relabeling an unchanged roster.
 
@@ -32,7 +40,7 @@ All notable changes are documented here. Repository releases use Semantic Versio
 - Every narrow-mode round and full-cycle stage now regenerates roles and waits for user confirmation before internal fresh-context execution.
 - Retry/replacement preserves the exact frozen role revision; capacity affects waves only.
 - Installed runtime manifest now includes meeting lifecycle/import contracts, schemas, and deterministic contract validators.
-- GUI implementation remains the next phase; the role-complexity runtime now requires a fresh behavioral release scorecard before the GUI entry gate is considered current.
+- GUI implementation remains the next phase; the current selective-routing/recovery runtime has passed its fresh Codex behavioral release gate and is GUI-ready.
 - Blocker/high discovery rounds now close `revise`/`no_go`; corrections are verified in a new reviewed and frozen round instead of rewriting the original finding into `go`.
 - Meeting structure remains two-level: main binds distinct professional perspective roles directly. `department` is only an affiliation label, so one profession may contribute several evidence-distinct seats without a Department entity, compound weights, leader-mediated aggregation, or extra voting power; supported secondary-seat evidence remains visible to main.
 - Main proposes per-profession participation counts through the concrete role slate, and users adjust them through copy-on-write role operations; displayed counts are derived from active bindings rather than a second headcount source.

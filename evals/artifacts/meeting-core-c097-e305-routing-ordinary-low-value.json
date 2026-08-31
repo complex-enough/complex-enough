@@ -1,0 +1,13 @@
+{
+  "artifact_version": "1.0",
+  "case_id": "routing-ordinary-low-value",
+  "host": "codex",
+  "run_id": "codex-meeting-core-current2-c-VGch6p-380b08ed83f74933be6284e273927b76",
+  "executed_at": "2026-08-31T08:51:33.659531Z",
+  "execution": "forward",
+  "runtime_revision": "sha256:c0975717d09343fc13ce28a1e39319436acf8600ae32e35acc3815fc19cfec3e",
+  "suite_revision": "sha256:e30599245cfbae3778b2f28eead99b03c36bce9a9bf140823ee405dc0fad2029",
+  "skill_path": "/tmp/meeting-core-current2-c-VGch6p/work/cases/routing-ordinary-low-value/attempt-380b08ed83f74933be6284e273927b76/runtime/orchestrate-multi-perspective-panel",
+  "prompt_sha256": "sha256:ad3363beb882c8e927813286a2914c83bae1cc6e59b80fb8655cb9f3572c28b7",
+  "output": "=== PUBLIC TURN 1/1 ===\nA meeting is not worthwhile here. This is a single-user, locally reversible change using established patterns, with no shared state, handoff, authority conflict, public contract, migration, or high-consequence risk. I would proceed as an ordinary implementation task without creating a panel.\n\nImplementation plan:\n\n1. Locate the dashboard’s canonical shortcut defaults, existing per-user preference storage, and established sortable-list component.\n2. Store a personal override as an ordered list of stable shortcut IDs. Leave the product default unchanged.\n3. Resolve the displayed order by validating the user’s override, removing unavailable IDs, and appending newly introduced shortcuts in product-default order.\n4. Add a “Customize shortcuts” control using the existing sortable interaction, accessibility behavior, and save/cancel feedback conventions.\n5. Make “Restore default” delete the personal override rather than copying today’s default, so future default changes continue to apply.\n6. Validate that submitted IDs are existing, permitted, unique shortcuts and update only the authenticated user’s preference.\n7. Test default rendering, reorder persistence, user isolation, restore behavior, stale/invalid IDs, newly added defaults, and mouse/keyboard sorting.\n8. Run the dashboard and preference-layer test suites and manually verify reorder, reload, cancel, and restore flows.\n\nAcceptance condition: one user can reorder existing shortcuts without affecting anyone else, restore the live product default, and use the control through the established accessible sortable-list pattern."
+}

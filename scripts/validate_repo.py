@@ -80,6 +80,8 @@ REQUIRED_CASE_TAGS = {
     "role_import",
     "external_prompt",
     "freeze",
+    "routing",
+    "recovery",
 }
 REQUIRED_FILES = [
     "SKILL.md",

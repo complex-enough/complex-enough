@@ -8,6 +8,46 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class RuntimeMeetingContractTest(unittest.TestCase):
+    def test_selective_routing_precedes_round_creation(self) -> None:
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        selection = (ROOT / "references" / "modes-and-selection.md").read_text(
+            encoding="utf-8"
+        )
+        lifecycle = (ROOT / "references" / "meeting-lifecycle.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("Before creating a MeetingRound", skill)
+        self.assertIn("Task size alone is not the test", skill)
+        self.assertIn("Pre-round meeting-value routing", selection)
+        self.assertIn("Do not create a fake MeetingRound", selection)
+        self.assertIn("explicit meeting with low expected value", selection)
+        self.assertIn("Do not mirror every selected actual-user surface", selection)
+        self.assertIn("Do not automatically pair every actual-user lens", skill)
+        self.assertIn("Before creating the round", lifecycle)
+
+    def test_actual_user_design_has_minimum_recovery_closure(self) -> None:
+        skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        selection = (ROOT / "references" / "modes-and-selection.md").read_text(
+            encoding="utf-8"
+        )
+        panelist = (ROOT / "references" / "panelist-protocol.md").read_text(
+            encoding="utf-8"
+        )
+        lifecycle = (ROOT / "references" / "meeting-lifecycle.md").read_text(
+            encoding="utf-8"
+        )
+        roles = (ROOT / "references" / "role-definition-and-import.md").read_text(
+            encoding="utf-8"
+        )
+
+        for text in (skill, selection, panelist, lifecycle):
+            self.assertIn("minimum recovery closure", text.lower())
+        self.assertIn("visible_authoritative_state", panelist)
+        self.assertIn("authority_deferred", panelist)
+        self.assertIn("safe visible state and next action", lifecycle)
+        self.assertIn("recovery an explicit evidence duty", roles)
+
     def test_role_complexity_ranges_calibrate_specialist_splitting(self) -> None:
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
         selection = (ROOT / "references" / "modes-and-selection.md").read_text(

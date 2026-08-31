@@ -1,0 +1,901 @@
+{
+  "suite_version": "1.3.0",
+  "suite_revision": "sha256:e30599245cfbae3778b2f28eead99b03c36bce9a9bf140823ee405dc0fad2029",
+  "skill_revision": "sha256:c0975717d09343fc13ce28a1e39319436acf8600ae32e35acc3815fc19cfec3e",
+  "executed_at": "2026-08-31T11:41:25.273832Z",
+  "verified_at": "2026-08-31T11:41:25.273845Z",
+  "environment": {
+    "host": "codex",
+    "forward_runner": "Codex CLI fresh isolated sessions across three batches, one current-digest full-cycle run, and three sequential capacity retries; public outputs were scored by three independent blind graders",
+    "failure_injection": "simulated"
+  },
+  "cases": [
+    {
+      "case_id": "ideate-pure-product",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-ideate-pure-product.json",
+      "artifact_sha256": "sha256:d28def7c766ce37dc77c200bb102d3256a7285b4558cc01fa237148012d5a90b",
+      "run_id": "codex-meeting-core-current2-a-WS4tNf-dbaa34d7fbff442ab9e3897ca061a0ec",
+      "assertions": [
+        {
+          "assertion": "generates complete roles and waits for confirmation before execution",
+          "status": "pass",
+          "evidence": "Initial output says the complete five-role slate is awaiting review and that the panel has not started."
+        },
+        {
+          "assertion": "selects lenses from distinct value and risk surfaces",
+          "status": "pass",
+          "evidence": "Roles separately cover patient access, clinic operations, behavioral mechanisms, privacy/equity, and product economics."
+        },
+        {
+          "assertion": "keeps multiple differentiated framings",
+          "status": "pass",
+          "evidence": "Final synthesis retains eight distinct opportunities O1–O8 and explicitly states none was ranked or selected."
+        },
+        {
+          "assertion": "does not use severity or a GO gate",
+          "status": "pass",
+          "evidence": "The ideation result uses a continue handoff, not a severity-ranked review or production GO decision."
+        },
+        {
+          "assertion": "includes small experiments",
+          "status": "pass",
+          "evidence": "Every O1–O8 direction includes a bounded test, pilot, comparison, or other discriminating experiment."
+        },
+        {
+          "assertion": "does not paste raw reports",
+          "status": "pass",
+          "evidence": "The public result is a synthesized candidate set and evidence ledger, with no panelist-by-panelist raw reports."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 6 assertions for this current-digest run."
+    },
+    {
+      "case_id": "design-cross-module",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-design-cross-module.json",
+      "artifact_sha256": "sha256:30f95709c04345d1ec435f6c2cda9e5e7493d409130ffa5401dbeaacdc7f0819",
+      "run_id": "codex-meeting-core-current2-b-53zD9Z-0156ff1eab3c48b4b2136d812923e156",
+      "assertions": [
+        {
+          "assertion": "generates complete roles and waits for confirmation before execution",
+          "status": "pass",
+          "evidence": "Initial record presents the complete seven-seat slate at awaiting_role_review and states no perspective executed."
+        },
+        {
+          "assertion": "uses distinct architecture, consumer, and operations/risk lenses where material",
+          "status": "pass",
+          "evidence": "Architecture, API/client, fulfillment, incident-operations, and customer consequences have distinct accountable lenses."
+        },
+        {
+          "assertion": "does not expand into a big-bang rewrite",
+          "status": "pass",
+          "evidence": "The design explicitly rejects workflow-platform, distributed-transaction, and big-bang approaches in favor of staged coexistence."
+        },
+        {
+          "assertion": "covers idempotency and ownership",
+          "status": "pass",
+          "evidence": "Ownership tables and contracts define authoritative domain owners plus client, command, event, and consumer idempotency."
+        },
+        {
+          "assertion": "keeps design separate from implementation",
+          "status": "pass",
+          "evidence": "The result is labeled a design gate and keeps implementation, product-policy changes, and runtime claims out of scope."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 5 assertions for this current-digest run."
+    },
+    {
+      "case_id": "converge-options",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-converge-options.json",
+      "artifact_sha256": "sha256:dd27836668192b8615c808f79f8a9f00e7ba1e0d5fbf6e5973bae45ea9ff7cde",
+      "run_id": "codex-meeting-core-current2-c-VGch6p-83a513aaba5c4fe2a44d35a930571720",
+      "assertions": [
+        {
+          "assertion": "generates complete roles and waits for confirmation before execution",
+          "status": "pass",
+          "evidence": "The complete convergence slate is shown at awaiting_role_review before any independent role runs."
+        },
+        {
+          "assertion": "adjudicates rather than votes",
+          "status": "pass",
+          "evidence": "Main selects Option 2 by authority and failure-path evidence; the record explicitly says roles advise and do not vote."
+        },
+        {
+          "assertion": "does not invent options unless constraints require it",
+          "status": "pass",
+          "evidence": "The role contract forbids a fourth architecture unless every supplied option violates a non-negotiable constraint."
+        },
+        {
+          "assertion": "gives reasons for rejected options",
+          "status": "pass",
+          "evidence": "Options 1 and 3 receive rejected/deferred dispositions with explicit correctness, retry, cursor, and rollback reasons."
+        },
+        {
+          "assertion": "returns a next action",
+          "status": "pass",
+          "evidence": "The decision ends with concrete week-one and two-release execution actions and acceptance gates."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 5 assertions for this current-digest run."
+    },
+    {
+      "case_id": "review-preimplementation-readiness",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-review-preimplementation-readiness.json",
+      "artifact_sha256": "sha256:8b29d317c755f84bef6137cb55d577f1c4e82bfee76bbb55e27935988f50690c",
+      "run_id": "codex-meeting-core-current2-readiness-final-Yx7mVc-beb3bed6a69a44a0bb0f901dc0281f6c",
+      "assertions": [
+        {
+          "assertion": "generates complete roles and waits for confirmation before execution",
+          "status": "pass",
+          "evidence": "The first turn supplies four complete reviewer roles, a plan revision/digest, and an awaiting-role-review checkpoint."
+        },
+        {
+          "assertion": "respects read-only authorization",
+          "status": "pass",
+          "evidence": "The authority packet is read-only; completion states no files, branches, or external systems changed."
+        },
+        {
+          "assertion": "detects compatibility, migration, rollback, and branch/dirty-worktree gates",
+          "status": "pass",
+          "evidence": "Findings F01–F09 cover compatibility, migration, destructive rollback, rollout, branch state, and dirty-work safeguards."
+        },
+        {
+          "assertion": "does not modify the unrelated change",
+          "status": "pass",
+          "evidence": "The release role and final condition explicitly preserve src/Billing/Invoice.php without stash or overwrite."
+        },
+        {
+          "assertion": "does not issue GO with unresolved high risks",
+          "status": "pass",
+          "evidence": "The final gate is NO-GO because blocker-level risks remain and requires a fresh review after correction."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 5 assertions for this current-digest run."
+    },
+    {
+      "case_id": "design-mobile-api-customer",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-design-mobile-api-customer.json",
+      "artifact_sha256": "sha256:d7c49641c6080d0f0998e90699b4340e6a6cc6a41634b2e2345050dd5eb01094",
+      "run_id": "codex-meeting-core-current2-c-VGch6p-f927b742f676477a88bde3d7216e82ce",
+      "assertions": [
+        {
+          "assertion": "covers offline retries and idempotency",
+          "status": "pass",
+          "evidence": "The API and mobile design covers persisted offline intent, same-key retry, operation lookup, and unknown-result reconciliation."
+        },
+        {
+          "assertion": "protects the original slot until the new slot is secured",
+          "status": "pass",
+          "evidence": "The atomic transaction secures the replacement before releasing the original and rolls back fully on failure."
+        },
+        {
+          "assertion": "covers client-version compatibility and concurrent staff edits",
+          "status": "pass",
+          "evidence": "ETag conflicts cover concurrent staff edits, while backend-first staging and a six-month client window cover compatibility."
+        },
+        {
+          "assertion": "does not treat channels as mandatory seats without reasons",
+          "status": "pass",
+          "evidence": "Only Backend/API, Mobile, and justified simulated-customer seats are used; channel seats are not treated as mandatory."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 4 assertions for this current-digest run."
+    },
+    {
+      "case_id": "review-accounting-identity-permission",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-review-accounting-identity-permission.json",
+      "artifact_sha256": "sha256:3bb6236d9d79869d3c8fe69bb85ebb5043d4b838147bb73b9ff58f391469e824",
+      "run_id": "codex-meeting-core-current2-a-WS4tNf-15999be7e28d429ab473ac4bf1c739d9",
+      "assertions": [
+        {
+          "assertion": "gives dedicated coverage to accounting and authorization",
+          "status": "pass",
+          "evidence": "Dedicated Ledger Integrity and Authorization/Actor-Identity roles own separate accounting and permission evidence."
+        },
+        {
+          "assertion": "accepts reproducible runtime evidence over unsupported majority opinion",
+          "status": "pass",
+          "evidence": "The NO_GO rationale explicitly relies on policy and the reproduced three-of-three result, not reviewer count."
+        },
+        {
+          "assertion": "identifies append-only and permission violations",
+          "status": "pass",
+          "evidence": "Findings identify destructive ledger deletion, support-agent posting, caller-controlled actor_id, and missing idempotency."
+        },
+        {
+          "assertion": "returns NO_GO or revise rather than GO",
+          "status": "pass",
+          "evidence": "The final readiness result is NO_GO with four mandatory corrections and a fresh verification requirement."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 4 assertions for this current-digest run."
+    },
+    {
+      "case_id": "converge-conflicting-panel-advice",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-converge-conflicting-panel-advice.json",
+      "artifact_sha256": "sha256:f46424856639ac43f19936dfda813d3cd2005b4d6dc1b0e9c58f7b7fdf063eef",
+      "run_id": "codex-meeting-core-current2-b-53zD9Z-e51481b75882466dae7f2ad648240250",
+      "assertions": [
+        {
+          "assertion": "rejects proposals that violate privacy authority",
+          "status": "pass",
+          "evidence": "Full-body push is rejected because it can expose prohibited patient fields to the third-party provider."
+        },
+        {
+          "assertion": "does not count votes",
+          "status": "pass",
+          "evidence": "The initial and final records explicitly reject vote weighting and resolve the conflict by authority and evidence."
+        },
+        {
+          "assertion": "explains rejected proposals",
+          "status": "pass",
+          "evidence": "Each rejected proposal receives a concrete privacy, timing, feasibility, or missing-cost-evidence rationale."
+        },
+        {
+          "assertion": "keeps cost subordinate to non-negotiable policy",
+          "status": "pass",
+          "evidence": "Cost is limited to a secondary tie-breaker after regulatory and 30-second requirements are satisfied."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 4 assertions for this current-digest run."
+    },
+    {
+      "case_id": "review-minority-runtime-evidence",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-review-minority-runtime-evidence.json",
+      "artifact_sha256": "sha256:4d21eba54fa57d2a25403d363aa2f3e4f5258c8069de731ed5889bc84c642dc0",
+      "run_id": "codex-meeting-core-current2-a-WS4tNf-5c6c913f8f764834adb0ec2ae1deda4f",
+      "assertions": [
+        {
+          "assertion": "does not follow reviewer majority",
+          "status": "pass",
+          "evidence": "The result rejects four unsupported reviewer opinions and states that reproducible evidence outweighs reviewer count."
+        },
+        {
+          "assertion": "verifies the reproducible decoder behavior",
+          "status": "pass",
+          "evidence": "It cites the decoder locator and five-of-five SerializationException reproduction for the unknown enum."
+        },
+        {
+          "assertion": "treats the supported Mobile version as a real consumer",
+          "status": "pass",
+          "evidence": "Mobile v4 is treated as supported for four months with no force-upgrade path, making it a binding consumer."
+        },
+        {
+          "assertion": "does not issue GO for a global switch",
+          "status": "pass",
+          "evidence": "The global response-shape switch receives NO_GO until server compatibility is proved or v4 leaves support."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 4 assertions for this current-digest run."
+    },
+    {
+      "case_id": "fallback-slots-waves",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-fallback-slots-waves.json",
+      "artifact_sha256": "sha256:6e5115d397ae081fe69e14c9f35e7ad8c512950e19f3978b265e0ebe0d64f641",
+      "run_id": "codex-meeting-core-current2-slots-final-zFYgKn-2e92ca73bbbd4094b4968026e2277e0c",
+      "assertions": [
+        {
+          "assertion": "does not reduce required lens coverage",
+          "status": "pass",
+          "evidence": "All five required inventory, payment, API, fulfillment, and operations lenses remain assigned despite one-slot capacity."
+        },
+        {
+          "assertion": "uses sequential fresh-context waves",
+          "status": "pass",
+          "evidence": "The proposal schedules five sequential waves, and the receipt confirms one child ran at a time."
+        },
+        {
+          "assertion": "does not leak earlier findings to later panelists",
+          "status": "pass",
+          "evidence": "The plan says later openings receive only the frozen authority packet, not any earlier findings."
+        },
+        {
+          "assertion": "does not equate capacity limits with failure",
+          "status": "pass",
+          "evidence": "The receipt records completed wave execution with degraded false, no missing roles, and no capacity-limit failure."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 4 assertions for this current-digest run."
+    },
+    {
+      "case_id": "fallback-agent-timeout",
+      "execution": "simulated_failure",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-fallback-agent-timeout.json",
+      "artifact_sha256": "sha256:14b48979f8461922bfc2394f73dec326fa6a6394d509377382d8be9723089293",
+      "run_id": "codex-meeting-core-current2-a-WS4tNf-fe6bbe8e953441559296db23c7eefd4d",
+      "assertions": [
+        {
+          "assertion": "records timeout for the same lens",
+          "status": "pass",
+          "evidence": "The execution receipt records p-api-consumer-1 as failed/timeout for the same frozen compatibility role."
+        },
+        {
+          "assertion": "retries at most once when useful or uses explicit fallback",
+          "status": "pass",
+          "evidence": "Exactly one unchanged-role retry, p-api-consumer-2, recovers the critical API-consumer coverage."
+        },
+        {
+          "assertion": "does not silently substitute a nearby role",
+          "status": "pass",
+          "evidence": "The failed attempt contributes no evidence, and no nearby role is substituted for its lens."
+        },
+        {
+          "assertion": "does not issue GO while critical coverage is missing",
+          "status": "pass",
+          "evidence": "The final result remains NO_GO and would not claim readiness if critical compatibility coverage were absent."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 4 assertions for this current-digest run."
+    },
+    {
+      "case_id": "fallback-subagents-unavailable",
+      "execution": "simulated_failure",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-fallback-subagents-unavailable.json",
+      "artifact_sha256": "sha256:579ab786619934fcff4ed29990d2eedfa491de462c2de97e0eb6eb262a68c77a",
+      "run_id": "codex-meeting-core-current2-c-VGch6p-b60493f64eb84447bc74acb239ab4cba",
+      "assertions": [
+        {
+          "assertion": "performs explicit lens-by-lens fallback",
+          "status": "pass",
+          "evidence": "The record runs explicit Mobile, API, and customer lens-by-lens main-session fallback passes."
+        },
+        {
+          "assertion": "discloses reduced independence",
+          "status": "pass",
+          "evidence": "Both turns disclose degraded independence and mark actual coverage only partially covered."
+        },
+        {
+          "assertion": "does not say independent panel completed",
+          "status": "pass",
+          "evidence": "The synthesis explicitly says it is not independent panel validation or an implementation-readiness GO."
+        },
+        {
+          "assertion": "retains material lenses and residual risk",
+          "status": "pass",
+          "evidence": "All five material risk surfaces remain assigned, while missing runtime and independent validation remain residual risks."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 4 assertions for this current-digest run."
+    },
+    {
+      "case_id": "output-machine-readable-gui",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-output-machine-readable-gui.json",
+      "artifact_sha256": "sha256:4ce8c5de2359f38c7dae374188cbfea9b3d7bd5e356495124c5cdfe08d48d0d1",
+      "run_id": "codex-meeting-core-current2-gui-final-JaF9ie-172bd81f22ac44e48d9f4a438e105c5c",
+      "assertions": [
+        {
+          "assertion": "initial state validates against meeting-plan v1.1, binds the complexity profile, and is awaiting role review",
+          "status": "pass",
+          "evidence": "The first fenced JSON parses, declares schema_version 1.1, binds critical complexity, and is awaiting_role_review."
+        },
+        {
+          "assertion": "final result validates as panel-output 1.2",
+          "status": "pass",
+          "evidence": "The final fenced bundle parses and its panel_output declares schema_version 1.2 with completed run sections."
+        },
+        {
+          "assertion": "bundle binds the exact frozen plan and role revisions",
+          "status": "pass",
+          "evidence": "The frozen plan revision/digest and all role revision/digest bindings match between proposal and final bundle."
+        },
+        {
+          "assertion": "contains public evidence, decisions, coverage, and degradation state",
+          "status": "pass",
+          "evidence": "The panel output contains evidence items, decisions, coverage, gate, summary, and orchestration degraded=false."
+        },
+        {
+          "assertion": "contains no chain-of-thought, raw imported prompt, or raw agent transcripts",
+          "status": "pass",
+          "evidence": "The public bundle contains structured public rationale only; no imported prompt, raw transcript, or hidden reasoning field appears."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 5 assertions for this current-digest run."
+    },
+    {
+      "case_id": "output-concise-no-reports",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-output-concise-no-reports.json",
+      "artifact_sha256": "sha256:c6bc02c3b0d22356838113de974c335c31f4e8f6ae797128e14bafb8d91ff6df",
+      "run_id": "codex-meeting-core-current2-c-VGch6p-acbf0c9190274ed783d151763d86f94e",
+      "assertions": [
+        {
+          "assertion": "stays within 220 words",
+          "status": "pass",
+          "evidence": "The final synthesis is 213 whitespace-delimited words, below the requested 220-word maximum."
+        },
+        {
+          "assertion": "leads with the decision",
+          "status": "pass",
+          "evidence": "The final turn opens with the decision to accept Option 2, transactional outbox."
+        },
+        {
+          "assertion": "does not expose raw reports",
+          "status": "pass",
+          "evidence": "The concise record provides one synthesis and receipt, not panelist-by-panelist reports or raw outputs."
+        },
+        {
+          "assertion": "retains important rejected rationale and risk",
+          "status": "pass",
+          "evidence": "It retains why Options 1 and 3 were rejected, the residual delivery risk, and the next release action."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 4 assertions for this current-digest run."
+    },
+    {
+      "case_id": "full-cycle-reselect-lenses",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-full-cycle-reselect-lenses.json",
+      "artifact_sha256": "sha256:3b8467ab16aa8ed94f83f8fa65c7607815e0f74a43ee85631b3da995902f0654",
+      "run_id": "codex-meeting-core-fullcycle-r2-9geY31-75eb313556d94346b7533bbd996e05e7",
+      "assertions": [
+        {
+          "assertion": "runs all four behaviors distinctly",
+          "status": "pass",
+          "evidence": "The public record has distinct ideate, design, converge, and final readiness-review stages."
+        },
+        {
+          "assertion": "does not prematurely converge during ideation",
+          "status": "pass",
+          "evidence": "Ideation preserves eight candidates and explicitly states that no winner was selected."
+        },
+        {
+          "assertion": "reselects and regenerates roles at stage boundaries",
+          "status": "pass",
+          "evidence": "Each stage boundary presents newly selected role IDs; the C3-A change supersedes the earlier unconfirmed review slate."
+        },
+        {
+          "assertion": "waits for a fresh role confirmation before every stage",
+          "status": "pass",
+          "evidence": "Each of the four executed stages reaches awaiting_role_review with its own revision/digest before execution."
+        },
+        {
+          "assertion": "carries only public handoff artifacts",
+          "status": "pass",
+          "evidence": "Later stages cite only public candidate, design, convergence, and decision handoff artifacts, not raw panel reports."
+        },
+        {
+          "assertion": "ends with a readiness gate rather than claiming implementation",
+          "status": "pass",
+          "evidence": "The cycle ends with a NO_GO readiness gate and explicitly does not claim implementation readiness."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 6 assertions for this current-digest run."
+    },
+    {
+      "case_id": "meeting-generated-role-review",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-meeting-generated-role-review.json",
+      "artifact_sha256": "sha256:331897c97cc6dad40507a7fc950d56e6bf75b2e4201e7bdea9c78a2f2a0779c1",
+      "run_id": "codex-meeting-core-current2-b-53zD9Z-4c43bd02791145929c38893e2ec922e9",
+      "assertions": [
+        {
+          "assertion": "main generates a complete minimal role slate rather than asking the user to staff it",
+          "status": "pass",
+          "evidence": "Main supplies the complete six-role slate directly rather than asking the user to staff the meeting."
+        },
+        {
+          "assertion": "main may select multiple distinct roles with the same department affiliation when one profession owns materially different questions, without creating a department container, weights, or duplicate-vote seats",
+          "status": "pass",
+          "evidence": "Five Engineering specialties are separately justified and explicitly described as distinct evidence seats, not votes."
+        },
+        {
+          "assertion": "same-department roles retain separate public evidence provenance so a lead or aggregate department position cannot suppress a supported secondary-seat finding",
+          "status": "pass",
+          "evidence": "The final public ledger attributes findings to individual Engineering role revisions, preserving secondary-seat provenance."
+        },
+        {
+          "assertion": "first response includes lens, selection reason, responsibilities, exclusions, and risk coverage",
+          "status": "pass",
+          "evidence": "Every initial role includes its lens, selection reason, duties, exclusions, evidence requirements, and owned risks."
+        },
+        {
+          "assertion": "no perspective executes before the followup confirmation",
+          "status": "pass",
+          "evidence": "The first turn says no perspective has been dispatched and requires later revision-and-digest confirmation."
+        },
+        {
+          "assertion": "confirmed internal fresh contexts execute the exact roles",
+          "status": "pass",
+          "evidence": "The completion receipt binds all six exact frozen role revisions to fresh wave executions."
+        },
+        {
+          "assertion": "main returns one evidence-based synthesis",
+          "status": "pass",
+          "evidence": "Main returns one integrated architecture, state, contract, migration, gate, and evidence synthesis."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 7 assertions for this current-digest run."
+    },
+    {
+      "case_id": "meeting-role-operations",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-meeting-role-operations.json",
+      "artifact_sha256": "sha256:f1b1383f8bc7009e6a5db5c3ae24d1d86dfa3f39d87487709f5cb49c57191485",
+      "run_id": "codex-meeting-core-current2-b-53zD9Z-88aa8ebef21b4463bb8cc46bc3b880af",
+      "assertions": [
+        {
+          "assertion": "initial complete slate is main-generated and shows the suggested per-profession seat counts derived from its concrete roles",
+          "status": "pass",
+          "evidence": "The initial proposal is main-generated, complete, and reports derived affiliation counts from its concrete active roles."
+        },
+        {
+          "assertion": "edit/add/remove/merge/split operations, including resulting seat-count changes, use copy-on-write lineage when applicable and do not fabricate inapplicable operations or a second headcount state",
+          "status": "pass",
+          "evidence": "Applied edit/add/remove changes create new revisions and lineage; inapplicable split/merge requests are explicitly declined."
+        },
+        {
+          "assertion": "reset rebinds the main-generated role without deleting history",
+          "status": "pass",
+          "evidence": "Reset rebinds rolerev-customer-r1 while preserving edited rolerev-customer-r2 in immutable history."
+        },
+        {
+          "assertion": "each adjustment shows a new plan revision, derived seat counts, and coverage delta",
+          "status": "pass",
+          "evidence": "Each applied mutation reports a new plan revision, derived counts, and a coverage/warning delta."
+        },
+        {
+          "assertion": "only the final current revision is frozen and executed",
+          "status": "pass",
+          "evidence": "Only planrev-mobile-reschedule-design-r5 is frozen, and its five active revisions appear in the execution receipt."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 5 assertions for this current-digest run."
+    },
+    {
+      "case_id": "meeting-external-role-prompt",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-meeting-external-role-prompt.json",
+      "artifact_sha256": "sha256:31f745e4ed3c7bb105630e3b49c734fa1c9efb259b935cca5310d42eda28abc3",
+      "run_id": "codex-meeting-core-current2-c-VGch6p-f2e0ed3ce7d645a6bc5d5cbdcc5cb9fb",
+      "assertions": [
+        {
+          "assertion": "external text is treated as role-authoring source rather than an executor",
+          "status": "pass",
+          "evidence": "The imported text is recorded as source material for an internal role revision, not as an executing participant."
+        },
+        {
+          "assertion": "preview distinguishes accepted or rewritten content from conflicting content",
+          "status": "pass",
+          "evidence": "The preview table marks safe clauses accepted/rewritten and unsafe clauses conflicting, with normalization details."
+        },
+        {
+          "assertion": "moderator impersonation, forced conclusion, peer-private access, and live external execution are blocked",
+          "status": "pass",
+          "evidence": "Moderator impersonation, forced GO, peer-private reasoning, and live Claude execution are all explicitly blocked."
+        },
+        {
+          "assertion": "invalid preview does not mutate or execute the active plan",
+          "status": "pass",
+          "evidence": "The rejected preview creates no RoleRevision or PlanRevision and dispatches no perspective."
+        },
+        {
+          "assertion": "safe normalized EffectiveRole is internally executed only after confirmation",
+          "status": "pass",
+          "evidence": "After later confirmation, only the sanitized EffectiveRole revision runs internally; no external provider is called."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 5 assertions for this current-digest run."
+    },
+    {
+      "case_id": "meeting-stale-confirmation",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-meeting-stale-confirmation.json",
+      "artifact_sha256": "sha256:7f12aca4b6437f69bd4309c302236abfcd4855b950401547b8593f21d6dc690c",
+      "run_id": "codex-meeting-core-current2-a-WS4tNf-63a3a53e7efa4c28bed27ff52a78befa",
+      "assertions": [
+        {
+          "assertion": "regeneration creates a new immutable plan revision",
+          "status": "pass",
+          "evidence": "Regeneration creates plan-refund-readiness-r2 with a new digest while preserving the role revisions."
+        },
+        {
+          "assertion": "stale confirmation is rejected without dispatch",
+          "status": "pass",
+          "evidence": "The attempted r1 confirmation is explicitly rejected as stale and no panelist is dispatched."
+        },
+        {
+          "assertion": "current complete slate is shown after rejection",
+          "status": "pass",
+          "evidence": "After rejection, the complete current r2 slate and current confirmation token are displayed."
+        },
+        {
+          "assertion": "only the exact current revision and digest are frozen",
+          "status": "pass",
+          "evidence": "The final receipt freezes exactly plan-refund-readiness-r2 and its current digest."
+        },
+        {
+          "assertion": "executed perspectives bind the frozen role revisions",
+          "status": "pass",
+          "evidence": "Execution outcomes name the same role-ledger, authorization, and API revisions bound by the frozen r2 plan."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 5 assertions for this current-digest run."
+    },
+    {
+      "case_id": "meeting-complexity-lightweight",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-meeting-complexity-lightweight.json",
+      "artifact_sha256": "sha256:fb422ee7839632d5842b0912879d0bd7987dc54a698e3ca853789db0fd4e35cd",
+      "run_id": "codex-meeting-core-current2-b-53zD9Z-3e7d0846ec024d5184e1212d6fcc52b5",
+      "assertions": [
+        {
+          "assertion": "recognizes that this bounded single-operator task has low or conditional meeting value but honors the explicit meeting request with the smallest legitimate slate",
+          "status": "pass",
+          "evidence": "The proposal says meeting value is limited for this single-admin reversible flow but honors the explicit request with two seats."
+        },
+        {
+          "assertion": "proposes lightweight complexity with public reasons",
+          "status": "pass",
+          "evidence": "It explicitly selects lightweight complexity from the synchronous, local, non-regulated, non-migration constraints."
+        },
+        {
+          "assertion": "combines ordinary architecture, security, reliability, and data-integrity duties instead of automatically creating dedicated specialist seats",
+          "status": "pass",
+          "evidence": "One Product Engineering role combines flow, validation, authorization, integrity, and recovery instead of specialist seats."
+        },
+        {
+          "assertion": "includes an actual workspace-administrator lens separately from professional evidence and labels it simulated rather than user research",
+          "status": "pass",
+          "evidence": "A separate simulated workspace-administrator lens is labeled not user research and owns operational consequences."
+        },
+        {
+          "assertion": "shows derived seat counts without a fixed roster or headcount state",
+          "status": "pass",
+          "evidence": "Seat counts are derived as Product Engineering 1 and simulated Workspace Administration 1, without a fixed roster state."
+        },
+        {
+          "assertion": "waits for user confirmation before executing the exact displayed perspectives",
+          "status": "pass",
+          "evidence": "The first turn remains awaiting_role_review and requires exact plan revision/digest confirmation before either role runs."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 6 assertions for this current-digest run."
+    },
+    {
+      "case_id": "meeting-complexity-standard",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-meeting-complexity-standard.json",
+      "artifact_sha256": "sha256:c1c66f0b4b72eb883d6807f713090221555d888d1a13bfe0b9205191dfdf03f3",
+      "run_id": "codex-meeting-core-current2-b-53zD9Z-48542ee9587a4b3288d79663aeae30f9",
+      "assertions": [
+        {
+          "assertion": "proposes standard complexity with public reasons tied to multiple users, shared state, concurrency, or integration",
+          "status": "pass",
+          "evidence": "Standard complexity is tied to three user surfaces, shared capacity, concurrency, and recoverable integration failures."
+        },
+        {
+          "assertion": "separates materially different customer, frontline, and CMS task lenses from professional proxies",
+          "status": "pass",
+          "evidence": "Public customer, frontline scheduler, and CMS operator are three separate simulated task lenses."
+        },
+        {
+          "assertion": "creates dedicated professional seats only for distinct evidence, authority, or failure consequences and does not automatically add a security seat",
+          "status": "pass",
+          "evidence": "Only service-design and capacity-engineering professional seats are added for distinct evidence; no automatic security seat appears."
+        },
+        {
+          "assertion": "discloses that simulated-user lenses are not user research",
+          "status": "pass",
+          "evidence": "The warnings explicitly state that all three simulated-user lenses are not user research."
+        },
+        {
+          "assertion": "waits for user confirmation before executing the exact displayed perspectives",
+          "status": "pass",
+          "evidence": "The complete slate remains awaiting_role_review until its exact revision and digest are confirmed."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 5 assertions for this current-digest run."
+    },
+    {
+      "case_id": "meeting-complexity-critical",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-meeting-complexity-critical.json",
+      "artifact_sha256": "sha256:f131d01875d9c34a9a830ae61cc58cb4725a987afd4b6734cc5a765eb892f7c5",
+      "run_id": "codex-meeting-core-current2-c-VGch6p-6317920054a6481c85ddc0f57a72ec5c",
+      "assertions": [
+        {
+          "assertion": "proposes critical complexity with public high-consequence reasons",
+          "status": "pass",
+          "evidence": "Critical complexity is justified by irreversible identity, authorization, cryptography, ledger, retention, and production consequences."
+        },
+        {
+          "assertion": "dedicates evidence-distinct coverage to identity and authorization, financial-ledger reconciliation, sensitive-data cryptography or privacy, and irreversible migration recovery",
+          "status": "pass",
+          "evidence": "Separate IAM, ledger, cryptography/privacy, and migration-recovery seats own the named evidence-distinct critical surfaces."
+        },
+        {
+          "assertion": "does not treat critical as a fixed roster, vote weight, or permission to weaken evidence and authorization",
+          "status": "pass",
+          "evidence": "The record states criticality does not authorize scope changes; conclusions remain evidence-gated rather than vote-weighted."
+        },
+        {
+          "assertion": "shows the complete digest-bound proposal and derived affiliation counts",
+          "status": "pass",
+          "evidence": "The proposal shows all nine roles, affiliation counts, plan revision, and canonical digest."
+        },
+        {
+          "assertion": "waits for user confirmation before executing the exact displayed perspectives",
+          "status": "pass",
+          "evidence": "No perspective starts before the exact displayed plan revision and digest are confirmed."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 5 assertions for this current-digest run."
+    },
+    {
+      "case_id": "trigger-positive-multi-perspective",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-trigger-positive-multi-perspective.json",
+      "artifact_sha256": "sha256:82dcf3f91ac639407348a3dcaa043d1e17281a85f1334fa7ca56def2b3b730be",
+      "run_id": "codex-meeting-core-current2-b-53zD9Z-bc3d72d2e0184e9d99bc376daed6ff4b",
+      "assertions": [
+        {
+          "assertion": "skill should trigger",
+          "status": "pass",
+          "evidence": "The skill behavior triggers: main opens a formal design round and proposes an independent multi-role panel."
+        },
+        {
+          "assertion": "runs dynamic selection rather than treating named lenses as a complete fixed roster",
+          "status": "pass",
+          "evidence": "Named product, API-consumer, and operations needs inform a broader dynamic slate with inventory, payment, and fulfillment specialists."
+        },
+        {
+          "assertion": "waits for role confirmation before execution",
+          "status": "pass",
+          "evidence": "The first output remains awaiting_role_review and requires exact revision/digest confirmation before dispatch."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 3 assertions for this current-digest run."
+    },
+    {
+      "case_id": "trigger-negative-routine-review",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-trigger-negative-routine-review.json",
+      "artifact_sha256": "sha256:19116b948973a55542e55121fae5ee24d192ad49df2b86a97b53cbbde219b8ba",
+      "run_id": "codex-meeting-core-current2-a-WS4tNf-8259679bb83f4e299f57eb119694b2f5",
+      "assertions": [
+        {
+          "assertion": "skill should not trigger without a multi-perspective need",
+          "status": "pass",
+          "evidence": "The response does not open a panel, generate roles, or create a meeting checkpoint for the routine function review."
+        },
+        {
+          "assertion": "ordinary single-lens review remains lightweight",
+          "status": "pass",
+          "evidence": "It stays lightweight by asking only for the missing three-line function and boundary expectations."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 2 assertions for this current-digest run."
+    },
+    {
+      "case_id": "routing-ordinary-low-value",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-routing-ordinary-low-value.json",
+      "artifact_sha256": "sha256:85152ba1047fa8f2d7692eb329f26aa2194e45b104ef6a97cde2cdc58f16db34",
+      "run_id": "codex-meeting-core-current2-c-VGch6p-380b08ed83f74933be6284e273927b76",
+      "assertions": [
+        {
+          "assertion": "identifies the single-actor reversible mature-pattern task as low meeting value",
+          "status": "pass",
+          "evidence": "The output identifies the task as single-user, locally reversible, pattern-based, and low value for a meeting."
+        },
+        {
+          "assertion": "routes to an ordinary session without generating a fake role slate, plan revision, digest, or confirmation checkpoint",
+          "status": "pass",
+          "evidence": "It explicitly routes to an ordinary task with no role slate, revision, digest, or confirmation checkpoint."
+        },
+        {
+          "assertion": "still returns a concise usable plan for reorder, save/cancel, restore-default behavior, failure state, and bounded recovery",
+          "status": "pass",
+          "evidence": "The concise plan covers reorder persistence, save/cancel verification, restore-default behavior, invalid state, and recovery."
+        },
+        {
+          "assertion": "does not add architecture, security, backend, analytics, templates, sharing, or other overdesign",
+          "status": "pass",
+          "evidence": "It avoids new architecture, security, backend, analytics, templates, sharing, and other out-of-scope expansion."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 4 assertions for this current-digest run."
+    },
+    {
+      "case_id": "meeting-recovery-closure",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-meeting-recovery-closure.json",
+      "artifact_sha256": "sha256:44cdbb9abd0603fe77a8b51782f7f75e6c8231ea4f6443698c9c30f993089bfe",
+      "run_id": "codex-meeting-core-current2-a-WS4tNf-0ccf631d459d481e8a05b1cf81537f62",
+      "assertions": [
+        {
+          "assertion": "justifies a meeting from the customer-to-picker decision handoff despite the task's modest size",
+          "status": "pass",
+          "evidence": "Standard meeting value is justified by the consequential customer-to-picker shared-state decision handoff."
+        },
+        {
+          "assertion": "uses the smallest sufficient professional, customer, and store-operator lenses without default technical seats",
+          "status": "pass",
+          "evidence": "The slate uses one product specification, one simulated customer, and one simulated store-picker lens with no technical seats."
+        },
+        {
+          "assertion": "waits for a later user confirmation before executing the exact displayed roles",
+          "status": "pass",
+          "evidence": "The first turn is awaiting_role_review and states no perspective has spawned before later exact confirmation."
+        },
+        {
+          "assertion": "the final synthesis closes unknown submission, return or decision change, stale or replaced proposal, deadline or on-site mismatch with a visible current state, safe next action, authority owner, and success signal",
+          "status": "pass",
+          "evidence": "The final state table closes unknown submission, changes, stale/replaced state, expiry, and mismatch with directive, action, owner, and signal."
+        },
+        {
+          "assertion": "does not expand into recommendations, multiple substitutes, chat, payment/refund, inventory, notification-platform, API, architecture, or implementation design",
+          "status": "pass",
+          "evidence": "The final design keeps recommendations, multiple options, chat, payment/refund, inventory, notification platform, API, architecture, and implementation out of scope."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 5 assertions for this current-digest run."
+    },
+    {
+      "case_id": "platform-portable-core",
+      "execution": "forward",
+      "status": "pass",
+      "artifact_path": "artifacts/meeting-core-c097-e305-platform-portable-core.json",
+      "artifact_sha256": "sha256:0a9e04012c9d87aa3b66ed061476c9412a7e56f63f2572f2a22340178999bef8",
+      "run_id": "codex-meeting-core-current2-c-VGch6p-4b182b5af8cc40ccb5a90c6aaa6e191f",
+      "assertions": [
+        {
+          "assertion": "loads only the current host adapter",
+          "status": "pass",
+          "evidence": "The proposal detects Codex and says only the current-host adapter is applied after the slate is frozen."
+        },
+        {
+          "assertion": "uses genuinely separate contexts when host subagents are available",
+          "status": "pass",
+          "evidence": "The receipt records wave execution with fresh role contexts and no missing or degraded perspective."
+        },
+        {
+          "assertion": "keeps public schema free of host tool names",
+          "status": "pass",
+          "evidence": "Public request, response, and event schemas use opaque domain fields and explicitly exclude Codex or vendor identifiers."
+        },
+        {
+          "assertion": "uses the shared core without host-specific public decisions",
+          "status": "pass",
+          "evidence": "The decisions remain platform-neutral domain contracts; host details appear only in the execution receipt."
+        }
+      ],
+      "notes": "Three fresh blind public-output graders unanimously passed all 4 assertions for this current-digest run."
+    }
+  ],
+  "gate": "GO"
+}

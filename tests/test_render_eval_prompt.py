@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -68,6 +69,17 @@ class RenderEvalPromptTest(unittest.TestCase):
         }
         with self.assertRaisesRegex(ValueError, "followups"):
             render_conversation(case, "codex", Path("/tmp/portable-skill"))
+
+    def test_full_cycle_resolves_product_gate_before_confirming_review_slate(self) -> None:
+        suite = json.loads((ROOT / "evals" / "cases.json").read_text(encoding="utf-8"))
+        case = next(
+            item for item in suite["cases"] if item["id"] == "full-cycle-reselect-lenses"
+        )
+
+        self.assertEqual(len(case["followups"]), 5)
+        self.assertIn("choose C3-A", case["followups"][-2])
+        self.assertIn("Generate the fresh readiness-review role slate", case["followups"][-2])
+        self.assertIn("final review stage", case["followups"][-1])
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 {
-  "suite_version": "1.2.0",
+  "suite_version": "1.3.0",
   "skill": "orchestrate-multi-perspective-panel",
   "target_platforms": ["codex", "claude-code"],
   "cases": [
@@ -140,7 +140,7 @@
       "request": "Use a multi-perspective panel for the full cycle in the fixture: ideate, design, converge, then readiness review. Keep the output concise, preserve stage boundaries, and reselect lenses rather than carrying a fixed panel through every stage.",
       "fixtures": ["fixtures/full-cycle-objective.md"],
       "capability": "subagents_available",
-      "followups": ["Use this stage's complete main-generated role slate and continue.", "Use the newly generated role slate for the next stage and continue.", "Use the newly generated role slate for the next stage and continue.", "Use the newly generated role slate for the final review stage and continue."],
+      "followups": ["Use this stage's complete main-generated role slate and continue.", "Use the newly generated role slate for the next stage and continue.", "Use the newly generated role slate for the next stage and continue.", "For decision C3, choose C3-A, the recommended signal-only initial scope. Generate the fresh readiness-review role slate and wait for confirmation.", "Use the newly generated role slate for the final review stage and continue."],
       "assertions": ["runs all four behaviors distinctly", "does not prematurely converge during ideation", "reselects and regenerates roles at stage boundaries", "waits for a fresh role confirmation before every stage", "carries only public handoff artifacts", "ends with a readiness gate rather than claiming implementation"]
     },
     {
@@ -191,7 +191,7 @@
       "fixtures": [],
       "capability": "subagents_available",
       "followups": ["Use the exact displayed slate and start this round."],
-      "assertions": ["proposes lightweight complexity with public reasons", "combines ordinary architecture, security, reliability, and data-integrity duties instead of automatically creating dedicated specialist seats", "includes an actual workspace-administrator lens separately from professional evidence and labels it simulated rather than user research", "shows derived seat counts without a fixed roster or headcount state", "waits for user confirmation before executing the exact displayed perspectives"]
+      "assertions": ["recognizes that this bounded single-operator task has low or conditional meeting value but honors the explicit meeting request with the smallest legitimate slate", "proposes lightweight complexity with public reasons", "combines ordinary architecture, security, reliability, and data-integrity duties instead of automatically creating dedicated specialist seats", "includes an actual workspace-administrator lens separately from professional evidence and labels it simulated rather than user research", "shows derived seat counts without a fixed roster or headcount state", "waits for user confirmation before executing the exact displayed perspectives"]
     },
     {
       "id": "meeting-complexity-standard",
@@ -231,6 +231,25 @@
       "fixtures": [],
       "capability": "not_applicable",
       "assertions": ["skill should not trigger without a multi-perspective need", "ordinary single-lens review remains lightweight"]
+    },
+    {
+      "id": "routing-ordinary-low-value",
+      "mode": null,
+      "tags": ["routing", "ordinary", "single_user", "reversible"],
+      "request": "Use the skill to decide whether a meeting is worthwhile for this task, and if it is not, plan it normally: add a reversible personal dashboard control that lets one CMS user reorder existing shortcuts and restore the product default. It changes only that user's view, uses an established sortable-list pattern, has no shared state or role handoff, and introduces no public contract, regulated data, migration, or high-consequence decision. Do not manufacture a panel merely because the skill was named.",
+      "fixtures": [],
+      "capability": "not_applicable",
+      "assertions": ["identifies the single-actor reversible mature-pattern task as low meeting value", "routes to an ordinary session without generating a fake role slate, plan revision, digest, or confirmation checkpoint", "still returns a concise usable plan for reorder, save/cancel, restore-default behavior, failure state, and bounded recovery", "does not add architecture, security, backend, analytics, templates, sharing, or other overdesign"]
+    },
+    {
+      "id": "meeting-recovery-closure",
+      "mode": "design",
+      "tags": ["meeting", "routing", "recovery", "actual_user", "handoff", "design"],
+      "request": "Open a multi-perspective design meeting for a bounded store-pickup substitution flow. An existing pickup order has one unavailable item; the store proposes exactly one concrete substitute, the customer accepts or rejects before the deadline, and the store needs one current executable decision for picking. Cover product/specification, quantity, current price impact, whether the decision reached the store, changing a prior decision when allowed, stale or replaced proposals, unknown submit results, deadline expiry, and an on-site mismatch. Recommendations, multiple options, chat, payment/refund policy, inventory policy, notification-platform design, API, architecture, and implementation are out of scope. Generate the complete initial role proposal and wait before starting.",
+      "fixtures": [],
+      "capability": "subagents_available",
+      "followups": ["Use the exact displayed slate and start this round."],
+      "assertions": ["justifies a meeting from the customer-to-picker decision handoff despite the task's modest size", "uses the smallest sufficient professional, customer, and store-operator lenses without default technical seats", "waits for a later user confirmation before executing the exact displayed roles", "the final synthesis closes unknown submission, return or decision change, stale or replaced proposal, deadline or on-site mismatch with a visible current state, safe next action, authority owner, and success signal", "does not expand into recommendations, multiple substitutes, chat, payment/refund, inventory, notification-platform, API, architecture, or implementation design"]
     },
     {
       "id": "platform-portable-core",

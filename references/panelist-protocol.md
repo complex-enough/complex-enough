@@ -68,10 +68,34 @@ Use this only when the frozen slate contains an actual customer/operator lens. T
 
 For a user-facing `design` round, execute the same frozen role in two bounded phases:
 
-1. **Unanchored opening:** give only the common authority packet and the user's frozen role. Ask for task goals, information needed before/during/after action, likely misunderstandings, unacceptable failures, and minimum success conditions. Prohibit proposing a complete architecture or seeing peer/UI proposals.
-2. **Public-claim critique:** after professional openings, main creates a short packet of only the UI steps, state labels, visible fields/actions, failure/recovery behavior, claim IDs, and public evidence locators relevant to that user surface. Ask the role to mark each claim `accept`, `revise`, or `question`, explain the operational consequence, and propose the smallest correction.
+1. **Unanchored opening:** give only the common authority packet and the user's frozen role. Ask for task goals, information needed before/during/after action, likely misunderstandings, unacceptable failures, minimum success conditions, and how the user recovers when the result is unknown, state is stale, or a prior decision must change. Prohibit proposing a complete architecture or seeing peer/UI proposals.
+2. **Public-claim critique:** after professional openings, main creates a short packet of only the UI steps, state labels, visible fields/actions, failure/recovery behavior, claim IDs, and public evidence locators relevant to that user surface. Ask the role to mark each claim `accept`, `revise`, or `question`, explain the operational consequence, and propose the smallest correction. Require it to identify any recovery category that the claims omit instead of silently accepting a happy-path-only flow.
 
 Do not count the critique as a new role or vote. Preserve the same `role_id` and `role_revision_id`; record a separate attempt/phase identifier when the host can. Do not send raw peer reports, technical scratch work, or unrelated claims. Main adjudicates critiques against authority and evidence; a simulated preference cannot override safety, permissions, or a verified contract.
+
+### Minimum recovery closure
+
+Before Main closes a user-facing `design` synthesis, retain one concise public recovery entry per selected actual-user surface covering every applicable category:
+
+```text
+surface:
+failure_or_change:
+visible_authoritative_state:
+safe_next_action:
+authority_or_owner:
+success_signal:
+disposition: closed | authority_deferred | inapplicable
+```
+
+Check at least:
+
+- submit/save result unknown or interrupted;
+- return to edit, reselect, or change a prior decision;
+- stale page, concurrent update, replaced proposal, or expired state;
+- post-commit correction, bounded undo, or an existing human handoff when self-service is not authorized;
+- the single current result and observable signal that the action actually took effect.
+
+Do not require every category to become a new feature. `inapplicable` needs a reason. `authority_deferred` must name the existing owner, keep a safe visible state, and give the user/operator an actionable next step. Missing authority is not permission to invent policy. This closure is a synthesis invariant, not a reason to add architecture, frontend, backend, security, or operations seats.
 
 ## Public response
 
@@ -122,3 +146,5 @@ Apply these rules:
 Assign each returned material item a stable public item ID and map it to one source perspective, its `role_revision_id`, and public evidence locator before moderation. Deduplicate only at the decision layer so provenance remains intact. Preserve conflicting proposals until evidence-based adjudication is complete. In the public completion, expose a compact evidence ledger or equivalent inline mapping for consequential findings. Every completed same-department role must source at least one ledger item or be marked `no_material_finding`; a role-execution table alone cannot prove its evidence survived synthesis.
 
 When actual-user critique changes a UI/UX claim, keep both the original public claim locator and the critique locator in the issue/ledger entry. Describe the accepted correction in user-facing terms; do not present simulated-user agreement count as research evidence.
+
+For user-facing `design`, Main also maps each recovery entry to the relevant professional claim and actual-user critique locators. Compression may shorten wording, but it must not delete the visible state, safe action, authority owner, or success signal.

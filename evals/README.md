@@ -50,7 +50,7 @@ Codex and Claude Code must be scored separately. A passing Codex run plus Claude
 
 Historical prompt bytes are not reconstructed from the changing current harness. Their stored prompt digest remains part of the sealed artifact, while only a fresh current-suite run can establish behavioral release evidence. Repository promotion requires at least one fully validated current Codex `GO` scorecard.
 
-The [results/codex-2026-08-28.json](results/codex-2026-08-28.json) scorecard is sealed historical evidence for the preceding meeting-core runtime: 21/21 isolated cases, 49 captured public turns, and 95/95 assertions passed three fresh blind public-output graders. The 2026-08-29 role-complexity runtime change requires a new exact-runtime scorecard before release. The older 2026-08-10 scorecard also remains historical only.
+The [results/codex-2026-08-31.json](results/codex-2026-08-31.json) scorecard is current release evidence: 26/26 isolated cases, 59 captured public turns, and 120/120 assertions passed three fresh blind public-output graders. It binds the exact 1.3 suite and current range-calibrated, selective-routing, minimum-recovery runtime. The 2026-08-28 and 2026-08-10 scorecards remain sealed historical evidence only.
 
 Example non-trigger run:
 

@@ -24,12 +24,13 @@ generating_roles
 
 For each round or full-cycle stage:
 
-1. Recompute the authority packet and risk-surface map from the current objective and accepted public handoff.
-2. Select `lightweight`, `standard`, or `critical` role-splitting complexity and record the evidence-backed reasons. This is role-granularity guidance, not a headcount bucket.
-3. Select the smallest sufficient set of distinct professional and actual-user lenses. The same department label may appear on several roles when their questions, evidence, and risk ownership are materially different. Do not mistake a professional proxy for actual-user evidence.
-4. Generate a complete RoleDefinition for every selected perspective seat. `department` remains a descriptive label; do not create a department container, department vote, numeric department weight, or duplicate seat for influence. The number of generated roles with a given label is main's concrete seat-count recommendation. Do not ask the user to staff a blank panel.
-5. Create a new immutable plan revision that binds the selected complexity profile, exact role revisions, planned coverage, warnings, and digest.
-6. Enter `awaiting_role_review` only after the complete proposal exists.
+1. Before creating the round, apply the pre-round meeting-value routing in [modes-and-selection.md](modes-and-selection.md). An implicit/recommendation case with low expected value returns to ordinary main-session work without a MeetingRound; an explicit meeting continues with the smallest legitimate slate and a low-value disclosure.
+2. Recompute the authority packet and risk-surface map from the current objective and accepted public handoff.
+3. Select `lightweight`, `standard`, or `critical` role-splitting complexity and record the evidence-backed reasons. This is role-granularity guidance, not a headcount bucket.
+4. Select the smallest sufficient set of distinct professional and actual-user lenses. The same department label may appear on several roles when their questions, evidence, and risk ownership are materially different. Do not mistake a professional proxy for actual-user evidence.
+5. Generate a complete RoleDefinition for every selected perspective seat. `department` remains a descriptive label; do not create a department container, department vote, numeric department weight, or duplicate seat for influence. The number of generated roles with a given label is main's concrete seat-count recommendation. Do not ask the user to staff a blank panel.
+6. Create a new immutable plan revision that binds the selected complexity profile, exact role revisions, planned coverage, warnings, and digest.
+7. Enter `awaiting_role_review` only after the complete proposal exists.
 
 Do not silently reuse the prior round's slate. Prior roles can be regenerated when still useful, but the new selection reason and coverage must be current.
 
@@ -152,6 +153,7 @@ Before `completed`:
 
 - record attempts, waves, retry/replacement, degradation, items, decisions, and actual evidence coverage;
 - compare actual coverage with the frozen coverage plan;
+- for user-facing `design`, audit each selected actual-user surface against the minimum recovery closure in [panelist-protocol.md](panelist-protocol.md); retain a closed recovery entry or an authority-owned deferral with safe visible state and next action, and use `revise` when a material recovery path simply disappeared during synthesis;
 - re-audit the terminal condition and authorized correction loop;
 - produce one public synthesis and gate;
 - bind a machine result to the frozen plan when machine-readable output is requested.
