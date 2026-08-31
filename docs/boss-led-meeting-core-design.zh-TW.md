@@ -2,10 +2,11 @@
 
 - 決策日期：2026-08-26
 - 實作更新：2026-08-29
+- 產品／證據更新：2026-08-31
 - 文件狀態：`implementation_validated_behavioral_release_pending`
 - runtime 狀態：portable instructions、contracts、validators 與 deterministic tests 已實作；2026-08-29 range-calibrated runtime 尚待 fresh behavioral release scorecard
 - 依據：使用者確認的產品主軸、現行 repo 契約與四個 fresh-context 設計視角
-- 下一階段：完成 current-runtime Codex behavioral release scorecard 後進入 GUI 產品與實作階段；Claude Code 仍需獨立 behavioral scorecard
+- 下一階段：凍結 plan-only core protocol、完成 N-task 效果驗證與 current-runtime Codex behavioral release scorecard 後進入 GUI 產品與實作階段；Claude Code 仍需獨立 behavioral scorecard
 
 ## 文件邊界
 
@@ -13,7 +14,9 @@
 
 先前對話曾人工模擬「main 先產生角色卡、使用者確認後才開會」的流程，用途是 dogfood 互動模型。該次模擬本身仍不是實作證據；後續 runtime instructions、meeting-plan v1.1、panel-output v1.2、semantic/bundle validators 與 deterministic tests 才是目前的 implementation evidence。
 
-目前 runtime 以 [`SKILL.md`](../SKILL.md)、[`references/`](../references/)、[`schemas/meeting-plan.schema.json`](../schemas/meeting-plan.schema.json)、[`schemas/panel-output.schema.json`](../schemas/panel-output.schema.json) 與 validators/tests 為準。Codex v1.1 [2026-08-28 scorecard](../evals/results/codex-2026-08-28.json) 已通過 21/21 cases、49 個公開回合與 95/95 fresh blind assertions，但只綁定 range 變更前的 runtime；目前作為歷史證據，不再滿足 current-runtime release gate。三案規劃品質比較見[Meeting core 規劃品質對照評估](evaluations/meeting-core-quality-comparison.zh-TW.md)。
+目前 runtime 以 [`SKILL.md`](../SKILL.md)、[`references/`](../references/)、[`schemas/meeting-plan.schema.json`](../schemas/meeting-plan.schema.json)、[`schemas/panel-output.schema.json`](../schemas/panel-output.schema.json) 與 validators/tests 為準。Codex v1.1 [2026-08-28 scorecard](../evals/results/codex-2026-08-28.json) 已通過 21/21 cases、49 個公開回合與 95/95 fresh blind assertions，但只綁定 range 變更前的 runtime；目前作為歷史證據，不再滿足 current-runtime release gate。
+
+2026-08-31 的 [使用者驗證 Plan Pilot](evaluations/meeting-core-user-validated-plan-pilot.zh-TW.md) 是 clarified core claim 的第一份直接證據：`Main＋領域專業＋模擬 End user` 的 plan-only Treatment 在三位 fresh 模擬租戶盲評中以 3–0 勝過一般 Agent，平均差 `+0.604/5`。這是單案方向性訊號，還不能取代 N-task 驗證。先前的[規劃品質比較](evaluations/meeting-core-quality-comparison.zh-TW.md)、[Compact panel 實驗](evaluations/meeting-core-compact-panel-comparison.zh-TW.md)及[後續控制實驗](evaluations/meeting-core-follow-up-experiments.zh-TW.md)保留為技術型 meeting 的次要機制證據。
 
 ### 目前實作狀態
 
@@ -35,6 +38,25 @@
 ## 核心產品定義
 
 Skill 的主體是一位代表使用者召集會議的老闆／main，而不是固定專家 roster，也不是要求使用者自行組 panel。
+
+### 產品目標與 Plan → Spec 交接邊界
+
+對產品、流程與 UIUX 類任務，skill 的首要目標是改善最上游的 Plan：讓需求先經過領域專業與實際承受流程後果的 End-user lens，降低單一 Agent 過度思考、補入不必要功能，或產生不符合現場 task model 的設計。它不以取代後續普通 Agent 的技術設計與實作流程為目標。
+
+```text
+階段 1：Main＋領域專業＋End user
+  → 釐清真實任務、資訊時機、UIUX、誤操作後果與最低成功
+
+階段 2：Main 產生使用者檢查過的 Plan
+  → task flow、畫面骨架、可見狀態、操作、恢復與待決政策
+
+階段 3：普通 Agent 沿既有流程接手
+  → 依 Plan 產生技術 Spec、implementation plan、實作與測試
+```
+
+技術角色不是階段 1 的預設席位。只有當已知技術限制會實質改變產品選項、可行性或高後果安全邊界時，Main 才應建議在該輪加入相應專業；一般前後端、架構、資安與資料設計由後續 Agent 依正常工程流程處理。這不代表技術「一定做得到」，而是避免在使用者任務尚未穩定前，讓 implementation concern 主導或膨脹產品 Plan。
+
+用於驗證核心效果的比較實驗應停在 Plan：Control 是一般 Agent 直接規劃；Treatment 是先完成上述使用者驗證流程。兩者由 fresh 模擬 End users 盲評任務符合、資訊時機、狀態清晰、誤操作、恢復、比例原則與 Spec handoff，不把技術欄位完整度列入本階段分數。
 
 ```text
 使用者提出會議議題

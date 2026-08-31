@@ -10,6 +10,8 @@
 
 > 2026-08-29 現況更新：三組 ordinary-session／meeting-skill 盲評顯示效益具有條件性，並促成 `lightweight`／`standard`／`critical` 角色拆分 range、actual-user lens protocol 與 meeting-plan v1.1。這些 runtime bytes 尚未由新的完整 release scorecard 綁定，因此 2026-08-28 的 `GO` 現為歷史證據，current-runtime GUI entry gate pending。比較結果見 [Meeting core 規劃品質對照評估](evaluations/meeting-core-quality-comparison.zh-TW.md)。
 
+> 2026-08-31 產品與證據更新：核心效果已進一步限縮為「先用 Main＋領域專業＋End user 改善使用者任務與 UIUX Plan，再交給普通 Agent 進入 Spec／implementation」。第一個 plan-only Pilot 由三位 fresh 模擬租戶一致選擇 Treatment，平均高 `+0.604/5`；流程 gate 通過，但單案只屬方向性訊號，仍待 N-task 驗證。詳見 [Meeting core 使用者驗證 Plan Pilot](evaluations/meeting-core-user-validated-plan-pilot.zh-TW.md)。先前 technical plan／spec 實驗保留為次要機制證據。
+
 ## 結論
 
 目前的核心方向是成立的，而且成熟度高於一般「叫多個 Agent 各自發言」的做法。它已經形成一條清楚的控制鏈：先界定目標、授權與權威，再依風險面動態選角，以 fresh context 保持獨立，最後由 moderator 依證據裁決，而不是投票。失敗、容量不足、replacement 與 single-session fallback 也都有公開且可驗證的降級語意。

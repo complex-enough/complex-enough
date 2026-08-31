@@ -2,6 +2,8 @@
 
 Traditional Chinese version: [meeting-core-quality-comparison.zh-TW.md](meeting-core-quality-comparison.zh-TW.md)
 
+> Scope note, 2026-08-31: this report evaluates fuller plan/spec meetings that include domain state, technical contracts, and multiple actor surfaces. It is retained as historical and secondary mechanism evidence, not direct evidence for the clarified core claim that Main + a domain professional + an end-user lens improves the upstream user-task/UIUX Plan. The first direct pilot for that claim is the Traditional Chinese [user-validated Plan pilot](meeting-core-user-validated-plan-pilot.zh-TW.md).
+
 - Evaluation date: 2026-08-29
 - Scope: pre-GUI planning quality, not implementation quality
 - Status: completed comparative experiment; results include positive, neutral, and negative findings

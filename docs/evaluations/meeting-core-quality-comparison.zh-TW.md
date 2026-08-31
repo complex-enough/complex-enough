@@ -4,6 +4,8 @@
 
 後續 3–4 人壓縮實驗：[meeting-core-compact-panel-comparison.zh-TW.md](meeting-core-compact-panel-comparison.zh-TW.md)
 
+> 2026-08-31 範圍說明：本文比較的是包含 domain state、technical contracts 與多角色 surfaces 的較完整 plan／spec meeting，現定位為歷史與次要機制證據。它不能直接回答 clarified core claim：「Main＋領域專業＋End user 是否先改善使用者任務與 UIUX Plan」。該主張的第一份直接 Pilot 見 [Meeting core 使用者驗證 Plan Pilot](meeting-core-user-validated-plan-pilot.zh-TW.md)。
+
 - 評估日期：2026-08-29
 - 評估範圍：GUI 實作前的規劃品質，不是 implementation 品質
 - 狀態：比較實驗已完成；報告保留正向、中性與負向結果

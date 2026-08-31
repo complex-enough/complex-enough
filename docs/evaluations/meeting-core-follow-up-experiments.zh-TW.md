@@ -6,6 +6,8 @@
 - 前置報告：[3–4 人 compact panel 規劃品質評估](meeting-core-compact-panel-comparison.zh-TW.md)
 - 凍結 revisions：`evalrev-large-vs-compact-r1`、`evalrev-synthesis-compression-r1`、`planrev-address-user-ablation-r1`
 
+> 2026-08-31 範圍說明：本文的 actual-user ablation 是把使用者 findings 編入 technical plan／contract，適合研究角色拆分、authority back-propagation 與 synthesis 壓縮，現定位為次要機制證據。它不是 clarified core workflow 的直接測試；plan-only Control／Treatment Pilot 見 [Meeting core 使用者驗證 Plan Pilot](meeting-core-user-validated-plan-pilot.zh-TW.md)。
+
 ## 結論摘要
 
 三組實驗支持四個不同層次的結論：
