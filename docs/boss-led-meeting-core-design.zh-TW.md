@@ -6,7 +6,7 @@
 - 文件狀態：`implementation_validated_behavioral_release_pending`
 - runtime 狀態：portable instructions、contracts、validators 與 deterministic tests 已實作；2026-08-29 range-calibrated runtime 尚待 fresh behavioral release scorecard
 - 依據：使用者確認的產品主軸、現行 repo 契約與四個 fresh-context 設計視角
-- 下一階段：凍結 plan-only core protocol、完成 N-task 效果驗證與 current-runtime Codex behavioral release scorecard 後進入 GUI 產品與實作階段；Claude Code 仍需獨立 behavioral scorecard
+- 下一階段：依六案 Plan-only 結果補入 selective routing 與最低 recovery closure，完成 current-runtime Codex behavioral release scorecard 後進入 GUI 產品與實作階段；Claude Code 仍需獨立 behavioral scorecard
 
 ## 文件邊界
 
@@ -16,7 +16,7 @@
 
 目前 runtime 以 [`SKILL.md`](../SKILL.md)、[`references/`](../references/)、[`schemas/meeting-plan.schema.json`](../schemas/meeting-plan.schema.json)、[`schemas/panel-output.schema.json`](../schemas/panel-output.schema.json) 與 validators/tests 為準。Codex v1.1 [2026-08-28 scorecard](../evals/results/codex-2026-08-28.json) 已通過 21/21 cases、49 個公開回合與 95/95 fresh blind assertions，但只綁定 range 變更前的 runtime；目前作為歷史證據，不再滿足 current-runtime release gate。
 
-2026-08-31 的 [使用者驗證 Plan Pilot](evaluations/meeting-core-user-validated-plan-pilot.zh-TW.md) 是 clarified core claim 的第一份直接證據：`Main＋領域專業＋模擬 End user` 的 plan-only Treatment 在三位 fresh 模擬租戶盲評中以 3–0 勝過一般 Agent，平均差 `+0.604/5`。這是單案方向性訊號，還不能取代 N-task 驗證。先前的[規劃品質比較](evaluations/meeting-core-quality-comparison.zh-TW.md)、[Compact panel 實驗](evaluations/meeting-core-compact-panel-comparison.zh-TW.md)及[後續控制實驗](evaluations/meeting-core-follow-up-experiments.zh-TW.md)保留為技術型 meeting 的次要機制證據。
+2026-08-31 的 [使用者驗證 Plan Pilot](evaluations/meeting-core-user-validated-plan-pilot.zh-TW.md) 是 clarified core claim 的第一份直接證據；後續 [Plan-only 六案盲評](evaluations/meeting-core-plan-only-batch6.zh-TW.md) 完成 N-task 方向性驗證。標準 Treatment 在 5/6 任務勝出，13/18 fresh 模擬使用者 evaluator 偏好 Treatment，平均差 `+0.222/5`。最大改善是避免過度設計、狀態清晰與防誤，但 recovery 平均退步，且單人低後果任務出現負向結果。這支持 selective meeting routing，不支持每案必開會或固定更多席位。先前的[規劃品質比較](evaluations/meeting-core-quality-comparison.zh-TW.md)、[Compact panel 實驗](evaluations/meeting-core-compact-panel-comparison.zh-TW.md)及[後續控制實驗](evaluations/meeting-core-follow-up-experiments.zh-TW.md)保留為技術型 meeting 的次要機制證據。
 
 ### 目前實作狀態
 

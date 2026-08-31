@@ -8,6 +8,7 @@ Maintainer docs:
 
 - [多視角編排邏輯現況評估與發展建議](docs/current-multi-perspective-logic-assessment.zh-TW.md)
 - [老闆召集式多視角會議核心設計](docs/boss-led-meeting-core-design.zh-TW.md) — meeting-core design and GUI entry contract
+- [Meeting core Plan-only 六案盲評](docs/evaluations/meeting-core-plan-only-batch6.zh-TW.md) — 核心 N-task 證據：5/6 任務正向、13/18 evaluator 偏好 Treatment，並識別 routing 與 recovery 邊界
 - [Meeting core 使用者驗證 Plan Pilot](docs/evaluations/meeting-core-user-validated-plan-pilot.zh-TW.md) — 核心產品主張的第一份直接 Pilot：Main＋專業＋End user 對一般 Agent 的 plan-only 盲評
 - [Meeting core 規劃品質對照評估](docs/evaluations/meeting-core-quality-comparison.zh-TW.md)（[English](docs/evaluations/meeting-core-quality-comparison.md)）— 次要歷史證據；比較較完整的 plan／spec meetings
 - [Meeting core 3–4 人 compact panel 品質評估](docs/evaluations/meeting-core-compact-panel-comparison.zh-TW.md) — 次要機制證據；固定 baseline 並壓縮技術型 panel 席位
