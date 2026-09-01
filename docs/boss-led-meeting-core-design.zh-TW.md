@@ -39,7 +39,7 @@
 
 ## 核心產品定義
 
-Skill 的主體是一位代表使用者召集會議的老闆／main，而不是固定專家 roster，也不是要求使用者自行組 panel。
+Skill 模擬的是「使用者作為老闆，Main 作為受委任主管」的會議。使用者擁有產品目標、scope 與重大決策；Main 代表使用者召集、組織並主持會議，而不是固定專家 roster，也不要求使用者自行組 panel。
 
 ### 產品目標與 Plan → Spec 交接邊界
 
@@ -77,7 +77,7 @@ Skill 的主體是一位代表使用者召集會議的老闆／main，而不是�
 
 ### 不可改變的主軸
 
-- main 是會議召集人、主持人與最終 accountable owner，不算一個 perspective seat。
+- main 是受委任的會議主管、召集人與主持人，對本輪流程與綜合結果負責，不算一個 perspective seat；產品方向與重大決策的最終 authority 仍屬於使用者。
 - 每輪的完整預設角色一定由 main 先產生；使用者不需要從空白畫面 staffing the meeting。
 - 使用者可以接受、修改、新增、移除、合併、拆分或匯入角色 prompt。
 - 外部 ChatGPT／Claude 只可能是角色定位 prompt 的作者來源，不是 meeting executor，也不需要等待外部模型回覆。
@@ -88,7 +88,7 @@ Skill 的主體是一位代表使用者召集會議的老闆／main，而不是�
 
 ## 參與者與責任
 
-### Human user
+### Human user／boss／product owner
 
 - 提供會議目標、產品方向與真正需要 human decision 的事項。
 - 檢查 main 已產生的完整角色 slate 是否偏離意圖。
@@ -96,7 +96,7 @@ Skill 的主體是一位代表使用者召集會議的老闆／main，而不是�
 - 對移除 critical coverage、產品方向、scope、外部承諾或重大成本作真正決策。
 - 不負責 model routing、waves、retry、一般 wording normalization 或 moderator 技術判斷。
 
-### Main／boss／convener
+### Main／manager／convener
 
 - 建立 authority packet、risk-surface map 與最小充分角色 slate。
 - 完整產生所有預設角色與選用理由。
@@ -105,6 +105,7 @@ Skill 的主體是一位代表使用者召集會議的老闆／main，而不是�
 - 凍結後依確定版本 dispatch，不允許 prompt drift。
 - 建立 public issue register、主持 challenge/rebuttal、親自驗證重大證據。
 - 最終接受、駁回、延後、標示 out-of-scope 或提出真正 user gate。
+- 對會議流程與 evidence-based synthesis accountable，但不得替使用者決定產品方向、scope 擴張、外部承諾、重大成本或高後果風險承擔。
 - 不以自己的立場增加一張 perspective vote。
 
 ### Logical professional perspective role
@@ -223,7 +224,7 @@ main 產生的每個角色至少包含：
 - 同部門角色因此各自保留 `role_id`、lens、risk ownership、public claim/evidence provenance，直接交由 main adjudicate；沒有 department consensus、department score 或 leader veto 的中介層。
 - 席位數只表示 main 判斷該專業需要多少個真正不同的問題與證據來源，不構成投票加權。支持度較少但證據較強的角色仍可推翻同部門或全場多數意見。
 
-這個設計模擬的是「老闆直接召集所需專業人士」：同一部門可以來一名或多名，但每個人都以自己的明確職責與證據對會議負責，而不是先被壓縮成部門代表的一票。
+這個設計模擬的是「老闆委任主管召集所需專業人士」：同一部門可以來一名或多名，但每個人都以自己的明確職責與證據對會議負責，而不是先被壓縮成部門代表的一票。
 
 ### Main 建議人數，使用者可調整
 
@@ -513,6 +514,36 @@ Domain codes 保持穩定且不本地化；GUI 用 structured parameters 產生 
 5. Meeting room：phase、waves、role progress、degradation、attention。
 6. Decision board：summary/gate、accepted changes、risks、user decisions、evidence drill-down。
 7. Next round：public handoff、recomputed risks、新的 generated slate。
+
+### Plan 定版前的老闆介入與臨時加人
+
+未來 GUI 應把「單回合凍結」與「最終 Plan 定版」分開。角色 slate 只在該回合內不可變；一個回合完成後、最終 Plan 尚未定版前，使用者可以看見該回合的公開主張、evidence、衝突、裁決與 unresolved items，並以老闆身分要求：
+
+- 下一回合加入一個新的 evidence-distinct 角色；
+- 將一個過度合併的角色拆開，或合併重複視角；
+- 指定要追問的公開問題、補充新的 authority／scope 資訊；
+- 要求 Main 先整理選項、後果與可逆性，再由使用者作重大決策；
+- 接受目前結果並將 Plan 定版。
+
+臨時加人不能修改正在執行或已完成回合的 frozen slate。若使用者在回合進行中提出要求，GUI 應先把它記為 pending next-round request；本輪完成後由 `create_next_round` 建立新的 Main-generated PlanRevision，重新計算角色、coverage、成本與 warnings，經使用者確認後才執行。
+
+```text
+Round N frozen slate
+  → independent opening／public challenge／Main adjudication
+  → structured public round result
+  → user reviews before final Plan freeze
+       ├─ accept and finalize Plan
+       └─ request another lens or question
+            → Main generates Round N+1 slate and coverage delta
+            → user confirms
+            → Round N+1
+```
+
+這裡的「學習」主要是使用者從 Agent 的公開討論中取得知識與決策理解，不是訓練模型或建立永久記憶。GUI 應讓使用者逐回合看懂：每個視角主張什麼、引用什麼 evidence、為何發生衝突、不同選項會造成什麼後果、Main 為何接受或駁回，以及還有哪些事實會改變 recommendation。使用者理解後，可以追問、補充資訊、要求下一回合加入新視角，或親自裁決真正的產品問題。
+
+後續角色仍可取得前一回合正規化後的 public handoff、已接受／駁回 claims、evidence ledger 與未決問題，再提出修正；但這是 deliberation continuity，不宣稱模型被訓練。GUI 不顯示或保存 chain-of-thought、private scratch、peer raw reports 或原始內部 transcript；視覺化的是可稽核的公開結論、證據、簡短 rationale、衝突與因果關係。
+
+Main 在這個階段是決策教練與會議主管，不是替老闆投票。它應把專業知識與衝突翻譯成具體選項，說明 authority、evidence、原因、後果、成本、可逆性、仍未知之處與 recommendation；產品方向、scope 擴張、外部承諾、重大成本與高後果風險仍由使用者決定。
 
 ## Compatibility 與 impact
 

@@ -1,7 +1,7 @@
 # 多視角編排邏輯現況評估與發展建議
 
 - 評估日期：2026-08-26
-- 基線：`main` / `dd12b4df27d146da2dd34a98058b2d4be758df27`
+- 基線：`main` / `44c896ed01ca0fcfb640b97978b68fa10d74ccbe`
 - 評估模式：`review`
 - 工作樹基線：乾淨
 - 驗證基線：`python3 scripts/validate_repo.py` 通過，59 個單元測試全數通過

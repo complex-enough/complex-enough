@@ -1,0 +1,105 @@
+{
+  "record_type": "local_plugin_discovery_smoke",
+  "schema_version": "1.0",
+  "executed_at": "2026-08-31T23:22:20+08:00",
+  "plugin": {
+    "name": "orchestrate-multi-perspective-panel",
+    "version": "1.1.0",
+    "tested_bundle_sha256": "sha256:0fe5443b0e81956522216ec59c58fbf18ca3029f16d1eb15f166990aaab4642c",
+    "current_bundle_sha256": "sha256:8dbec8d81274616a53f7d64043b550d927c84b1d8fdde20782bbd500775cd462",
+    "local_marketplace": "meeting-core-local",
+    "installed_enabled": true
+  },
+  "current_bundle_update": {
+    "recorded_at": "2026-09-01",
+    "classification": "metadata_only",
+    "changed_manifest_fields": [
+      "author.name",
+      "author.email",
+      "author.url",
+      "homepage",
+      "repository",
+      "interface.developerName",
+      "interface.displayName",
+      "interface.shortDescription",
+      "interface.longDescription",
+      "interface.category",
+      "interface.defaultPrompt",
+      "interface.brandColor",
+      "interface.composerIcon",
+      "interface.logo",
+      "interface.logoDark",
+      "interface.websiteURL",
+      "interface.privacyPolicyURL",
+      "interface.termsOfServiceURL",
+      "plugin-level listing image assets",
+      "top-level description"
+    ],
+    "runtime_skill_bytes_changed": false,
+    "behavioral_claim": "The recorded discovery and routing attempts remain attributed to tested_bundle_sha256. The current bundle changes only public publisher, URL, positioning copy, category, starter prompts, color, and listing-image metadata; runtime skill bytes remain unchanged. It was rebuilt and structurally validated, but was not relabeled as a fresh behavioral smoke."
+  },
+  "runtime_source_check": {
+    "repository_skill_sha256": "sha256:90dea49f3da26d7c84ecd65006056f1dd735983af5a6ae6e05aafbaa6a0ca4fd",
+    "personal_skill_sha256": "sha256:90dea49f3da26d7c84ecd65006056f1dd735983af5a6ae6e05aafbaa6a0ca4fd",
+    "plugin_cache_skill_sha256": "sha256:90dea49f3da26d7c84ecd65006056f1dd735983af5a6ae6e05aafbaa6a0ca4fd",
+    "result": "pass"
+  },
+  "attempts": [
+    {
+      "id": "positive-generic-artifact-review",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "result": "discovery_pass_completion_not_scored",
+      "observations": [
+        "A fresh session loaded the skill from the installed plugin cache.",
+        "It generated no perspectives before role review and correctly treated the absent review artifact as blocking.",
+        "The run was manually interrupted after excessive contract expansion and 71571 tokens; it is not counted as a completed behavioral pass."
+      ]
+    },
+    {
+      "id": "negative-pure-function",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "low",
+      "result": "pass",
+      "output_sha256": "sha256:610a56fe5117409ae5aa5fed122535a982b642175939e30c2328a94e435759b7",
+      "tokens_used": 5865,
+      "observations": [
+        "The session answered the local off-by-one question directly.",
+        "It created no meeting, roles, revision, digest, or confirmation gate."
+      ]
+    },
+    {
+      "id": "positive-lightweight-csv-before-source-sync",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "low",
+      "result": "invalidated_environment_collision",
+      "output_sha256": "sha256:4d1735cf0eea91cafe4661d6f2a020905a2576a1b38b7970c99319824af41198",
+      "observations": [
+        "The fresh session selected a stale same-name personal skill instead of the current plugin bytes.",
+        "Its four-seat result is excluded from behavioral scoring.",
+        "The personal installation was updated and byte equality was verified before the rerun."
+      ]
+    },
+    {
+      "id": "positive-lightweight-csv-after-source-sync",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "low",
+      "result": "pass",
+      "output_sha256": "sha256:6257ac349c820270981de93c499d0ce7b92d72786d9c6cd8491f97c897ad38bd",
+      "tokens_used": 17828,
+      "observations": [
+        "The session classified the bounded CSV import design as lightweight.",
+        "It proposed two materially different roles: CRM Operations and Product & Data Design.",
+        "It kept ordinary privacy, reliability, and technical concerns inside the generalist role instead of adding default architecture or security seats.",
+        "It ended at awaiting_role_review and did not start the meeting."
+      ]
+    }
+  ],
+  "overall": "pass_with_observations",
+  "limitations": [
+    "This is a local package-discovery and routing smoke, not the official submission portal test record.",
+    "The current bundle differs from the behaviorally tested bundle only in public publisher and directory metadata, including URLs, positioning copy, category, starter prompts, color, and listing-image assets; its Skill runtime digest is unchanged, and no fresh behavioral run is claimed for that rebuilt ZIP.",
+    "The draft five-positive and three-negative portal cases still require fresh-chat execution against the exact public release bytes and final submission host.",
+    "The two scored smoke passes use a low-cost model because they check routing and packaging, not full synthesis quality; the separate current-runtime scorecard remains the Sol/xhigh behavioral evidence."
+  ]
+}

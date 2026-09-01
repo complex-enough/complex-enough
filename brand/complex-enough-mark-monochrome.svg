@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Complex Enough monochrome mark</title>
+  <desc id="desc">Three distinct perspective shapes converge around a clear central diamond.</desc>
+  <rect width="512" height="512" rx="112" fill="#FFFFFF"/>
+  <path d="M86 118 232 202 164 320 86 276ZM426 118 280 202l68 118 78-44ZM256 414l-92-54 68-118h48l68 118Z" fill="#182633"/>
+  <path d="m256 203 53 53-53 53-53-53Z" fill="#FFFFFF" stroke="#182633" stroke-width="18"/>
+</svg>

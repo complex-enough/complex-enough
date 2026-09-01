@@ -1,93 +1,131 @@
-# Orchestrate Multi-Perspective Panel
+# Complex Enough
 
-An Agent Skill for boss-led multi-perspective meetings. Main selects the departments needed for each round, generates their complete roles, lets the user accept or adjust the finished proposal, freezes the exact slate, and then runs independent internal perspectives. It supports product ideation, architecture/product design, option convergence, readiness review, full-cycle orchestration, and versioned public contracts for future GUI/API consumers.
+**The right perspectives. No more.**
 
-The panel is not a fixed roster and is not a voting mechanism. External ChatGPT/Claude prompts can be imported as role-authoring material, but external providers never become meeting executors. The moderator verifies consequential evidence, adjudicates conflicts, and owns the final output and any authorized edits.
+[Website](https://complexenough.com/en/) · [繁體中文](https://complexenough.com/zh-TW/) · [Privacy](https://complexenough.com/en/privacy/) · [Terms](https://complexenough.com/en/terms/) · [Support](https://complexenough.com/en/support/)
 
-Maintainer docs:
+Complex Enough is agent-led planning quality control for autonomous software development. The user remains the boss, owning goals, scope, and consequential decisions; Main acts as the meeting manager. Before a request becomes a spec or code, Main decides whether independent perspectives would materially improve the plan, proposes the smallest sufficient set of professional and end-user perspectives, lets the user accept or adjust the complete role slate, and only then runs independent perspectives and returns one evidence-based synthesis.
 
-- [多視角編排邏輯現況評估與發展建議](docs/current-multi-perspective-logic-assessment.zh-TW.md)
-- [老闆召集式多視角會議核心設計](docs/boss-led-meeting-core-design.zh-TW.md) — meeting-core design and GUI entry contract
-- [Meeting core Plan-only 六案盲評](docs/evaluations/meeting-core-plan-only-batch6.zh-TW.md) — 核心 N-task 證據：5/6 任務正向、13/18 evaluator 偏好 Treatment，並識別 routing 與 recovery 邊界
-- [Meeting core 使用者驗證 Plan Pilot](docs/evaluations/meeting-core-user-validated-plan-pilot.zh-TW.md) — 核心產品主張的第一份直接 Pilot：Main＋專業＋End user 對一般 Agent 的 plan-only 盲評
-- [Meeting core 規劃品質對照評估](docs/evaluations/meeting-core-quality-comparison.zh-TW.md)（[English](docs/evaluations/meeting-core-quality-comparison.md)）— 次要歷史證據；比較較完整的 plan／spec meetings
-- [Meeting core 3–4 人 compact panel 品質評估](docs/evaluations/meeting-core-compact-panel-comparison.zh-TW.md) — 次要機制證據；固定 baseline 並壓縮技術型 panel 席位
-- [Meeting core 後續控制實驗](docs/evaluations/meeting-core-follow-up-experiments.zh-TW.md) — 次要機制證據；Large／Compact、synthesis 壓縮與 technical-plan actual-user ablation
+The skill is designed for work where the agent drives design with limited user steering. It improves the earliest part of planning by understanding real user work, avoiding unnecessary complexity, and making important recovery paths visible before a normal agent continues into spec and implementation. The user retains an explicit role-slate confirmation checkpoint without having to identify every missing stakeholder lens. Better upstream inputs can reduce propagated ambiguity and rework, but downstream implementation impact has not yet been measured directly.
 
-## Architecture
+The public plugin brand is **Complex Enough**. The contained skill and its stable technical identifier remain `orchestrate-multi-perspective-panel`; existing invocation names, schemas, installation paths, and `1.x` contracts do not change with the brand.
+
+## Why this exists
+
+Multi-agent discussion is easy to start and easy to overdo. Fixed panels tend to invite the same architect, security, frontend, and backend roles regardless of the task; informal debates can also hide minority evidence behind consensus.
+
+This skill treats meeting formation as part of the decision:
+
+- Main first checks whether independent perspectives are likely to change the result.
+- Main generates complete role definitions; users do not have to author the panel themselves.
+- The user may accept the proposal, edit it, change participation, or import role-positioning text produced by another ChatGPT or Claude session.
+- The accepted slate is frozen before execution, so the meeting cannot silently change underneath the user.
+- Main resolves claims by authority and evidence, not votes or department weights.
+- When the requested task includes a user-facing workflow, its design must cover realistic uncertainty, correction, and handoff paths instead of only the happy path.
+
+This is not an implementation-task dispatcher. Task-parallel workflows divide work after a direction exists; this skill forms stakeholder and evidence lenses before plan/spec, exposes the complete role slate for user adjustment, and hands the validated synthesis back to the normal delivery workflow.
+
+## How it works
 
 ```text
-SKILL.md                              Runtime workflow and routing
-agents/openai.yaml                    Codex UI metadata and default prompt
-adapters/codex.md                     Codex context, agent, slot, and model mapping
-adapters/claude-code.md               Claude Code context, agent, and permission mapping
-references/modes-and-selection.md     Distinct mode behavior and lens selection
-references/panelist-protocol.md       Independent task and public response protocol
-references/authority-and-fallback.md  Repository, scope, branch, wave, and failure rules
-references/model-and-execution-policy.md  Model/reasoning tiers, slot math, and retries
-references/meeting-lifecycle.md         Role generation, review/freeze, meeting phases, and handoff
-references/role-definition-and-import.md  Effective roles and external prompt normalization
-references/meeting-plan-contract.md     Editable control-plane contract and canonical digests
-references/panel-output-contract.md   Versioned GUI/API contract guidance
-schemas/meeting-plan.schema.json       Meeting/round/role revision public control state
-schemas/panel-output.schema.json      Draft 2020-12 normative public schema
-schemas/stable-*.v1.json              Automated v1 wire-enum compatibility locks
-evals/                                Repeatable cases, neutral fixtures, and result summaries
-scripts/                              Validation, prompt rendering, and safe global install
-tests/                                Schema compatibility and semantic invariant tests
+request
+  -> Main checks meeting value and selects a mode
+  -> Main maps users, decisions, evidence, handoffs, and failure consequences
+  -> Main generates a complete role slate and complexity range
+  -> user accepts, adjusts, or imports external role-positioning text
+  -> the exact accepted revision is frozen
+  -> roles open independently in fresh contexts
+  -> Main challenges and verifies consequential claims
+  -> one public synthesis, evidence ledger, and readiness result
 ```
 
-`SKILL.md` and the core references are platform-neutral. Thin adapters map host-specific instruction files, subagent tools, permissions, model routing, concurrency, and install paths. Repository docs, eval artifacts, and tests support maintainers; the installer copies only runtime files.
+The role-review turn is a real checkpoint. The skill shows the finished proposal and waits; it does not generate roles and start the meeting in the same assistant turn.
 
-## Platform support
+### Example
 
-| Host | Packaging | Behavioral status |
-| --- | --- | --- |
-| Codex | `SKILL.md`, references/schemas/scripts, Codex adapter, `agents/openai.yaml` | Current runtime `GO`: 26/26 cases and 120/120 fresh blind assertions passed |
-| Claude Code | Same core plus Claude Code adapter; no OpenAI UI metadata required | Structurally compatible; behavioral forward tests still required in a Claude runtime |
-| GUI/API | `meeting-plan` v1.1 plus `panel-output` v1.2; no GUI runtime dependency | Entry gate passed; GUI implementation is the next phase |
+For a public appointment-change flow, Main might propose:
 
-## Dynamic perspective selection
+- a public customer who needs to understand the current booking and recover from an uncertain submit;
+- a CMS operator who handles exceptions and must see the authoritative state;
+- an appointment-domain owner who defines change windows, conflicts, and business rules.
 
-Before creating a round, main assesses whether independent perspectives are likely to change the outcome. Single-actor, mature, locally reversible work with no material state/decision handoff normally stays in an ordinary session; task size alone is not the test. An explicit meeting request is still honored with the smallest legitimate lightweight slate and a low-marginal-value disclosure.
+The user can accept that slate as generated, ask Main to split or merge a role, remove an unnecessary seat, or paste an externally authored persona prompt for normalization. Technical implementation roles are added only when they own different evidence or consequences; they are not mandatory simply because software will eventually be built.
 
-For each task, the moderator maps delivery surfaces, stakeholders, failure modes, irreversible decisions, evidence gaps, and cost. Before splitting seats it publishes a `lightweight`, `standard`, or `critical` complexity range. The range controls role granularity, not risk acceptance or a fixed headcount: lightweight work combines ordinary architecture/security/reliability duties into a capable generalist, standard work splits only evidence-distinct lenses, and critical work uses dedicated specialists for high-consequence evidence that cannot safely be combined.
+## When to use it
 
-A lens is included only when it asks a distinct material question, brings distinct evidence, or owns a material stakeholder consequence. Overlapping roles are merged. User-facing design also distinguishes actual customer/operator lenses from professional proxies: selected user roles state unanchored task needs first, then critique bounded public UI/UX claims. These are explicitly simulated lenses, not a substitute for real user research.
+Use the skill when a task benefits from genuinely different lenses, for example:
 
-Actual-user coverage does not create a matching professional proxy by default. Without separate operational evidence or policy authority, the smallest domain-professional set owns the solution skeleton while customer/operator lenses own task, misoperation, and recovery consequences.
+- several users or operators have different goals, permissions, or failure consequences;
+- a decision or state crosses a team, system, or human handoff;
+- stale or conflicting truth can cause real harm;
+- materially different evidence or authority must be reconciled;
+- the user explicitly asks for a panel, meeting, adversarial review, or cross-functional judgment.
 
-For every selected actual-user surface, the final design retains a minimum recovery closure: uncertain results, return/reselection, stale or replaced state, post-commit correction or an existing human handoff, the visible current truth, its authority owner, and the success signal. This is a synthesis requirement, not a reason to add frontend, backend, architecture, or security seats.
+Keep the task in an ordinary session when one actor is using a mature, locally reversible pattern with no material handoff, authority split, or independent evidence need. If the user explicitly requests a meeting anyway, the skill honors that request with the smallest legitimate `lightweight` slate and discloses the likely low marginal value.
 
-The model stays two-level: a MeetingRound directly binds professional perspective roles. `department` is only a descriptive affiliation label, so main may generate multiple roles from one profession when they own distinct questions or evidence. There is no Department entity, leader-mediated department result, or compound weighting layer. This avoids weight distortion and preserves a secondary seat's evidence instead of letting a department lead collapse it into one position; extra same-department seats still never count as extra votes.
+## Role and department model
 
-Main also proposes each profession's seat count by generating the concrete roles. Users may ask for more or fewer seats, which becomes copy-on-write add/split/remove/merge operations with coverage deltas. The displayed count is always derived from active role bindings; there is no second `headcount` source that can drift from the executable slate.
+The executable model has two levels:
 
-Main converts the selected lenses into a complete role slate and waits for user review before execution. The user can accept immediately, adjust roles, or import externally authored role-positioning text. There is no default, minimum, or maximum panel size. Insufficient concurrency creates waves, not omitted lenses.
+```text
+human user / boss (goals, scope, consequential decisions)
+  -> Main / manager (meeting formation, moderation, synthesis)
+       -> role A
+       -> role B
+       -> role C
+```
+
+`department` is a descriptive affiliation, not an aggregation layer. Main may select two roles from the same profession when they own different questions or evidence. There is no department leader result, compound department/role weighting, or extra vote for additional seats. This preserves useful evidence from a secondary seat instead of letting a leader collapse it into one departmental opinion.
+
+Main also proposes the participation count through the concrete role slate. Users adjust participation by adding, splitting, merging, or removing roles; there is no separate headcount value that can drift from the people actually invited.
+
+Main is accountable for the meeting process and evidence-based synthesis, not for silently taking product authority from the user. Product direction, scope changes, external commitments, major cost, and accepted high-consequence risk remain real user decisions.
+
+The planned GUI extends this boss/manager model without weakening the frozen-round contract. After each round, the user will be able to learn from structured public claims, evidence, conflicts, consequences, and concise decision rationale; before the final Plan is locked, they can ask questions or ask Main to add or split a perspective for a newly confirmed next round. This is guided user understanding and deliberation continuity—not model training—and never exposes hidden reasoning or raw private transcripts. This GUI is roadmap work and is not included in the current skills-only 1.1.0 release.
+
+## Design safeguards
+
+### Selective routing
+
+Task size is not used as a shortcut for meeting value. Routing is based on distinct consequences, handoffs, authority, evidence, reversibility, and stale-state harm. An implicitly selected low-value case returns to the ordinary Main workflow without creating meeting state.
+
+### Actual-user perspectives
+
+For user-facing design, simulated customer or operator roles first state their goals, information needs, likely misunderstandings, and unacceptable outcomes without seeing a proposed interface. They later critique bounded public UI/UX claims. These roles are useful design lenses, but are not a substitute for real user research.
+
+### Minimum recovery closure
+
+Each selected user surface must retain a safe answer for the relevant recovery conditions:
+
+- the result of submit/save is unknown;
+- the user returns or changes a selection;
+- visible state is stale, replaced, or expired;
+- a committed action needs correction, undo, or an existing human handoff;
+- the user needs to know the current authoritative truth, its owner, the safe next action, and the success signal.
+
+This is a synthesis requirement, not a reason to invite frontend, backend, architecture, or security roles by default.
 
 ## Modes
 
-- `ideate` preserves different framings and proposes smallest experiments without picking a winner.
-- `design` makes responsibilities, ownership, contracts, states, UX, failure recovery, migration, and operations concrete.
-- `converge` adjudicates a finite decision set by authority, evidence, reversibility, compatibility, and cost.
-- `review` requires locatable evidence, prioritizes findings, and produces a moderator `GO`/`NO_GO` gate.
-- `full_cycle` runs all four stages, closes public stage artifacts, and regenerates a user-confirmed role slate at every boundary.
+| Mode | Purpose |
+| --- | --- |
+| `ideate` | Preserve meaningfully different framings and propose the smallest useful experiments without forcing a winner. |
+| `design` | Make user flows, responsibilities, states, contracts, recovery, migration, and operations concrete. |
+| `converge` | Adjudicate a finite option set by authority, evidence, reversibility, compatibility, and cost. |
+| `review` | Verify an artifact or runtime state and return prioritized findings plus a `GO`/`NO_GO` gate. |
+| `full_cycle` | Run all four stages, generating and confirming a fresh role slate at every stage boundary. |
 
-## Public GUI/API contract
+Use the narrowest sufficient mode; `full_cycle` is not the default.
 
-`meeting-plan` v1.1 records the editable main-generated role proposal, digest-bound complexity profile, copy-on-write adjustments/imports, planned coverage, warnings, frozen revision/digest, lifecycle, and public events. Meeting-plan v1.0 remains valid legacy input without the complexity profile. `panel-output` v1.2 remains the closed-round result and adds immutable meeting/round/role/risk provenance to the v1.1 evidence, adjudication, coverage, degradation, gate, and summary shape. Panel-output v1.0/v1.1 remain valid legacy results.
+## Install from a repository checkout
 
-Both contracts explicitly exclude hidden chain-of-thought, private scratch work, raw internal messages, and panelist transcripts. Normal panel results also exclude raw imported role prompts. Consumers should reject unknown major versions, ignore unknown same-major additions, and render unknown enum values with a safe fallback. See [references/meeting-plan-contract.md](references/meeting-plan-contract.md) and [references/panel-output-contract.md](references/panel-output-contract.md).
-
-## Install or update the skill
-
-Prerequisites for development validation:
+Install the development dependencies:
 
 ```bash
 python3 -m pip install -r requirements-dev.txt
 ```
 
-Preview or install the Codex personal skill:
+Preview a Codex personal-skill installation:
 
 ```bash
 python3 scripts/install_skill.py \
@@ -96,7 +134,7 @@ python3 scripts/install_skill.py \
   --dry-run
 ```
 
-Install or update without deleting unrelated target files:
+Install or update it:
 
 ```bash
 python3 scripts/install_skill.py \
@@ -113,7 +151,9 @@ python3 scripts/install_skill.py \
   --check
 ```
 
-Install the same portable core for Claude Code after running Claude-specific forward tests:
+The installer validates the repository, copies only the runtime manifest, rejects unsafe or cross-platform targets, performs an atomic swap, and rolls back a failed commit. It does not modify persistent model settings or delete unrelated target files.
+
+Claude Code can use the same portable core with a separate target after Claude-specific forward validation:
 
 ```bash
 python3 scripts/install_skill.py \
@@ -121,9 +161,71 @@ python3 scripts/install_skill.py \
   --target ~/.claude/skills/orchestrate-multi-perspective-panel
 ```
 
-Before a real install, the installer runs the repository release gate. It rejects managed-path symlinks/reparse points and cross-platform target reuse, stages and verifies the complete target on the same filesystem, atomically swaps it into place, and rolls back a failed commit. It does not modify persistent model settings or delete unrelated target files. Use separate Codex and Claude targets.
+## Use
 
-## Validate
+Ask for the skill explicitly:
+
+```text
+$orchestrate-multi-perspective-panel help me design a public appointment-change flow.
+```
+
+Or ask naturally for a panel, independent perspectives, stakeholder lenses, adversarial review, or synthesized cross-functional judgment. Main will either explain why an ordinary session is sufficient or present the complete proposed slate for review.
+
+## Platform and distribution status
+
+| Target | Current status |
+| --- | --- |
+| Codex personal skill | Supported; current-runtime behavioral gate passed. |
+| Claude Code skill | Structurally compatible; host-specific behavioral forward tests remain required. |
+| GUI/API consumer | `meeting-plan` v1.1 and `panel-output` v1.2 contracts are ready; GUI starts after the skills-only plugin is submitted. |
+| OpenAI project-owned Skills API | OpenAI supports directory or zip uploads and immutable versions; this repository has not yet claimed an API-hosted release. |
+| OpenAI universal plugin directory | A reproducible skills-only package and local marketplace are ready; no public or portal submission has occurred. |
+| Legacy `openai/skills` catalog | Deprecated by OpenAI in favor of plugins. |
+| Plugin bundle | Packaged and locally installed as v1.1.0; `.codex-plugin/plugin.json` and plugin-level `skills/` bytes are generated from the canonical standalone skill. |
+
+The Skills API and a curated library or plugin marketplace are different distribution channels. Publishing this repository does not automatically place it in an official catalog.
+
+### Official directory readiness
+
+OpenAI's current publication path accepts a **skills-only plugin**; an MCP server and custom UI are optional. The official flow is documented in [Build skills](https://developers.openai.com/plugins/build/skills), [Package your plugin](https://developers.openai.com/plugins/build/plugins), and [Submit plugins](https://developers.openai.com/plugins/deploy/submission).
+
+This repository has the core skill, explicit trigger boundaries, supporting resources, public contracts, validation, behavioral evidence, metadata, changelog, Apache-2.0 license, reproducible skills-only packaging, final bilingual policy content, brand assets, a static public website, and draft portal test cases. Build the local marketplace and submission ZIP with:
+
+```bash
+python3 scripts/package_plugin.py --replace
+```
+
+Local package discovery and selective-routing smoke checks are recorded in [submission/local-smoke-2026-08-31.json](submission/local-smoke-2026-08-31.json). Public-surface source is prepared but has not been published. Before official submission it still needs:
+
+- confirmation that the OpenAI Platform verified individual display name exactly matches `Huan Min Wei`;
+- an OpenAI Platform organization with `Apps Management: Write`;
+- public activation of the prepared website, support, privacy, and terms URLs;
+- final portal confirmation of starter prompts, all selectable country/region availability, release notes, and policy attestations;
+- fresh-chat execution of the five positive and three negative portal cases against the exact public release bytes and final submission host;
+- review against the [plugin guidelines](https://developers.openai.com/plugins/app-guidelines), including clear utility and originality, authorized intellectual property, accurate claims, and no implication of OpenAI endorsement.
+
+The existing 26-case eval suite provides the evidence base, and [submission/test-cases.json](submission/test-cases.json) contains the portal-oriented five-positive/three-negative draft. Publisher-owned inputs and their current gates are recorded in [submission/listing.json](submission/listing.json) and the [送審準備紀錄](docs/official-plugin-submission-readiness.zh-TW.md). GUI development is intentionally scheduled after submission and is not a prerequisite for this skills-only release.
+
+For local development, do not leave an older same-name personal skill beside the plugin: host discovery may select either source. Update the personal installation to the same bytes with `scripts/install_skill.py --check`, or remove the duplicate before testing the packaged plugin.
+
+## Public contracts and privacy
+
+`meeting-plan` v1.1 records the editable role proposal, complexity profile, copy-on-write adjustments and imports, coverage, warnings, and frozen revision. `panel-output` v1.2 records the closed-round result, role/risk provenance, evidence, adjudication, degradation, gate, and summary. Legacy same-major inputs remain supported as documented.
+
+Both contracts exclude hidden chain-of-thought, private scratch work, raw internal messages, and panelist transcripts. Normal results also exclude raw imported role prompts. See [meeting-plan contract](references/meeting-plan-contract.md) and [panel-output contract](references/panel-output-contract.md).
+
+## Current validation evidence
+
+Controlled blind evaluations observed approximately 5.0%–12.5% relative mean planning-score uplift, depending on scope. The broader six-task selective plan-only comparison improved `+0.222/5` (about 5.0% relative to Control; 5 of 6 tasks), while a focused three-task compact-panel comparison improved `+0.514/5` (about 12.5%; 3 of 3 tasks). These are directional planning results, not a universal outcome guarantee. See the [concise quality evidence summary](docs/evaluations/complex-enough-quality-evidence-summary.zh-TW.md) for calculation boundaries and publication-safe wording.
+
+| Host | Result |
+| --- | --- |
+| Codex | `GO`: 26/26 isolated cases, 59 public turns, and 120/120 assertions passed by three fresh blind public-output graders. |
+| Claude Code | Structural compatibility only; no host behavioral `GO` is claimed. |
+
+The current scorecard is [evals/results/codex-2026-08-31.json](evals/results/codex-2026-08-31.json). Cases use neutral fixtures and fresh contexts; assertions, future turns, prior outputs, and intended fixes are not exposed to evaluated agents. Versioned artifacts contain public Main-session responses only, never raw panelist reports or private reasoning. See [evals/README.md](evals/README.md).
+
+## Develop and validate
 
 Run the Skill Creator structural validator:
 
@@ -137,7 +239,7 @@ Run repository, schema compatibility, semantic, metadata, and eval-coverage chec
 python3 scripts/validate_repo.py
 ```
 
-Validate meeting state, a closed result, or their frozen-provenance bundle directly:
+Validate public meeting artifacts directly:
 
 ```bash
 python3 scripts/validate_meeting_plan.py path/to/meeting-plan.json
@@ -145,38 +247,43 @@ python3 scripts/validate_panel_output.py path/to/panel-output.json
 python3 scripts/validate_meeting_bundle.py path/to/meeting-plan.json path/to/panel-output.json
 ```
 
-## Forward evals
+Before contributing, preserve the public `1.x` compatibility contract, keep runtime files separate from maintainer/eval material, use neutral fresh-context forward tests, and run both release validators. See [CHANGELOG.md](CHANGELOG.md) for version history.
 
-`evals/cases.json` contains neutral multi-turn user requests, capability conditions, and evaluator assertions. Fixtures contain only task authority, not intended answers. Render turn 0 of a contamination-resistant conversation with:
+## Repository map
 
-```bash
-python3 scripts/render_eval_prompt.py ideate-pure-product \
-  --host codex \
-  --skill-path /path/to/isolated/skill
+```text
+SKILL.md                              Portable runtime workflow and routing
+agents/openai.yaml                    Codex skill UI metadata
+adapters/                             Host capability and execution mappings
+references/                           Runtime protocols and public contracts
+schemas/                              Versioned meeting-plan and panel-output schemas
+scripts/                              Validators, eval renderer, and safe installer
+packaging/                            Canonical manifest and packaged listing images
+brand/                                Canonical SVG logo sources and usage guidance
+site/                                 Bilingual static website and public policy pages
+submission/                           Portal listing, tests, policies, and readiness records
+tests/                                Contract, compatibility, and semantic tests
+evals/                                Neutral cases and versioned public evidence
+docs/                                 Design decisions and evaluation reports
 ```
 
-Trigger cases omit `--skill-path` and render only the natural user request plus fixture, so discovery is observed without being named or primed. Send later `--turn N` messages only after the prior public response. Run each case in a fresh context; do not pass assertions, future turns, prior results, or intended fixes. Version only public main-session responses as a digest-bound artifact; never persist raw panelist reports or private reasoning. See [evals/README.md](evals/README.md).
+The installer copies only the runtime files. Repository documentation, tests, and evaluation material are not included in the installed skill manifest.
 
-The Codex `1.0.0` scorecard at [evals/results/codex-2026-08-10.json](evals/results/codex-2026-08-10.json) and the `1.1.0` [2026-08-28 Codex scorecard](evals/results/codex-2026-08-28.json) remain historical evidence. The current [2026-08-31 Codex scorecard](evals/results/codex-2026-08-31.json) binds the exact selective-routing/recovery runtime and suite: all 26 cases, 59 public turns, and 120 assertions passed three fresh blind public-output graders. Claude Code remains structural-only until its separate host scorecard passes.
+## Design and evaluation documents
 
-Repository validation keeps the historical scorecard integrity-checked but excludes it from release. A release `GO` is accepted only after full revalidation against the current suite digest, current runtime digest, complete current case set, and bound public artifacts.
-
-## Local Git and remote setup
-
-This repository is designed to work without a configured remote. A maintainer can add one later:
-
-```bash
-git remote add origin <repository-url>
-git push -u origin main
-```
-
-Remote owner and visibility are intentionally not assumed by the skill or installer.
-
-## Platform references
-
-- [Claude Code: Extend Claude with skills](https://code.claude.com/docs/en/skills)
-- [Claude Code: Create custom subagents](https://code.claude.com/docs/en/sub-agents)
+- [Complex Enough 品質成效摘要](docs/evaluations/complex-enough-quality-evidence-summary.zh-TW.md)
+- [多視角編排邏輯現況評估與發展建議](docs/current-multi-perspective-logic-assessment.zh-TW.md)
+- [老闆召集式多視角會議核心設計](docs/boss-led-meeting-core-design.zh-TW.md)
+- [Meeting core Plan-only 六案盲評](docs/evaluations/meeting-core-plan-only-batch6.zh-TW.md)
+- [Meeting core 使用者驗證 Plan Pilot](docs/evaluations/meeting-core-user-validated-plan-pilot.zh-TW.md)
+- [Meeting core 規劃品質對照評估](docs/evaluations/meeting-core-quality-comparison.zh-TW.md) ([English](docs/evaluations/meeting-core-quality-comparison.md))
+- [Meeting core 3–4 人 compact panel 品質評估](docs/evaluations/meeting-core-compact-panel-comparison.zh-TW.md)
+- [Meeting core 後續控制實驗](docs/evaluations/meeting-core-follow-up-experiments.zh-TW.md)
+- [OpenAI 官方 Plugin 送審準備紀錄](docs/official-plugin-submission-readiness.zh-TW.md)
+- [GitHub Pages 與 DNS 發布計畫](docs/github-pages-and-dns-plan.zh-TW.md)
 
 ## License
+
+Copyright 2026 [Huan Min Wei](https://complexenough.com/en/) and contributors.
 
 Licensed under Apache-2.0. See [LICENSE](LICENSE).

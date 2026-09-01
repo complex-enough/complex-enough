@@ -8,6 +8,7 @@ import hashlib
 import re
 import subprocess
 import sys
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -19,6 +20,7 @@ from validate_meeting_bundle import validate_bundle
 from validate_meeting_plan import validate as validate_meeting_plan
 from validate_panel_output import validate as validate_panel_output
 from render_eval_prompt import render_conversation
+from package_plugin import PLUGIN_NAME, build as build_plugin, load_manifest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -109,9 +111,56 @@ REQUIRED_FILES = [
     "evals/results/codex-2026-08-10.json",
     "README.md",
     "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "CODE_OF_CONDUCT.md",
     "LICENSE",
     "CLAUDE.md",
+    "packaging/plugin.json",
+    "scripts/package_plugin.py",
+    "submission/listing.json",
+    "submission/test-cases.json",
+    "submission/local-smoke-2026-08-31.json",
+    "submission/privacy-policy.md",
+    "submission/privacy-policy.zh-TW.md",
+    "submission/terms-of-use.md",
+    "submission/terms-of-use.zh-TW.md",
+    "submission/support.md",
+    "submission/support.zh-TW.md",
+    "brand/README.md",
+    "brand/complex-enough-mark.svg",
+    "brand/complex-enough-mark-dark.svg",
+    "brand/complex-enough-mark-monochrome.svg",
+    "brand/complex-enough-lockup.svg",
+    "packaging/assets/composer-icon.png",
+    "packaging/assets/logo.png",
+    "packaging/assets/logo-dark.png",
+    "site/index.html",
+    "site/en/index.html",
+    "site/en/privacy/index.html",
+    "site/en/terms/index.html",
+    "site/en/support/index.html",
+    "site/en/brand/index.html",
+    "site/zh-TW/index.html",
+    "site/zh-TW/privacy/index.html",
+    "site/zh-TW/terms/index.html",
+    "site/zh-TW/support/index.html",
+    "site/zh-TW/brand/index.html",
+    "site/assets/css/site.css",
+    "site/assets/brand/mark.svg",
+    "site/404.html",
+    "site/robots.txt",
+    "site/sitemap.xml",
+    "site/.nojekyll",
+    ".github/workflows/pages.yml",
+    "docs/github-pages-and-dns-plan.zh-TW.md",
+    "docs/official-plugin-submission-readiness.zh-TW.md",
 ]
+
+PUBLIC_PUBLISHER = "Huan Min Wei"
+PUBLIC_CONTACT = "support@complexenough.com"
+PUBLIC_BASE_URL = "https://complexenough.com/en/"
+PUBLIC_REPOSITORY_URL = "https://github.com/complex-enough/complex-enough"
 
 PROHIBITED_PRIVATE_OUTPUT_IDENTIFIERS = (
     "chain_of_thought",
@@ -203,6 +252,198 @@ def validate_evals() -> None:
             fixture = ROOT / "evals" / relative
             if not fixture.is_file():
                 fail(f"eval case {case['id']} missing fixture {relative}")
+
+
+def validate_submission_materials() -> None:
+    manifest = load_manifest()
+    listing = json.loads((ROOT / "submission" / "listing.json").read_text(encoding="utf-8"))
+    test_suite = json.loads(
+        (ROOT / "submission" / "test-cases.json").read_text(encoding="utf-8")
+    )
+    smoke = json.loads(
+        (ROOT / "submission" / "local-smoke-2026-08-31.json").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    if listing.get("record_type") != "internal_openai_plugin_submission_readiness":
+        fail("submission listing must identify its internal readiness record type")
+    if listing.get("submission_type") != "skills_only":
+        fail("submission listing must remain skills_only until scope changes explicitly")
+    if listing.get("status") not in {"awaiting_publisher_inputs", "ready_to_submit"}:
+        fail("submission listing has an unknown readiness status")
+    plugin = listing.get("plugin", {})
+    if plugin.get("name") != PLUGIN_NAME or plugin.get("version") != manifest["version"]:
+        fail("submission listing and plugin manifest identity/version differ")
+    listing_interface_fields = {
+        "display_name": "displayName",
+        "short_description": "shortDescription",
+        "long_description": "longDescription",
+    }
+    for listing_field, manifest_field in listing_interface_fields.items():
+        if plugin.get(listing_field) != manifest["interface"][manifest_field]:
+            fail(
+                f"submission listing {listing_field} and plugin manifest "
+                f"{manifest_field} differ"
+            )
+    if plugin.get("starter_prompts") != manifest["interface"]["defaultPrompt"]:
+        fail("submission listing and plugin manifest starter prompts differ")
+
+    publisher_inputs = listing.get("publisher_inputs", {})
+    if publisher_inputs.get("publisher_display_name") != manifest["author"]["name"]:
+        fail("submission publisher display name and plugin manifest author differ")
+    if publisher_inputs.get("publisher_profile_url") != manifest["author"]["url"]:
+        fail("submission publisher profile URL and plugin manifest author URL differ")
+    if publisher_inputs.get("publisher_type") != "individual":
+        fail("submission publisher type must match the confirmed individual application")
+    expected_public_inputs = {
+        "publisher_display_name": PUBLIC_PUBLISHER,
+        "publisher_profile_url": PUBLIC_BASE_URL,
+        "public_repository_url": PUBLIC_REPOSITORY_URL,
+        "website_url": PUBLIC_BASE_URL,
+        "support_url": PUBLIC_BASE_URL + "support/",
+        "privacy_policy_url": PUBLIC_BASE_URL + "privacy/",
+        "terms_url": PUBLIC_BASE_URL + "terms/",
+    }
+    for field, expected in expected_public_inputs.items():
+        if publisher_inputs.get(field) != expected:
+            fail(f"submission publisher input {field} differs from the public surface")
+    if listing["status"] == "ready_to_submit" and any(
+        value is None or value == "" for value in publisher_inputs.values()
+    ):
+        fail("ready_to_submit requires every publisher-owned input")
+
+    cases = test_suite.get("cases")
+    if not isinstance(cases, list):
+        fail("submission test cases must be a list")
+    ids = [case.get("id") for case in cases]
+    if len(ids) != len(set(ids)) or any(not isinstance(case_id, str) for case_id in ids):
+        fail("submission test case ids must be unique strings")
+    counts = {
+        kind: sum(case.get("kind") == kind for case in cases)
+        for kind in ("positive", "negative")
+    }
+    if counts != {"positive": 5, "negative": 3}:
+        fail(f"submission suite must contain five positive and three negative cases: {counts}")
+    for case in cases:
+        turns = case.get("turns")
+        expected = case.get("expected_behavior")
+        if not isinstance(turns, list) or not turns or not all(
+            isinstance(turn, str) and turn.strip() for turn in turns
+        ):
+            fail(f"submission case {case.get('id')} has invalid turns")
+        if not isinstance(expected, list) or not expected or not all(
+            isinstance(item, str) and item.strip() for item in expected
+        ):
+            fail(f"submission case {case.get('id')} has invalid expected behavior")
+
+    if smoke.get("record_type") != "local_plugin_discovery_smoke":
+        fail("local plugin smoke has an unknown record type")
+    smoke_plugin = smoke.get("plugin", {})
+    if (
+        smoke_plugin.get("name") != PLUGIN_NAME
+        or smoke_plugin.get("version") != manifest["version"]
+    ):
+        fail("local plugin smoke and manifest identity/version differ")
+    if smoke.get("overall") not in {"pass", "pass_with_observations"}:
+        fail("local plugin smoke must state a passing overall result")
+    scored_attempts = [
+        attempt
+        for attempt in smoke.get("attempts", [])
+        if attempt.get("result") == "pass"
+    ]
+    if not any(attempt.get("id", "").startswith("positive-") for attempt in scored_attempts):
+        fail("local plugin smoke has no passing positive routing attempt")
+    if not any(attempt.get("id", "").startswith("negative-") for attempt in scored_attempts):
+        fail("local plugin smoke has no passing negative routing attempt")
+
+    with tempfile.TemporaryDirectory(prefix="plugin-validation-", dir=ROOT) as directory:
+        first = build_plugin(Path(directory) / "first")
+        second = build_plugin(Path(directory) / "second")
+        if first["sha256"] != second["sha256"]:
+            fail("skills-only plugin bundle is not reproducible")
+        if smoke_plugin.get("current_bundle_sha256") != "sha256:" + first["sha256"]:
+            fail("current local plugin bundle digest differs from the reproducible build")
+        tested_bundle = smoke_plugin.get("tested_bundle_sha256")
+        if not isinstance(tested_bundle, str) or not tested_bundle.startswith("sha256:"):
+            fail("local plugin smoke must retain the behaviorally tested bundle digest")
+        repository_skill_digest = "sha256:" + hashlib.sha256(
+            (ROOT / "SKILL.md").read_bytes()
+        ).hexdigest()
+        if (
+            smoke.get("runtime_source_check", {}).get("repository_skill_sha256")
+            != repository_skill_digest
+        ):
+            fail("local smoke runtime digest differs from the current canonical skill")
+        if tested_bundle != smoke_plugin["current_bundle_sha256"]:
+            update = smoke.get("current_bundle_update", {})
+            if (
+                update.get("classification") != "metadata_only"
+                or update.get("runtime_skill_bytes_changed") is not False
+                or not update.get("behavioral_claim")
+            ):
+                fail("bundle digest changed without an explicit metadata-only smoke boundary")
+        if not Path(first["archive"]).is_file():
+            fail("skills-only plugin archive was not generated")
+
+
+def validate_public_surface() -> None:
+    manifest = load_manifest()
+    if manifest["author"] != {
+        "name": PUBLIC_PUBLISHER,
+        "email": PUBLIC_CONTACT,
+        "url": PUBLIC_BASE_URL,
+    }:
+        fail("plugin author metadata differs from the confirmed public publisher")
+    if manifest.get("repository") != PUBLIC_REPOSITORY_URL:
+        fail("plugin repository URL differs from the Organization repository")
+    interface = manifest["interface"]
+    expected_urls = {
+        "websiteURL": PUBLIC_BASE_URL,
+        "privacyPolicyURL": PUBLIC_BASE_URL + "privacy/",
+        "termsOfServiceURL": PUBLIC_BASE_URL + "terms/",
+    }
+    for field, expected in expected_urls.items():
+        if interface.get(field) != expected:
+            fail(f"plugin interface {field} differs from the public surface")
+
+    policy_paths = [
+        ROOT / "submission" / "privacy-policy.md",
+        ROOT / "submission" / "privacy-policy.zh-TW.md",
+        ROOT / "submission" / "terms-of-use.md",
+        ROOT / "submission" / "terms-of-use.zh-TW.md",
+        ROOT / "submission" / "support.md",
+        ROOT / "submission" / "support.zh-TW.md",
+    ]
+    for path in policy_paths:
+        content = path.read_text(encoding="utf-8")
+        if PUBLIC_PUBLISHER not in content or PUBLIC_CONTACT not in content:
+            fail(f"public policy identity/contact is incomplete: {path.name}")
+        if "not for publication" in content.lower() or "[verified publisher" in content.lower():
+            fail(f"public policy still contains draft language: {path.name}")
+
+    for path in (ROOT / "site").rglob("*.html"):
+        content = path.read_text(encoding="utf-8")
+        lowered = content.lower()
+        if "http://" in lowered:
+            fail(f"public site contains an insecure URL: {path.relative_to(ROOT)}")
+        if re.search(r"<script\s+[^>]*src=", lowered):
+            fail(f"public site must not load external scripts: {path.relative_to(ROOT)}")
+        if any(marker in lowered for marker in ("google-analytics", "googletagmanager", "segment.io", "facebook.net")):
+            fail(f"public site contains analytics/tracking code: {path.relative_to(ROOT)}")
+
+    legacy_personal_alias = "dryada" + "70749"
+    tracked_public_text = subprocess.run(
+        ["git", "grep", "-n", "-I", legacy_personal_alias, "--", ":(exclude)evals/results/**"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if tracked_public_text.returncode == 0:
+        fail("current public repository content still identifies the legacy personal alias")
+    if tracked_public_text.returncode not in {0, 1}:
+        fail("could not scan current public repository content for legacy identity")
 
 
 def runtime_revision(host: str) -> str:
@@ -775,6 +1016,8 @@ def main() -> int:
         validate_skill()
         validate_openai_yaml()
         validate_evals()
+        validate_submission_materials()
+        validate_public_surface()
         current_results = validate_eval_results()
         validate_stable_enums()
         Draft202012Validator.check_schema(

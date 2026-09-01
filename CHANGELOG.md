@@ -6,6 +6,13 @@ All notable changes are documented here. Repository releases use Semantic Versio
 
 ### Added
 
+- A bilingual static website source with final privacy, terms, support, and brand pages; a manual-only GitHub Pages workflow; and a non-executed custom-domain/DNS runbook.
+- Canonical SVG brand sources plus reproducible plugin listing PNGs included in the submission bundle.
+- Public-surface validation covering publisher identity, policy completeness, local links, package assets, and tracking-free static pages.
+- Reproducible skills-only plugin packaging with a validated manifest, generated local marketplace, deterministic submission ZIP, and runtime-manifest parity tests.
+- Portal-oriented listing metadata, five positive and three negative submission cases, privacy/terms/support drafts, and a Chinese official-submission readiness record.
+- Public contribution, security-reporting, and community conduct policies for the planned public repository.
+- A machine-readable local plugin smoke record covering discovery, negative routing, lightweight selective routing, and the invalidated stale same-name installation attempt.
 - A pre-round selective-routing gate that keeps low-value single-actor reversible work in an ordinary session unless the user explicitly requests a meeting.
 - A minimum actual-user recovery closure covering unknown results, return/reselection, stale or replaced state, post-commit correction or human handoff, visible current truth, authority owner, and success signal.
 - Neutral forward cases for ordinary-session routing, explicit low-value lightweight meetings, and customer-to-operator recovery closure.
@@ -28,6 +35,9 @@ All notable changes are documented here. Repository releases use Semantic Versio
 
 ### Changed
 
+- Public project authorship and plugin developer metadata now identify the verified-individual candidate `Huan Min Wei`, use `support@complexenough.com`, and point to the Complex Enough Organization, website, and policy paths. Exact OpenAI Platform identity matching remains a submission-time gate.
+- Adopted **Complex Enough** as the public plugin brand while preserving the stable `orchestrate-multi-perspective-panel` skill/plugin identifier, invocation name, schemas, and `1.x` contracts.
+- Official skills-only plugin submission now precedes GUI implementation in the phase plan; publisher-owned identity, policy URLs, branding, availability, public release, and external submission remain explicit gates.
 - Task size no longer acts as a meeting-value proxy: distinct consequences, state/decision handoffs, authority/evidence differences, and real stale-state harm drive routing and user-seat splitting.
 - Actual-user surfaces no longer receive mirrored professional proxies unless those seats contribute separate supplied evidence, policy authority, or materially different consequences.
 - Main synthesis may compress wording but must retain each selected actual-user surface's recovery state, safe action, authority owner, and success signal or an explicit authority-owned deferral.

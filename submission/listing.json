@@ -1,0 +1,76 @@
+{
+  "record_type": "internal_openai_plugin_submission_readiness",
+  "schema_version": "1.0",
+  "status": "awaiting_publisher_inputs",
+  "submission_type": "skills_only",
+  "plugin": {
+    "name": "orchestrate-multi-perspective-panel",
+    "version": "1.1.0",
+    "display_name": "Complex Enough",
+    "category": "Developer Tools",
+    "short_description": "Agent-led plan quality control",
+    "long_description": "Complex Enough is agent-led planning quality control for autonomous software development. The user remains the boss, owning goals, scope, and consequential decisions; Main acts as the meeting manager. Before a request becomes a spec or code, Main decides whether independent perspectives would materially improve the plan, proposes the smallest sufficient panel for user review, freezes the accepted slate, and returns one evidence-based synthesis. Low-value tasks continue normally. Controlled blind evaluations observed 5.0%–12.5% relative mean planning-score uplift across different scopes; these are directional planning results, not guarantees of downstream implementation outcomes.",
+    "starter_prompts": [
+      "Before writing a spec, improve this workflow with the smallest useful panel.",
+      "Review this agent-written plan for stakeholder, stale-state, and recovery gaps.",
+      "Decide whether this task needs a meeting, then plan normally if it does not."
+    ]
+  },
+  "review_positioning": {
+    "public_brand": "Complex Enough",
+    "brand_tagline": "The right perspectives. No more.",
+    "purpose": "Provide agent-led planning quality control before omissions and false assumptions propagate into specs and implementation, when distinct users, evidence, authority, or handoffs make independent perspectives valuable.",
+    "category_positioning": {
+      "adjacent_workflow": "Interactive requirements elicitation improves plans by repeatedly asking the user to resolve goals and conflicts.",
+      "complex_enough_focus": "When an agent is authorized to drive design, the user remains the boss while Main acts as meeting manager: it autonomously maps missing perspectives and evidence, and the user retains explicit role-slate and consequential-decision authority.",
+      "scope_boundary": "Complex Enough improves and validates the upstream plan; it does not replace the downstream spec, implementation, TDD, debugging, or delivery workflow."
+    },
+    "not_a_generic_debate_tool": true,
+    "not_an_implementation_task_dispatcher": true,
+    "differentiators": [
+      "Main assesses meeting value before creating meeting state.",
+      "Controlled blind evaluations observed 5.0%–12.5% relative mean planning-score uplift across broader and focused scopes, with explicit limitations.",
+      "Main generates the complete role slate and the user can accept, edit, or import external role-positioning text before freeze.",
+      "Actual-user lenses challenge task fit and recovery behavior without being mislabeled as user research.",
+      "Consequential claims are adjudicated by authority and evidence rather than votes or department weights.",
+      "Public versioned contracts preserve role-level provenance without exposing private reasoning or raw transcripts.",
+      "Roles represent distinct stakeholder consequences or evidence, not implementation work units; normal plan/spec work continues after synthesis."
+    ]
+  },
+  "publisher_inputs": {
+    "verified_developer_or_business_identity": null,
+    "publisher_type": "individual",
+    "publisher_display_name": "Huan Min Wei",
+    "publisher_profile_url": "https://complexenough.com/en/",
+    "public_repository_url": "https://github.com/complex-enough/complex-enough",
+    "website_url": "https://complexenough.com/en/",
+    "support_url": "https://complexenough.com/en/support/",
+    "privacy_policy_url": "https://complexenough.com/en/privacy/",
+    "terms_url": "https://complexenough.com/en/terms/",
+    "logo_asset": "packaging/assets/logo.png",
+    "country_availability": "All countries and regions selectable in the OpenAI submission portal",
+    "platform_organization_with_apps_management_write": null
+  },
+    "release_notes": "Initial official-directory submission of the Complex Enough skills-only plugin, version 1.1.0. Improves planning before specs and code through selective meeting routing, user-reviewed role slates, evidence-based synthesis, public 1.x contracts, and deterministic local validators.",
+  "submission_materials": {
+    "plugin_manifest": "packaging/plugin.json",
+    "test_cases": "submission/test-cases.json",
+    "local_smoke": "submission/local-smoke-2026-08-31.json",
+    "privacy_policy": "submission/privacy-policy.md",
+    "privacy_policy_zh_tw": "submission/privacy-policy.zh-TW.md",
+    "terms_of_use": "submission/terms-of-use.md",
+    "terms_of_use_zh_tw": "submission/terms-of-use.zh-TW.md",
+    "support": "submission/support.md",
+    "support_zh_tw": "submission/support.zh-TW.md",
+    "brand_assets": "brand/",
+    "website_source": "site/",
+    "build_command": "python3 scripts/package_plugin.py --replace",
+    "generated_bundle": "build/submission/orchestrate-multi-perspective-panel-1.1.0.zip"
+  },
+  "notes": [
+    "This file is an internal readiness record, not an OpenAI portal import schema.",
+    "Public URLs are planned but not live until GitHub Pages and the custom domain are explicitly enabled.",
+    "The exact verified individual display name and an eligible OpenAI Platform organization remain portal-time gates.",
+    "Do not change status to ready_to_submit until every publisher input is resolved and the generated bundle passes fresh-host validation."
+  ]
+}
