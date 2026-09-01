@@ -4,6 +4,10 @@ All notable changes are documented here. Repository releases use Semantic Versio
 
 ## [Unreleased]
 
+### Changed
+
+- Recorded the successful `v1.1.0` tag-driven Pages deployment and the required `github-pages` environment rule for `v*` tags.
+
 ## [1.1.0] - 2026-09-02
 
 ### Added
