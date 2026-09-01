@@ -1,6 +1,9 @@
-name: Build GitHub Pages artifact
+name: Publish GitHub Pages
 
 on:
+  push:
+    tags:
+      - "v*"
   workflow_dispatch:
 
 permissions:
@@ -16,6 +19,12 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+      - name: Check release tag matches plugin version
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          expected="v$(python3 -c 'import json; print(json.load(open("packaging/plugin.json", encoding="utf-8"))["version"])')"
+          test "$GITHUB_REF_NAME" = "$expected"
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload static site artifact

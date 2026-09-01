@@ -8,6 +8,37 @@ Complex Enough is agent-led planning quality control for autonomous software dev
 
 The public plugin brand is **Complex Enough**. The contained skill and its stable technical identifier remain `orchestrate-multi-perspective-panel`; existing invocation names, schemas, installation paths, and `1.x` contracts do not change with the brand.
 
+## Install before official directory listing
+
+Complex Enough has not yet been accepted into OpenAI's universal public Plugins Directory. Until then, install the public release from this repository and pin the release tag instead of tracking moving `main` bytes.
+
+### Plugin marketplace (recommended)
+
+Clone the release and build its local marketplace:
+
+```bash
+git clone --depth 1 --branch v1.1.0 https://github.com/complex-enough/complex-enough.git
+cd complex-enough
+python3 -m pip install -r requirements-dev.txt
+python3 scripts/package_plugin.py --replace
+codex plugin marketplace add ./build/marketplace
+codex plugin add orchestrate-multi-perspective-panel@complex-enough-releases
+```
+
+Start a new thread after installation. In the ChatGPT desktop app, **Complex Enough** also appears under **Complex Enough Releases** in the Plugins Directory. This local marketplace is a pre-directory distribution source; it does not imply OpenAI review or endorsement. See OpenAI's [plugin marketplace documentation](https://developers.openai.com/plugins/build/plugins#add-a-marketplace-from-the-cli).
+
+### Codex personal skill
+
+If the plugin surface is unavailable, install the same portable runtime as a personal Codex skill from the cloned release:
+
+```bash
+python3 scripts/install_skill.py \
+  --platform codex \
+  --target ~/.codex/skills/orchestrate-multi-perspective-panel
+```
+
+Restart Codex after installation. Do not keep this personal copy enabled beside the plugin, because same-name discovery may select either source.
+
 ## Product scope
 
 ### 1. Suitable situations and boundaries
@@ -137,7 +168,7 @@ This is a synthesis requirement, not a reason to invite frontend, backend, archi
 
 Use the narrowest sufficient mode; `full_cycle` is not the default.
 
-## Install from a repository checkout
+## Maintainer installation from a repository checkout
 
 Install the development dependencies:
 

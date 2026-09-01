@@ -9,6 +9,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
+PAGES_WORKFLOW = ROOT / ".github" / "workflows" / "pages.yml"
 
 
 class LinkParser(HTMLParser):
@@ -24,6 +25,13 @@ class LinkParser(HTMLParser):
 
 
 class PublicSiteTest(unittest.TestCase):
+    def test_pages_publish_is_release_tag_driven_with_manual_recovery(self) -> None:
+        workflow = PAGES_WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn('tags:\n      - "v*"', workflow)
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertIn("packaging/plugin.json", workflow)
+        self.assertIn("$GITHUB_REF_NAME", workflow)
+
     def test_all_relative_html_and_asset_links_resolve(self) -> None:
         for page in sorted(SITE.rglob("*.html")):
             with self.subTest(page=page.relative_to(SITE)):

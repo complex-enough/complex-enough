@@ -4,9 +4,12 @@ All notable changes are documented here. Repository releases use Semantic Versio
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-02
+
 ### Added
 
-- A bilingual static website source with final privacy, terms, support, and brand pages; a manual-only GitHub Pages workflow; and a non-executed custom-domain/DNS runbook.
+- A bilingual static website source with final privacy, terms, support, and brand pages; a release-tag-driven GitHub Pages workflow with manual recovery; and a staged custom-domain/DNS runbook.
+- Public pre-directory installation instructions for a tag-pinned local plugin marketplace or Codex personal skill, with a branded `Complex Enough Releases` marketplace.
 - Canonical SVG brand sources plus reproducible plugin listing PNGs included in the submission bundle.
 - Public-surface validation covering publisher identity, policy completeness, local links, package assets, and tracking-free static pages.
 - Reproducible skills-only plugin packaging with a validated manifest, generated local marketplace, deterministic submission ZIP, and runtime-manifest parity tests.

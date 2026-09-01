@@ -157,8 +157,8 @@ def _write_json(path: Path, value: dict) -> None:
 
 def _marketplace(category: str) -> dict:
     return {
-        "name": "meeting-core-local",
-        "interface": {"displayName": "Meeting Core Local"},
+        "name": "complex-enough-releases",
+        "interface": {"displayName": "Complex Enough Releases"},
         "plugins": [
             {
                 "name": PLUGIN_NAME,

@@ -113,6 +113,10 @@ class PackagePluginTest(unittest.TestCase):
                 Path(result["marketplace"]).relative_to(Path(result["plugin_root"]).parents[1]).as_posix(),
                 ".agents/plugins/marketplace.json",
             )
+            self.assertEqual(marketplace["name"], "complex-enough-releases")
+            self.assertEqual(
+                marketplace["interface"]["displayName"], "Complex Enough Releases"
+            )
             entry = marketplace["plugins"][0]
             self.assertEqual(entry["name"], package_plugin.PLUGIN_NAME)
             self.assertEqual(entry["source"]["path"], f"./plugins/{package_plugin.PLUGIN_NAME}")
