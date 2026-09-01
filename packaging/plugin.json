@@ -21,7 +21,7 @@
   "interface": {
     "displayName": "Complex Enough",
     "shortDescription": "Agent-led plan quality control",
-    "longDescription": "Complex Enough is agent-led planning quality control for autonomous software development. The user remains the boss, owning goals, scope, and consequential decisions; Main acts as the meeting manager. Before a request becomes a spec or code, Main decides whether independent perspectives would materially improve the plan, proposes the smallest sufficient panel for user review, freezes the accepted slate, and returns one evidence-based synthesis. Low-value tasks continue normally. Controlled blind evaluations observed 5.0%–12.5% relative mean planning-score uplift across different scopes; these are directional planning results, not guarantees of downstream implementation outcomes.",
+    "longDescription": "Complex Enough improves plans before specs and code when users have only a goal or partial domain knowledge and an AI agent is expected to drive design. Instead of letting one session fill every gap from one perspective, Main checks whether independent lenses would materially change the result, proposes the smallest sufficient panel for user review, freezes the accepted slate, and returns one evidence-based synthesis. Simple, reversible tasks continue normally. The complete six-task blind evaluation observed 5.0% relative mean planning-score uplift while retaining a deliberately simple negative-applicability case; a separate focused three-task compact-panel benchmark observed 12.5%. These are directional planning results, not guarantees of downstream implementation outcomes.",
     "developerName": "Huan Min Wei",
     "category": "Developer Tools",
     "brandColor": "#E76F51",
@@ -37,7 +37,7 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Before writing a spec, improve this workflow with the smallest useful panel.",
+      "I know the goal but not every domain detail. Before writing a spec, improve this workflow with the smallest useful panel.",
       "Review this agent-written plan for stakeholder, stale-state, and recovery gaps.",
       "Decide whether this task needs a meeting, then plan normally if it does not."
     ]

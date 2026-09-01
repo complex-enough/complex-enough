@@ -6,7 +6,7 @@
     "name": "orchestrate-multi-perspective-panel",
     "version": "1.1.0",
     "tested_bundle_sha256": "sha256:0fe5443b0e81956522216ec59c58fbf18ca3029f16d1eb15f166990aaab4642c",
-    "current_bundle_sha256": "sha256:8dbec8d81274616a53f7d64043b550d927c84b1d8fdde20782bbd500775cd462",
+    "current_bundle_sha256": "sha256:ea105e9f6bec3e8513b8fdfffcdcbff23730bc72d86bc4f88c8ea524c0d7281e",
     "local_marketplace": "meeting-core-local",
     "installed_enabled": true
   },

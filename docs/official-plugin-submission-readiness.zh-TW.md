@@ -10,13 +10,32 @@ OpenAI 的官方路徑是將 skill 包成 skills-only plugin，經 Platform subm
 
 - Directory category：`Developer Tools`。
 - Short description：`Agent-led plan quality control`。
-- 核心類別：偏自動化開發情境中的 agent-led planning quality control。
-- 責任模型：使用者是老闆，擁有目標、scope 與重大決策；Main 是受委任的會議主管，負責判斷 meeting value、找齊最小充分視角、主持證據衝突並整合 Plan。
-- 主要效益：在 Plan 變成 Spec 與程式碼前，找出使用者後果、authority、handoff、stale state、誤操作與 recovery 缺口，避免錯誤假設向後續自動化流程傳播。
-- 方向性證據：較廣六任務盲評的相對平均規劃分數提升約 `5.0%`；聚焦 compact 三任務盲評約 `12.5%`。不可把任務勝率、assertion pass rate 或推測的下游放大改寫為品質提升百分比。
-- 相鄰但不同的工作流：互動式需求引導主要透過 Agent 反覆詢問使用者來完善需求；Complex Enough 的主要情境是 Agent 已被授權主導設計，Main 自動建立缺少的 evidence-distinct lenses，使用者保留角色確認與重大決策權。
 
-Portal 與 reviewer talk track 應只承諾本次 skills-only 版本已具備的 selective routing、role proposal/review/freeze、independent perspectives、evidence adjudication 與 synthesis。未來 GUI 會讓使用者逐回合從公開理由、證據、衝突與後果中學習，並在最終 Plan 定版前要求下一回合臨時加入視角；這是 roadmap，不是 1.1.0 的 listing claim。GUI 仍只顯示結構化 public deliberation，不顯示 hidden reasoning 或 raw private transcripts。
+### 1. 適合情境與範圍
+
+- 核心類別：偏自動化開發情境中的 agent-led planning quality control。
+- 主要使用者狀態：使用者只有目標，或只有部分領域知識，並授權 Agent 主導設計；不要求使用者先列出所有缺少的利害關係人與專業視角。
+- 高價值觸發條件：不同使用者承受不同後果，或存在 authority、evidence、state、human/system handoff、stale state、誤操作與 recovery 風險。
+- 不適用邊界：單一操作者、低後果、成熟且局部可逆的工作應留在 ordinary session；Complex Enough 的 selective routing 會主動避免沒有邊際價值的會議。
+- 責任模型：使用者是老闆，擁有目標、scope 與重大決策；Main 是受委任的會議主管，負責判斷 meeting value、找齊最小充分視角、主持證據衝突並整合 Plan。
+
+### 2. 與一般直接設計的差異
+
+一般直接設計會由同一 Agent 依單一 working perspective 補足未知內容，接著讓該 Plan 成為 Spec 與實作的上游輸入。Complex Enough 在這之前加入選擇性品質閘門：Main 自動建立缺少的 evidence-distinct lenses，使用者確認完整角色組合，各視角獨立執行，最後由 Main 依 authority 與 evidence 整合為一份可稽核 Plan。它不是固定 panel、投票工具或 implementation task dispatcher。
+
+- 主要效益：在 Plan 變成 Spec 與程式碼前找出錯誤假設，避免同一缺口向後續自動化流程傳播。
+- 完整主結果：六任務盲評全部保留，平均分數為 `+0.222/5`，約相對 Control 提升 `5.0%`；B1 是刻意納入的簡單、可逆負向適用性案例，其 `-0.167` 沒有排除。
+- 情境分層：同批 B4–B6 的多方狀態、權威或實體交接案例平均 `+0.403/5`，約為 B2–B3 平均 `+0.146/5` 的 `2.8` 倍。這只描述 score-delta magnitude，不是「品質提高 2.8 倍」，也不取代完整六任務主結果。
+- 獨立補充證據：另一組聚焦 compact 的三任務盲評為 `+0.514/5`，約相對提升 `12.5%`。
+- 不可把任務勝率、assertion pass rate、描述性分層或推測的下游放大改寫為普遍品質提升百分比；目前尚未直接量測 Spec／Implementation outcome。
+
+相鄰但不同的互動式需求引導，主要透過 Agent 反覆詢問使用者來完善需求。Complex Enough 的主要價值是當使用者只提供目標或部分領域知識、並希望 Agent 主導規劃時，自動補齊互相獨立的專業與實際使用視角，同時保留使用者的角色確認與重大決策權。
+
+### 3. 後續延伸應用
+
+Portal 與 reviewer talk track 應只承諾本次 skills-only 版本已具備的 selective routing、role proposal/review/freeze、independent perspectives、evidence adjudication 與 synthesis。
+
+未來 GUI 會讓使用者逐回合從公開理由、證據、衝突與後果中學習領域知識與決策原因，並在最終 Plan 定版前追問 Main，或要求下一回合臨時加入／拆分視角。這是使用者學習與理解，不是模型訓練或永久記憶；也是 roadmap，而非 1.1.0 listing claim。GUI 仍只顯示結構化 public deliberation，不顯示 hidden reasoning 或 raw private transcripts。角色 prompt 的後續訓練不列入目前 roadmap。
 
 ## 已確認的公開身分
 
@@ -98,4 +117,5 @@ Repository 公開 publisher 使用個人姓名、品牌網域與 Organization na
 - [Package your plugin](https://developers.openai.com/plugins/build/plugins)
 - [Submit plugins](https://developers.openai.com/plugins/deploy/submission)
 - [Plugin guidelines](https://developers.openai.com/plugins/app-guidelines)
+- [Optimize metadata](https://developers.openai.com/plugins/guides/optimize-metadata)
 - [Security and privacy](https://developers.openai.com/plugins/guides/security-privacy)

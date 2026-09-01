@@ -22,12 +22,26 @@
   <main id="main" class="page">
     <section class="hero">
       <div><p class="eyebrow">Agent-led planning quality control</p><h1>Better plans before specs and code.</h1>
-        <p class="lede">The right perspectives. No more. You remain the boss; Main acts as the meeting manager. When an AI agent drives design, Complex Enough decides whether independent lenses would materially improve the plan, forms the smallest useful panel for your review, and returns one evidence-based synthesis.</p>
+        <p class="lede">The right perspectives. No more. When you have only a goal or partial domain knowledge and want an AI agent to drive design, Complex Enough improves the Plan before assumptions propagate into specs and code. You remain the boss; Main acts as the meeting manager.</p>
         <div class="actions"><a class="button" href="https://github.com/complex-enough/complex-enough">View the source</a><a class="button secondary" href="support/">Get support</a></div>
       </div>
       <img class="hero-mark" src="../assets/brand/mark.svg" alt="Three perspective shapes converging around a central diamond">
     </section>
-    <section class="section"><p class="eyebrow">How it works</p><h2>A meeting only when it earns its place.</h2>
+    <section class="section"><p class="eyebrow">1 · Where it fits</p><h2>You need a sound Plan—not every answer upfront.</h2>
+      <p class="section-intro">Complex Enough is for agent-led product and software planning where missing a user consequence, authority boundary, source of truth, or handoff could distort everything built afterward.</p>
+      <div class="grid">
+        <article class="card"><h3>Only a goal</h3><p>Describe the outcome. Main maps the missing professional and real-use lenses instead of expecting you to name every stakeholder.</p></article>
+        <article class="card"><h3>Partial domain knowledge</h3><p>Your perspective stays visible and reviewable while independent lenses challenge gaps you may not know to ask about.</p></article>
+        <article class="card"><h3>Consequential handoffs</h3><p>Use it when state, authority, evidence, or responsibility crosses users, teams, systems, or a physical handoff.</p></article>
+      </div>
+      <p class="section-intro">Keep simple, single-actor, locally reversible work in an ordinary session. Selective routing is part of the product.</p>
+    </section>
+    <section class="section"><p class="eyebrow">2 · Difference from direct design</p><h2>A quality gate before one perspective becomes the Plan.</h2>
+      <p class="section-intro">A direct session lets one agent fill missing details from one working perspective. Complex Enough first asks whether independent lenses could materially change the result.</p>
+      <div class="grid comparison-grid">
+        <article class="card"><p class="number">Direct session</p><h3>One path fills the gaps</h3><p>Goal or partial knowledge → one agent’s assumptions → Plan → Spec → Implementation.</p></article>
+        <article class="card"><p class="number">Complex Enough</p><h3>Perspectives challenge the gaps</h3><p>Goal or partial knowledge → selective routing → user-reviewed independent lenses → evidence-based synthesis → confirmed Plan.</p></article>
+      </div>
       <p class="section-intro">The stable technical identifier remains <code>orchestrate-multi-perspective-panel</code>. Complex Enough preserves the public 1.x contracts while making meeting formation visible and adjustable.</p>
       <div class="grid">
         <article class="card"><p class="number">01</p><h3>Route selectively</h3><p>Main checks consequences, handoffs, authority, evidence, reversibility, and stale-state harm before creating meeting state.</p></article>
@@ -35,13 +49,23 @@
         <article class="card"><p class="number">03</p><h3>Synthesize evidence</h3><p>Independent perspectives are adjudicated by evidence and authority—not votes—and return one auditable result.</p></article>
       </div>
     </section>
+    <section class="section"><p class="eyebrow">3 · Planned extension</p><h2>Follow the discussion. Learn why the decision holds.</h2>
+      <p class="section-intro">The current skills-only release already returns structured public evidence and decisions. A planned GUI will make that deliberation easier for the human boss to follow before the final Plan is locked.</p>
+      <div class="grid">
+        <article class="card"><h3>Understand the domain</h3><p>See public claims, evidence, conflicts, consequences, and concise decision reasons—not just the final answer.</p></article>
+        <article class="card"><h3>Intervene before lock</h3><p>Ask Main for clarification or request an added or split perspective for a newly confirmed next round.</p></article>
+        <article class="card"><h3>Keep reasoning boundaries</h3><p>This is human learning, not model training or permanent memory. Hidden chain-of-thought and raw private transcripts remain excluded.</p></article>
+      </div>
+      <p class="section-intro">The GUI is roadmap work and is not included in the current skills-only 1.1.0 release.</p>
+    </section>
     <section class="section"><p class="eyebrow">Directional evidence</p><h2>Catch ambiguity before it travels downstream.</h2>
       <p class="section-intro">Plans become inputs to later specs and implementation decisions. Complex Enough is designed to expose user consequences, authority boundaries, handoffs, and recovery gaps before those assumptions harden.</p>
       <div class="grid">
-        <article class="card"><p class="number">5.0%</p><h3>Broader evaluation</h3><p>Relative mean planning-score uplift in a six-task selective plan-only blind comparison; Treatment scored higher in 5 of 6 tasks.</p></article>
-        <article class="card"><p class="number">12.5%</p><h3>Focused compact panel</h3><p>Relative mean planning-score uplift in a three-task compact-panel blind comparison; Treatment scored higher in all 3 tasks.</p></article>
+        <article class="card"><p class="number">5.0%</p><h3>Complete six-task result</h3><p>Relative mean planning-score uplift with all six tasks retained, including a deliberately simple negative-applicability case.</p></article>
+        <article class="card"><p class="number">12.5%</p><h3>Separate compact benchmark</h3><p>Relative mean planning-score uplift in an independent focused three-task compact-panel comparison.</p></article>
         <article class="card"><p class="number">120/120</p><h3>Current contract gate</h3><p>Behavioral assertions passed by three fresh blind public-output graders across 26 isolated cases.</p></article>
       </div>
+      <p class="section-intro">Inside the six-task evaluation, higher meeting-value cases with multi-party state, authority, or physical handoffs averaged a <code>+0.403/5</code> score delta, versus <code>+0.146/5</code> for the two lower meeting-value positive cases—about <code>2.8x</code> the observed delta magnitude. This is descriptive scenario segmentation, not a claim that quality became 2.8 times higher.</p>
       <p class="section-intro">These are directional planning results from simulated evaluators in one model family—not guarantees of production outcomes. Downstream amplification has not yet been measured directly. <a href="https://github.com/complex-enough/complex-enough/blob/main/docs/evaluations/complex-enough-quality-evidence-summary.zh-TW.md">Read the evidence boundaries and calculations</a>.</p>
     </section>
     <section class="section"><div class="callout"><p class="eyebrow">Clear boundaries</p><h2>Decision support, not artificial consensus.</h2><p>Generated perspectives are analytical lenses, not real stakeholders or user research. Public output excludes hidden reasoning, private scratch work, raw internal messages, and panelist transcripts.</p><p><a href="privacy/">Read the privacy policy</a> · <a href="terms/">Read the terms of use</a></p></div></section>

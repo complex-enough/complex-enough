@@ -51,6 +51,8 @@
 | B5 門市取貨替代品確認 | 顧客、低信心顧客、門市揀貨／交班 | 顧客接受、門市收到及目前可執行是否被拆開 | Control；三席 Treatment |
 | B6 訪客登記變更 | Host、Guest、Front desk | 目前時間／地點／取消／check-in 邊界及舊資訊 | Control；標準三席；擴充四席 |
 
+B1 刻意採用成熟、低後果且局部可逆的單一操作者工作，目的是檢查多視角流程會不會在低 meeting-value 情境中增加設計而沒有足夠收益。本文後續稱它為「負向適用性案例」或 task-level negative-applicability case；這不等於各任務內用來比較 Treatment 的 `Control` arm。
+
 Main 是 moderator，不算 perspective seat。二席 Treatment 是一位領域專業加一位模擬 End user；三席／四席則依 evidence-distinct 使用面增加 End-user lens。
 
 ## 固定流程與成本

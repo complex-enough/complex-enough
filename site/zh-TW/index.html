@@ -22,12 +22,26 @@
   <main id="main" class="page">
     <section class="hero">
       <div><p class="eyebrow">Agent 主導的規劃品質控制</p><h1>在 Spec 與程式碼之前，先改善 Plan。</h1>
-        <p class="lede">需要的視角，僅此而已。你是老闆，Main 是會議主管。當 AI Agent 主導設計時，Complex Enough 會判斷獨立視角能否實質改善 Plan，形成最小而足夠的角色組合供你檢視，最後回傳一份以證據為基礎的整合結果。</p>
+        <p class="lede">需要的視角，僅此而已。當你只有目標，或只有部分領域知識，並希望 AI Agent 主導設計時，Complex Enough 會在假設擴散到 Spec 與程式碼前先改善 Plan。你是老闆，Main 是會議主管。</p>
         <div class="actions"><a class="button" href="https://github.com/complex-enough/complex-enough">查看原始碼</a><a class="button secondary" href="support/">取得支援</a></div>
       </div>
       <img class="hero-mark" src="../assets/brand/mark.svg" alt="三個不同視角匯聚於清楚的中心">
     </section>
-    <section class="section"><p class="eyebrow">運作方式</p><h2>只有在有價值時才開會。</h2>
+    <section class="section"><p class="eyebrow">1 · 適合情境與範圍</p><h2>你需要的是可靠的 Plan，不是事先知道所有答案。</h2>
+      <p class="section-intro">Complex Enough 適合 Agent 主導的產品與軟體規劃，特別是漏掉使用者後果、權威邊界、truth source 或交接，就可能扭曲後續所有產出的情境。</p>
+      <div class="grid">
+        <article class="card"><h3>只有目標</h3><p>先說明想達成的結果；Main 會整理缺少的專業與實際使用視角，不要求你事先列出所有利害關係人。</p></article>
+        <article class="card"><h3>部分領域知識</h3><p>你的視角會被保留並可檢視，同時由獨立觀點挑戰你可能不知道要追問的缺口。</p></article>
+        <article class="card"><h3>有後果的交接</h3><p>當狀態、權威、證據或責任跨越使用者、團隊、系統或實體交接時使用。</p></article>
+      </div>
+      <p class="section-intro">簡單、單一操作者且可局部回復的工作，應留在普通 session。選擇性 routing 本身就是產品能力。</p>
+    </section>
+    <section class="section"><p class="eyebrow">2 · 與直接設計的差異</p><h2>在單一視角變成 Plan 前，先加入品質閘門。</h2>
+      <p class="section-intro">一般直接設計會由同一 Agent 依一個 working perspective 補足未知內容。Complex Enough 先判斷獨立視角是否可能實質改變結果。</p>
+      <div class="grid comparison-grid">
+        <article class="card"><p class="number">一般 session</p><h3>由一條路徑補齊缺口</h3><p>目標或部分知識 → 單一 Agent 的假設 → Plan → Spec → Implementation。</p></article>
+        <article class="card"><p class="number">Complex Enough</p><h3>讓獨立視角挑戰缺口</h3><p>目標或部分知識 → 選擇性 routing → 使用者確認的獨立視角 → 證據整合 → 確認後的 Plan。</p></article>
+      </div>
       <p class="section-intro">穩定技術識別維持 <code>orchestrate-multi-perspective-panel</code>。Complex Enough 保留公開的 1.x contracts，同時讓會議形成過程可見、可調整。</p>
       <div class="grid">
         <article class="card"><p class="number">01</p><h3>選擇性 routing</h3><p>Main 先檢查後果、交接、權限、證據、可逆性與 stale-state harm，再決定是否建立會議狀態。</p></article>
@@ -35,13 +49,23 @@
         <article class="card"><p class="number">03</p><h3>整合證據</h3><p>各觀點獨立執行，Main 依證據與權威裁決，而非投票，最後回傳一份可稽核結果。</p></article>
       </div>
     </section>
+    <section class="section"><p class="eyebrow">3 · 後續延伸應用</p><h2>看懂討論，也看懂決策為什麼成立。</h2>
+      <p class="section-intro">目前 skills-only 版本已會回傳結構化公開證據與決策。規劃中的 GUI 會讓身為老闆的使用者，在最終 Plan 定版前更容易理解整段討論。</p>
+      <div class="grid">
+        <article class="card"><h3>理解領域知識</h3><p>查看公開主張、證據、衝突、後果與精簡決策理由，而不只看到最後答案。</p></article>
+        <article class="card"><h3>定版前介入</h3><p>向 Main 追問，或要求下一個重新確認的回合臨時加入、拆分一個視角。</p></article>
+        <article class="card"><h3>維持推理界線</h3><p>這是使用者學習，不是模型訓練或永久記憶；隱藏 chain-of-thought 與原始私人逐字稿仍不公開。</p></article>
+      </div>
+      <p class="section-intro">GUI 屬於 roadmap，不包含在目前 skills-only 1.1.0 版本。</p>
+    </section>
     <section class="section"><p class="eyebrow">方向性證據</p><h2>在模糊假設向下游擴散前找出它。</h2>
       <p class="section-intro">Plan 會成為後續 Spec 與實作決策的輸入。Complex Enough 的設計目標，是在這些假設固化前，揭露使用者後果、權威邊界、交接與恢復缺口。</p>
       <div class="grid">
-        <article class="card"><p class="number">5.0%</p><h3>較廣評估</h3><p>六任務 selective plan-only 盲評的相對平均規劃分數提升；Treatment 在 6 個任務中勝出 5 個。</p></article>
-        <article class="card"><p class="number">12.5%</p><h3>聚焦 compact panel</h3><p>三任務 compact-panel 盲評的相對平均規劃分數提升；Treatment 在 3 個任務中全部勝出。</p></article>
+        <article class="card"><p class="number">5.0%</p><h3>完整六任務結果</h3><p>六題全數保留後的相對平均規劃分數提升，包含刻意納入的簡單負向適用性案例。</p></article>
+        <article class="card"><p class="number">12.5%</p><h3>另一組 compact benchmark</h3><p>獨立、聚焦的三任務 compact-panel 比較所觀察到的相對平均規劃分數提升。</p></article>
         <article class="card"><p class="number">120/120</p><h3>目前 contract gate</h3><p>26 個隔離案例的行為 assertions，經三位 fresh blind public-output graders 全數判定通過。</p></article>
       </div>
+      <p class="section-intro">六任務評估內，多方狀態、權威或實體交接的較高 meeting-value 案例，平均分數差值為 <code>+0.403/5</code>；兩個較低 meeting-value 的正向案例為 <code>+0.146/5</code>，前者約為後者的 <code>2.8</code> 倍。這是描述性情境分層，不代表品質變成 2.8 倍。</p>
       <p class="section-intro">這些是單一 model family、模擬 evaluator 的方向性規劃結果，不是 production outcome 保證；下游放大效果尚未直接量測。<a href="https://github.com/complex-enough/complex-enough/blob/main/docs/evaluations/complex-enough-quality-evidence-summary.zh-TW.md">閱讀證據邊界與計算方式</a>。</p>
     </section>
     <section class="section"><div class="callout"><p class="eyebrow">清楚界線</p><h2>決策支援，不製造表面共識。</h2><p>生成觀點是分析視角，不是真實利害關係人或使用者研究。公開輸出排除隱藏推理、私人草稿、原始內部訊息與 panelist transcripts。</p><p><a href="privacy/">閱讀隱私權政策</a> · <a href="terms/">閱讀使用條款</a></p></div></section>

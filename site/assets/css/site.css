@@ -122,6 +122,7 @@ h3 { margin-top: 1.8rem; font-size: 1.25rem; }
 .section { padding-block: clamp(4rem, 8vw, 7rem); border-top: 1px solid var(--line); }
 .section-intro { max-width: 760px; color: var(--slate); font-size: 1.15rem; }
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+.comparison-grid { grid-template-columns: repeat(2, 1fr); }
 .card {
   padding: clamp(1.4rem, 3vw, 2rem);
   border: 1px solid var(--line);
@@ -169,6 +170,7 @@ code { padding: .12em .35em; border-radius: .35em; background: var(--warm); font
   .hero { min-height: auto; grid-template-columns: 1fr; }
   .hero-mark { width: min(72vw, 320px); grid-row: 1; }
   .grid { grid-template-columns: 1fr; }
+  .comparison-grid { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr; }
   .footer-links { justify-content: flex-start; }
 }

@@ -4,15 +4,29 @@
 
 [Website](https://complexenough.com/en/) · [繁體中文](https://complexenough.com/zh-TW/) · [Privacy](https://complexenough.com/en/privacy/) · [Terms](https://complexenough.com/en/terms/) · [Support](https://complexenough.com/en/support/)
 
-Complex Enough is agent-led planning quality control for autonomous software development. The user remains the boss, owning goals, scope, and consequential decisions; Main acts as the meeting manager. Before a request becomes a spec or code, Main decides whether independent perspectives would materially improve the plan, proposes the smallest sufficient set of professional and end-user perspectives, lets the user accept or adjust the complete role slate, and only then runs independent perspectives and returns one evidence-based synthesis.
-
-The skill is designed for work where the agent drives design with limited user steering. It improves the earliest part of planning by understanding real user work, avoiding unnecessary complexity, and making important recovery paths visible before a normal agent continues into spec and implementation. The user retains an explicit role-slate confirmation checkpoint without having to identify every missing stakeholder lens. Better upstream inputs can reduce propagated ambiguity and rework, but downstream implementation impact has not yet been measured directly.
+Complex Enough is agent-led planning quality control for autonomous software development. It is designed for situations where the user has only a goal or partial domain knowledge and expects an AI agent to drive the design. The user remains the boss, owning goals, scope, and consequential decisions; Main acts as the meeting manager.
 
 The public plugin brand is **Complex Enough**. The contained skill and its stable technical identifier remain `orchestrate-multi-perspective-panel`; existing invocation names, schemas, installation paths, and `1.x` contracts do not change with the brand.
 
-## Why this exists
+## Product scope
+
+### 1. Suitable situations and boundaries
+
+Use Complex Enough when a plan has genuinely different user consequences, authority, evidence, state transitions, or human/system handoffs, especially when missing one of those perspectives could propagate a false assumption into later delivery work. The user does not need to know every stakeholder or solution detail in advance: Main maps the missing lenses and proposes the smallest sufficient slate for review.
+
+Keep simple, single-actor, locally reversible work in an ordinary session. Selective routing is part of the product, not a failure to use it.
+
+### 2. Difference from direct agent design
 
 Multi-agent discussion is easy to start and easy to overdo. Fixed panels tend to invite the same architect, security, frontend, and backend roles regardless of the task; informal debates can also hide minority evidence behind consensus.
+
+A direct design session usually lets one agent fill missing details from one working perspective. Complex Enough inserts a selective quality gate before the plan becomes the source for specs and code:
+
+```text
+direct session:  goal or partial knowledge -> one agent fills gaps -> Plan -> Spec -> Implementation
+Complex Enough: goal or partial knowledge -> selective routing -> user-reviewed independent lenses
+                -> evidence-based synthesis -> user-confirmed Plan -> Spec -> Implementation
+```
 
 This skill treats meeting formation as part of the decision:
 
@@ -24,6 +38,14 @@ This skill treats meeting formation as part of the decision:
 - When the requested task includes a user-facing workflow, its design must cover realistic uncertainty, correction, and handoff paths instead of only the happy path.
 
 This is not an implementation-task dispatcher. Task-parallel workflows divide work after a direction exists; this skill forms stakeholder and evidence lenses before plan/spec, exposes the complete role slate for user adjustment, and hands the validated synthesis back to the normal delivery workflow.
+
+Controlled evaluations directly measure the upstream Plan, where a broader six-task comparison observed about `5.0%` relative mean planning-score uplift. A better Plan is expected to reduce ambiguity passed into Spec and Implementation, but that downstream effect has not yet been measured and is not claimed as a percentage.
+
+### 3. Planned extension: visible user learning
+
+The current skills-only release returns structured public claims, evidence, conflicts, decisions, and a synthesis. A planned GUI will make that deliberation easier to follow so users can learn domain knowledge and understand why tradeoffs exist, ask Main for clarification, and request an added or split perspective for a newly confirmed round before the final Plan is locked.
+
+Here, “learning” means the human user learns from the public decision process. It does not mean model training, permanent agent memory, hidden chain-of-thought, or access to raw private transcripts. This GUI is roadmap work and is not included in the current skills-only 1.1.0 release.
 
 ## How it works
 
@@ -80,8 +102,6 @@ human user / boss (goals, scope, consequential decisions)
 Main also proposes the participation count through the concrete role slate. Users adjust participation by adding, splitting, merging, or removing roles; there is no separate headcount value that can drift from the people actually invited.
 
 Main is accountable for the meeting process and evidence-based synthesis, not for silently taking product authority from the user. Product direction, scope changes, external commitments, major cost, and accepted high-consequence risk remain real user decisions.
-
-The planned GUI extends this boss/manager model without weakening the frozen-round contract. After each round, the user will be able to learn from structured public claims, evidence, conflicts, consequences, and concise decision rationale; before the final Plan is locked, they can ask questions or ask Main to add or split a perspective for a newly confirmed next round. This is guided user understanding and deliberation continuity—not model training—and never exposes hidden reasoning or raw private transcripts. This GUI is roadmap work and is not included in the current skills-only 1.1.0 release.
 
 ## Design safeguards
 
@@ -216,7 +236,9 @@ Both contracts exclude hidden chain-of-thought, private scratch work, raw intern
 
 ## Current validation evidence
 
-Controlled blind evaluations observed approximately 5.0%–12.5% relative mean planning-score uplift, depending on scope. The broader six-task selective plan-only comparison improved `+0.222/5` (about 5.0% relative to Control; 5 of 6 tasks), while a focused three-task compact-panel comparison improved `+0.514/5` (about 12.5%; 3 of 3 tasks). These are directional planning results, not a universal outcome guarantee. See the [concise quality evidence summary](docs/evaluations/complex-enough-quality-evidence-summary.zh-TW.md) for calculation boundaries and publication-safe wording.
+The primary public result keeps all six selective plan-only tasks: `+0.222/5`, or about `5.0%` relative to Control, with Treatment scoring higher in 5 of 6 tasks. The batch deliberately included B1, a simple, single-actor and reversible negative-applicability case, and did not remove its `-0.167` result. Within the same batch, the higher meeting-value B4–B6 cases averaged `+0.403/5`, compared with `+0.146/5` for B2–B3—about `2.8x` the observed score-delta magnitude. This is descriptive scenario segmentation, not a claim that quality became 2.8 times higher.
+
+A separate focused three-task compact-panel comparison improved `+0.514/5` (about `12.5%` relative to its Control; 3 of 3 tasks). These are directional planning results, not a universal outcome guarantee. See the [concise quality evidence summary](docs/evaluations/complex-enough-quality-evidence-summary.zh-TW.md) for calculation boundaries and publication-safe wording.
 
 | Host | Result |
 | --- | --- |

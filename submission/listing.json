@@ -9,9 +9,9 @@
     "display_name": "Complex Enough",
     "category": "Developer Tools",
     "short_description": "Agent-led plan quality control",
-    "long_description": "Complex Enough is agent-led planning quality control for autonomous software development. The user remains the boss, owning goals, scope, and consequential decisions; Main acts as the meeting manager. Before a request becomes a spec or code, Main decides whether independent perspectives would materially improve the plan, proposes the smallest sufficient panel for user review, freezes the accepted slate, and returns one evidence-based synthesis. Low-value tasks continue normally. Controlled blind evaluations observed 5.0%–12.5% relative mean planning-score uplift across different scopes; these are directional planning results, not guarantees of downstream implementation outcomes.",
+    "long_description": "Complex Enough improves plans before specs and code when users have only a goal or partial domain knowledge and an AI agent is expected to drive design. Instead of letting one session fill every gap from one perspective, Main checks whether independent lenses would materially change the result, proposes the smallest sufficient panel for user review, freezes the accepted slate, and returns one evidence-based synthesis. Simple, reversible tasks continue normally. The complete six-task blind evaluation observed 5.0% relative mean planning-score uplift while retaining a deliberately simple negative-applicability case; a separate focused three-task compact-panel benchmark observed 12.5%. These are directional planning results, not guarantees of downstream implementation outcomes.",
     "starter_prompts": [
-      "Before writing a spec, improve this workflow with the smallest useful panel.",
+      "I know the goal but not every domain detail. Before writing a spec, improve this workflow with the smallest useful panel.",
       "Review this agent-written plan for stakeholder, stale-state, and recovery gaps.",
       "Decide whether this task needs a meeting, then plan normally if it does not."
     ]
@@ -19,17 +19,19 @@
   "review_positioning": {
     "public_brand": "Complex Enough",
     "brand_tagline": "The right perspectives. No more.",
-    "purpose": "Provide agent-led planning quality control before omissions and false assumptions propagate into specs and implementation, when distinct users, evidence, authority, or handoffs make independent perspectives valuable.",
+    "purpose": "Improve upstream Plan quality before omissions and false assumptions propagate into specs and implementation, especially when a user has only a goal or partial domain knowledge and distinct users, evidence, authority, or handoffs make independent perspectives valuable.",
     "category_positioning": {
       "adjacent_workflow": "Interactive requirements elicitation improves plans by repeatedly asking the user to resolve goals and conflicts.",
-      "complex_enough_focus": "When an agent is authorized to drive design, the user remains the boss while Main acts as meeting manager: it autonomously maps missing perspectives and evidence, and the user retains explicit role-slate and consequential-decision authority.",
+      "complex_enough_focus": "When a user has only a goal or partial domain knowledge and authorizes an agent to drive design, the user remains the boss while Main acts as meeting manager: it autonomously maps missing perspectives and evidence, and the user retains explicit role-slate and consequential-decision authority.",
       "scope_boundary": "Complex Enough improves and validates the upstream plan; it does not replace the downstream spec, implementation, TDD, debugging, or delivery workflow."
     },
     "not_a_generic_debate_tool": true,
     "not_an_implementation_task_dispatcher": true,
     "differentiators": [
       "Main assesses meeting value before creating meeting state.",
-      "Controlled blind evaluations observed 5.0%–12.5% relative mean planning-score uplift across broader and focused scopes, with explicit limitations.",
+      "The complete six-task blind evaluation observed 5.0% relative mean planning-score uplift while retaining B1, a deliberately simple negative-applicability case.",
+      "Within that batch, higher meeting-value B4–B6 cases averaged +0.403/5 versus +0.146/5 for B2–B3, a 2.8x larger observed score-delta magnitude; this is descriptive segmentation, not a quality multiplier.",
+      "A separate focused three-task compact-panel benchmark observed 12.5% relative mean planning-score uplift, with explicit limitations.",
       "Main generates the complete role slate and the user can accept, edit, or import external role-positioning text before freeze.",
       "Actual-user lenses challenge task fit and recovery behavior without being mislabeled as user research.",
       "Consequential claims are adjudicated by authority and evidence rather than votes or department weights.",
