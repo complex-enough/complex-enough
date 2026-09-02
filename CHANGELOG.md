@@ -7,6 +7,7 @@ All notable changes are documented here. Repository releases use Semantic Versio
 ### Changed
 
 - Recorded the successful `v1.1.0` tag-driven Pages deployment and the required `github-pages` environment rule for `v*` tags.
+- Recorded the verified `complexenough.com` custom domain, DNS-only GitHub Pages routing, enforced HTTPS, canonical redirects, and final bilingual desktop/mobile validation.
 
 ## [1.1.0] - 2026-09-02
 

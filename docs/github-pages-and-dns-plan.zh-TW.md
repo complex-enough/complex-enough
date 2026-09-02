@@ -1,6 +1,16 @@
 # Complex Enough GitHub Pages 與 DNS 發布計畫
 
-本文件是 GitHub Pages 與自訂網域發布 runbook。Repository 已公開，Pages source 已選擇 GitHub Actions；`v1.1.0` tag deployment 已於 2026-09-02 成功，預設網站位於 `https://complex-enough.github.io/complex-enough/`。DNS 與官方送審仍是獨立的外部 gate。
+本文件是 GitHub Pages 與自訂網域發布 runbook。Repository 已公開，Pages source 已選擇 GitHub Actions；`v1.1.0` tag deployment 已於 2026-09-02 成功。`complexenough.com` 的 Organization 驗證、DNS、GitHub Pages custom domain 與 Enforce HTTPS 亦已於同日完成；官方送審仍是獨立的外部 gate。
+
+## 目前發布狀態
+
+- Canonical website：`https://complexenough.com/`。
+- Organization domain verification TXT 已驗證並保留。
+- Apex 使用四筆 GitHub Pages A records，`www` CNAME 指向 `complex-enough.github.io`；全部為 **DNS only**。
+- Google Workspace MX、SPF、DKIM 與 domain verification records 未被覆蓋。
+- **Enforce HTTPS** 已啟用。
+- 2026-09-02 Playwright 最終檢查：11 條公開路徑各以桌面與手機 viewport 驗證，全部回應 `200`，沒有 broken image、console/network failure 或水平溢位。
+- `http://complexenough.com/`、`https://www.complexenough.com/` 與舊 `https://complex-enough.github.io/complex-enough/` 入口都會導向 canonical HTTPS host。
 
 ## 目標架構
 
@@ -21,7 +31,7 @@
 4. 推送與 `packaging/plugin.json` 版本一致的 release tag，讓 `Publish GitHub Pages` workflow 自動部署。只有重跑或故障恢復時才使用 `workflow_dispatch`。
 5. 驗證預設 `https://complex-enough.github.io/complex-enough/` 網址、兩種語言、四種政策頁、404、sitemap、手機版與無 JavaScript fallback。
 
-### Phase B：取得 DNS 修改授權後切換自訂網域
+### Phase B：取得 DNS 修改授權後切換自訂網域（2026-09-02 已完成）
 
 6. 在 GitHub Organization 的 **Settings → Pages** 驗證 `complexenough.com`。GitHub 會提供 `_github-pages-challenge-…` TXT 名稱與精確 token；不得自行猜測。
 7. 保留 domain verification TXT，不要在驗證後刪除。

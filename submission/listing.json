@@ -71,7 +71,7 @@
   },
   "notes": [
     "This file is an internal readiness record, not an OpenAI portal import schema.",
-    "Public URLs are planned but not live until GitHub Pages and the custom domain are explicitly enabled.",
+    "The public repository, website, support page, privacy policy, and terms are live over the verified complexenough.com HTTPS custom domain.",
     "The exact verified individual display name and an eligible OpenAI Platform organization remain portal-time gates.",
     "Do not change status to ready_to_submit until every publisher input is resolved and the generated bundle passes fresh-host validation."
   ]

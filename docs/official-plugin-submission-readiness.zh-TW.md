@@ -59,7 +59,8 @@ Portal 與 reviewer talk track 應只承諾本次 skills-only 版本已具備的
 - `brand/` 保存 canonical SVG，`packaging/assets/` 保存 128px composer icon 與 512px light/dark listing logo。
 - `site/` 保存無第三方 script、cookie、publisher analytics 或外部字型的英文／繁體中文靜態網站。
 - Privacy policy、terms of use 與 support 已由 draft 轉為可發布雙語內容。
-- Repository 已公開，Pages source 已選擇 GitHub Actions。`v1.1.0` tag 已成功觸發 Pages 部署，預設雙語網站已由桌面與手機 Playwright 驗證；另保留手動恢復入口。自訂網域尚未切換。
+- Repository 已公開，Pages source 已選擇 GitHub Actions。`v1.1.0` tag 已成功觸發 Pages 部署，另保留手動恢復入口。
+- `complexenough.com` 已完成 Organization domain verification、GitHub Pages custom domain、apex／`www` DNS 與 Enforce HTTPS。英文／繁中首頁、privacy、terms、support 與 brand 共 11 條公開路徑均已用桌面與手機 Playwright 匿名驗證；HTTP、`www` 與舊 GitHub Pages URL 都會導向 canonical HTTPS host。
 - 自訂網域與 DNS 的人工發布／回復順序已記錄於 [`github-pages-and-dns-plan.zh-TW.md`](github-pages-and-dns-plan.zh-TW.md)。
 - Portal 所需的 5 個正向與 3 個負向案例草稿已準備。
 - `CONTRIBUTING.md`、`SECURITY.md`、`CODE_OF_CONDUCT.md` 與 Apache-2.0 license 已存在。
@@ -93,11 +94,9 @@ Repository 公開 publisher 使用個人姓名、品牌網域與 Organization na
 
 1. 在 OpenAI Platform 完成或確認個人身分驗證，逐字確認 publisher 顯示名稱。
 2. 選擇具有 `Apps Management: Write` 的 organization／project。
-3. 依 runbook 驗證 Pages domain、設定 custom domain，之後才修改網站 A／AAAA／CNAME DNS；不得影響既有郵件 MX、SPF、DKIM 與驗證 TXT。
-4. 驗證英文／繁中 website、privacy、terms、support URL 皆可匿名公開讀取。
-5. 在最終提交 host 與精確 bundle bytes 上，以 fresh chats 執行 5 positive／3 negative portal cases。
-6. 逐項完成 portal listing、availability、release notes、policy attestations 與 guidelines review。
-7. 使用者明確授權後才修改 DNS 或提交官方審查。
+3. 在最終提交 host 與精確 bundle bytes 上，以 fresh chats 執行 5 positive／3 negative portal cases。
+4. 逐項完成 portal listing、availability、release notes、policy attestations 與 guidelines review。
+5. 使用者明確授權後才提交官方審查。
 
 ## `ready_to_submit` terminal condition
 
