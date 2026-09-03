@@ -1,6 +1,6 @@
 {
   "name": "orchestrate-multi-perspective-panel",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Agent-led planning quality control before specs and code.",
   "author": {
     "name": "Huan Min Wei",

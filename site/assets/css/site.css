@@ -98,6 +98,14 @@ h1 { max-width: 900px; margin: 0; font-size: clamp(3.1rem, 8vw, 6.8rem); }
 h2 { margin: 0 0 1rem; font-size: clamp(2rem, 4vw, 3.2rem); }
 h3 { margin-top: 1.8rem; font-size: 1.25rem; }
 .lede { max-width: 720px; margin: 1.5rem 0 0; color: var(--slate); font-size: clamp(1.12rem, 2vw, 1.35rem); }
+.availability-note {
+  max-width: 720px;
+  margin: 1.4rem 0 0;
+  padding: .8rem 1rem;
+  border-left: 4px solid var(--teal);
+  color: var(--slate);
+  background: var(--warm);
+}
 .actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
 .button {
   display: inline-flex;

@@ -20,7 +20,13 @@ from validate_meeting_bundle import validate_bundle
 from validate_meeting_plan import validate as validate_meeting_plan
 from validate_panel_output import validate as validate_panel_output
 from render_eval_prompt import render_conversation
-from package_plugin import PLUGIN_NAME, build as build_plugin, load_manifest
+from package_plugin import (
+    PLUGIN_NAME,
+    SKILL_NAME,
+    SUBMISSION_PLUGIN_NAME,
+    build as build_plugin,
+    load_manifest,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -270,10 +276,18 @@ def validate_submission_materials() -> None:
         fail("submission listing must identify its internal readiness record type")
     if listing.get("submission_type") != "skills_only":
         fail("submission listing must remain skills_only until scope changes explicitly")
-    if listing.get("status") not in {"awaiting_publisher_inputs", "ready_to_submit"}:
+    if listing.get("status") not in {
+        "awaiting_publisher_inputs",
+        "ready_to_submit",
+        "published",
+    }:
         fail("submission listing has an unknown readiness status")
     plugin = listing.get("plugin", {})
-    if plugin.get("name") != PLUGIN_NAME or plugin.get("version") != manifest["version"]:
+    if (
+        plugin.get("name") != SUBMISSION_PLUGIN_NAME
+        or plugin.get("skill_name") != SKILL_NAME
+        or plugin.get("version") != manifest["version"]
+    ):
         fail("submission listing and plugin manifest identity/version differ")
     listing_interface_fields = {
         "display_name": "displayName",
@@ -308,10 +322,28 @@ def validate_submission_materials() -> None:
     for field, expected in expected_public_inputs.items():
         if publisher_inputs.get(field) != expected:
             fail(f"submission publisher input {field} differs from the public surface")
-    if listing["status"] == "ready_to_submit" and any(
+    if listing["status"] in {"ready_to_submit", "published"} and any(
         value is None or value == "" for value in publisher_inputs.values()
     ):
-        fail("ready_to_submit requires every publisher-owned input")
+        fail("ready_to_submit or published requires every publisher-owned input")
+    if listing["status"] == "published":
+        publication = listing.get("publication", {})
+        expected_publication = {
+            "directory": "OpenAI universal Plugins Directory",
+            "published_version": manifest["version"],
+            "portal_status_before_publish": "Approved",
+            "publication_confirmed_by": "publisher",
+        }
+        for field, expected in expected_publication.items():
+            if publication.get(field) != expected:
+                fail(f"published submission has invalid {field}")
+        published_on = publication.get("published_on")
+        if not isinstance(published_on, str) or not re.fullmatch(
+            r"\d{4}-\d{2}-\d{2}", published_on
+        ):
+            fail("published submission must record an ISO publication date")
+        if not publication.get("listing_locator"):
+            fail("published submission must record a directory locator")
 
     cases = test_suite.get("cases")
     if not isinstance(cases, list):

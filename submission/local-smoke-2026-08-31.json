@@ -4,14 +4,14 @@
   "executed_at": "2026-08-31T23:22:20+08:00",
   "plugin": {
     "name": "orchestrate-multi-perspective-panel",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "tested_bundle_sha256": "sha256:0fe5443b0e81956522216ec59c58fbf18ca3029f16d1eb15f166990aaab4642c",
-    "current_bundle_sha256": "sha256:ea105e9f6bec3e8513b8fdfffcdcbff23730bc72d86bc4f88c8ea524c0d7281e",
+    "current_bundle_sha256": "sha256:be1eaa13fe5fc264989c5c90430f3c6253a4c69e052b3640ce152b35cf9454db",
     "local_marketplace": "meeting-core-local",
     "installed_enabled": true
   },
   "current_bundle_update": {
-    "recorded_at": "2026-09-01",
+    "recorded_at": "2026-09-02",
     "classification": "metadata_only",
     "changed_manifest_fields": [
       "author.name",
@@ -33,10 +33,12 @@
       "interface.privacyPolicyURL",
       "interface.termsOfServiceURL",
       "plugin-level listing image assets",
-      "top-level description"
+      "top-level description",
+      "official submission wrapper name",
+      "plugin version"
     ],
     "runtime_skill_bytes_changed": false,
-    "behavioral_claim": "The recorded discovery and routing attempts remain attributed to tested_bundle_sha256. The current bundle changes only public publisher, URL, positioning copy, category, starter prompts, color, and listing-image metadata; runtime skill bytes remain unchanged. It was rebuilt and structurally validated, but was not relabeled as a fresh behavioral smoke."
+    "behavioral_claim": "The recorded discovery and routing attempts remain attributed to tested_bundle_sha256. The current bundle changes only public publisher, URL, positioning copy, category, starter prompts, color, listing-image metadata, the official submission wrapper name, and the patch version; the stable skill identifier and runtime skill bytes remain unchanged. It was rebuilt and structurally validated, but was not relabeled as a fresh behavioral smoke."
   },
   "runtime_source_check": {
     "repository_skill_sha256": "sha256:90dea49f3da26d7c84ecd65006056f1dd735983af5a6ae6e05aafbaa6a0ca4fd",
@@ -98,7 +100,7 @@
   "overall": "pass_with_observations",
   "limitations": [
     "This is a local package-discovery and routing smoke, not the official submission portal test record.",
-    "The current bundle differs from the behaviorally tested bundle only in public publisher and directory metadata, including URLs, positioning copy, category, starter prompts, color, and listing-image assets; its Skill runtime digest is unchanged, and no fresh behavioral run is claimed for that rebuilt ZIP.",
+    "The current bundle differs from the behaviorally tested bundle only in public publisher and directory metadata, including URLs, positioning copy, category, starter prompts, color, listing-image assets, the official submission wrapper name, and the patch version; its stable Skill identifier and runtime digest are unchanged, and no fresh behavioral run is claimed for that rebuilt ZIP.",
     "The draft five-positive and three-negative portal cases still require fresh-chat execution against the exact public release bytes and final submission host.",
     "The two scored smoke passes use a low-cost model because they check routing and packaging, not full synthesis quality; the separate current-runtime scorecard remains the Sol/xhigh behavioral evidence."
   ]

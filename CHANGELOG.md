@@ -4,8 +4,12 @@ All notable changes are documented here. Repository releases use Semantic Versio
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-09-03
+
 ### Changed
 
+- Recorded the 2026-09-03 approval and publisher-initiated release of Complex Enough v1.1.1 in OpenAI's universal Plugins Directory, and made directory installation the primary public path.
+- Released the `1.1.1` runtime-compatible packaging patch: the official submission ZIP now uses the short `complex-enough` wrapper identifier so `plugin-name:skill-name` stays within the Platform 64-character limit, while the stable `orchestrate-multi-perspective-panel` skill, invocation, local marketplace identifier, runtime bytes, schemas, and `1.x` contracts remain unchanged.
 - Recorded the successful `v1.1.0` tag-driven Pages deployment and the required `github-pages` environment rule for `v*` tags.
 - Recorded the verified `complexenough.com` custom domain, DNS-only GitHub Pages routing, enforced HTTPS, canonical redirects, and final bilingual desktop/mobile validation.
 

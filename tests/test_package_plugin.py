@@ -43,12 +43,30 @@ class PackagePluginTest(unittest.TestCase):
                     ):
                         package_plugin.load_manifest(manifest_path)
 
+    def test_submission_combined_name_limit_preserves_skill_identifier(self) -> None:
+        manifest = package_plugin.load_manifest()
+        submission = package_plugin.submission_manifest(manifest)
+        self.assertEqual(submission["name"], "complex-enough")
+        self.assertEqual(
+            package_plugin.SKILL_NAME,
+            "orchestrate-multi-perspective-panel",
+        )
+        self.assertLessEqual(
+            len(f"{submission['name']}:{package_plugin.SKILL_NAME}"),
+            package_plugin.MAX_COMBINED_PLUGIN_SKILL_NAME,
+        )
+        with self.assertRaisesRegex(
+            package_plugin.PackagingError,
+            "combined submission plugin and skill name",
+        ):
+            package_plugin.submission_manifest(manifest, "x" * 64)
+
     def test_build_contains_exact_runtime_and_submission_archive(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT) as directory:
             output = Path(directory) / "build"
             result = package_plugin.build(output)
             plugin_root = Path(result["plugin_root"])
-            skill_root = plugin_root / "skills" / package_plugin.PLUGIN_NAME
+            skill_root = plugin_root / "skills" / package_plugin.SKILL_NAME
 
             expected_runtime = {
                 relative.as_posix()
@@ -81,8 +99,12 @@ class PackagePluginTest(unittest.TestCase):
             archive = Path(result["archive"])
             with zipfile.ZipFile(archive) as bundle:
                 names = set(bundle.namelist())
+                submission_manifest = json.loads(
+                    bundle.read(".codex-plugin/plugin.json").decode("utf-8")
+                )
+            self.assertEqual(submission_manifest["name"], package_plugin.SUBMISSION_PLUGIN_NAME)
             self.assertIn(".codex-plugin/plugin.json", names)
-            self.assertIn(f"skills/{package_plugin.PLUGIN_NAME}/SKILL.md", names)
+            self.assertIn(f"skills/{package_plugin.SKILL_NAME}/SKILL.md", names)
             self.assertIn("assets/composer-icon.png", names)
             self.assertIn("assets/logo.png", names)
             self.assertIn("assets/logo-dark.png", names)

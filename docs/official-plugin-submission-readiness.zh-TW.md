@@ -1,8 +1,8 @@
-# Complex Enough：OpenAI 官方 Plugin 送審準備紀錄
+# Complex Enough：OpenAI 官方 Plugin 送審與發布紀錄
 
 ## 決策
 
-以 **Complex Enough** 作為公開 plugin 品牌，先送出目前已通過行為驗證的 skills-only plugin，再開始 GUI。GUI、MCP server、遠端資料、帳號系統及遙測均不屬於本次送審範圍。
+以 **Complex Enough** 作為公開 plugin 品牌，先發布已通過行為驗證的 skills-only plugin，再開始 GUI。GUI、MCP server、遠端資料、帳號系統及遙測均不屬於本次發布範圍。
 
 OpenAI 的官方路徑是將 skill 包成 skills-only plugin，經 Platform submission portal 審查後發布到 ChatGPT 與 Codex 共用的 plugin directory。Repository 公開、GitHub Pages、DNS、OpenAI portal 寫入及 submission 都是分開的外部 gate。
 
@@ -35,27 +35,30 @@ OpenAI 的官方路徑是將 skill 包成 skills-only plugin，經 Platform subm
 
 Portal 與 reviewer talk track 應只承諾本次 skills-only 版本已具備的 selective routing、role proposal/review/freeze、independent perspectives、evidence adjudication 與 synthesis。
 
-未來 GUI 會讓使用者逐回合從公開理由、證據、衝突與後果中學習領域知識與決策原因，並在最終 Plan 定版前追問 Main，或要求下一回合臨時加入／拆分視角。這是使用者學習與理解，不是模型訓練或永久記憶；也是 roadmap，而非 1.1.0 listing claim。GUI 仍只顯示結構化 public deliberation，不顯示 hidden reasoning 或 raw private transcripts。角色 prompt 的後續訓練不列入目前 roadmap。
+未來 GUI 會讓使用者逐回合從公開理由、證據、衝突與後果中學習領域知識與決策原因，並在最終 Plan 定版前追問 Main，或要求下一回合臨時加入／拆分視角。這是使用者學習與理解，不是模型訓練或永久記憶；也是 roadmap，而非 1.1.1 listing claim。GUI 仍只顯示結構化 public deliberation，不顯示 hidden reasoning 或 raw private transcripts。角色 prompt 的後續訓練不列入目前 roadmap。
 
 ## 已確認的公開身分
 
 - 申請類型：個人。
-- 公開 publisher／developer 候選顯示名稱：`Huan Min Wei`。
+- OpenAI Platform 已驗證的 publisher／developer 顯示名稱：`Huan Min Wei`。
+- 送審 organization：`Personal`，portal 已接受其提交與發布權限。
 - GitHub Organization 與 repository：`complex-enough/complex-enough`。
 - 官網：`https://complexenough.com/en/`，另提供 `/zh-TW/`。
 - 支援：`support@complexenough.com`，best effort，不保證回覆或解決時限。
 - Availability：portal 可選的全部國家與地區。
 - 公開品牌與 directory display name：`Complex Enough`。
 - 品牌短句：`The right perspectives. No more.`。
-- 穩定 skill／plugin identifier：`orchestrate-multi-perspective-panel`。
-- 既有 invocation、安裝路徑、schema URN 與 `1.x` public contracts 不因公開名稱或 repository namespace 調整而更名。
+- 穩定 skill、invocation 與本機 marketplace plugin identifier：`orchestrate-multi-perspective-panel`。
+- OpenAI 官方 submission wrapper identifier：`complex-enough`。這只用來滿足 `plugin-name:skill-name` 合計不超過 64 字元的 portal ingestion 限制；ZIP 內的 skill 目錄與 `SKILL.md` 名稱仍是 `orchestrate-multi-perspective-panel`。
+- 既有 invocation、安裝路徑、schema URN 與 `1.x` public contracts 不因官方 wrapper、公開名稱或 repository namespace 調整而更名。
 
-`Huan Min Wei` 必須在送審前與 OpenAI Platform 已驗證個人身分的實際顯示字串逐字比對。如果平台顯示順序或拼法不同，manifest、listing、官網及政策必須一起調整後重新驗證。
+`Huan Min Wei` 已在 portal 的 developer identity 選單與 OpenAI Platform 個人驗證結果完成逐字確認。
 
 ## Repository 內已完成
 
 - Repo 根目錄仍是唯一 canonical skill source。
 - Deterministic packaging 產生 `.codex-plugin/plugin.json`、plugin-level `skills/`、listing images、本機 marketplace 與 submission ZIP。
+- Portal ingestion 實測發現 `plugin-name:skill-name` 合計 64 字元限制；1.1.1 打包流程保留原本本機 plugin／skill identifier，並只在官方 submission ZIP 產生 `complex-enough` wrapper manifest，組合長度由 71 降為 50。
 - `brand/` 保存 canonical SVG，`packaging/assets/` 保存 128px composer icon 與 512px light/dark listing logo。
 - `site/` 保存無第三方 script、cookie、publisher analytics 或外部字型的英文／繁體中文靜態網站。
 - Privacy policy、terms of use 與 support 已由 draft 轉為可發布雙語內容。
@@ -64,6 +67,7 @@ Portal 與 reviewer talk track 應只承諾本次 skills-only 版本已具備的
 - 自訂網域與 DNS 的人工發布／回復順序已記錄於 [`github-pages-and-dns-plan.zh-TW.md`](github-pages-and-dns-plan.zh-TW.md)。
 - Portal 所需的 5 個正向與 3 個負向案例草稿已準備。
 - `CONTRIBUTING.md`、`SECURITY.md`、`CODE_OF_CONDUCT.md` 與 Apache-2.0 license 已存在。
+- v1.1.1 skills-only submission 已通過 portal ingestion 與 Skills 檢查，狀態成為 `Approved`，並於 2026-09-03 由 publisher 執行 `Publish`。
 
 產生送審包：
 
@@ -82,7 +86,7 @@ python3 scripts/package_plugin.py --replace
 - 一次同名舊 personal skill 的來源碰撞已標為無效，同步 bytes 後才重跑。
 - 一次通用 artifact review 證明 package discovery，但因缺少 artifact 且人工中止，不列為完成通過。
 
-Current-runtime Codex gate 是 26/26 cases、59 public turns、120/120 assertions，由三個 fresh blind graders一致通過。這些證據不取代送審時在最終 host、精確 public release bytes 上重跑的 5 positive／3 negative portal cases。
+Current-runtime Codex gate 是 26/26 cases、59 public turns、120/120 assertions，由三個 fresh blind graders 一致通過。這些是產品行為證據；portal 的 ingestion、approval 與 publication 狀態另記錄於 [`submission/listing.json`](../submission/listing.json)。
 
 ## 隱私與歷史資料
 
@@ -90,24 +94,16 @@ Repository 公開 publisher 使用個人姓名、品牌網域與 Organization na
 
 部分早期歷史 eval artifact 含 `/home/sai` 本機絕對路徑。它不是密鑰或使用者資料，但 artifact 與 scorecard digest 綁定；直接改寫會破壞保存的實驗證據。因此公開版保留原始歷史證據並揭露此限制。新的 current-runtime artifacts 不依賴該本機路徑。
 
-## 仍需人工／外部完成
+## 發布結果
 
-1. 在 OpenAI Platform 完成或確認個人身分驗證，逐字確認 publisher 顯示名稱。
-2. 選擇具有 `Apps Management: Write` 的 organization／project。
-3. 在最終提交 host 與精確 bundle bytes 上，以 fresh chats 執行 5 positive／3 negative portal cases。
-4. 逐項完成 portal listing、availability、release notes、policy attestations 與 guidelines review。
-5. 使用者明確授權後才提交官方審查。
+- 發布版本：`1.1.1`。
+- 發布日期：2026-09-03。
+- Portal 在提交後未出現可觀察的等待期即顯示 `Approved`；portal 沒有揭露採用的審查機制，因此本紀錄不再推論人工或自動審查。
+- Publisher 隨後執行 `Publish`，完成 OpenAI universal Plugins Directory 發布。
+- Portal 當時未提供可保存的穩定 listing permalink；目前以 Plugins Directory 搜尋 `Complex Enough` 作為公開定位方式。
+- 後續版本仍須重新產生 deterministic ZIP、通過 repository validators，並以 portal 的更新流程提交；不得用已發布狀態略過新版驗證。
 
-## `ready_to_submit` terminal condition
-
-只有下列條件全部成立，`submission/listing.json` 才可從 `awaiting_publisher_inputs` 改為 `ready_to_submit`：
-
-1. OpenAI verified individual identity 與所有公開 publisher 字串一致。
-2. Public repository 與所有政策 URL 已上線，可匿名存取。
-3. Plugin Creator、Skill Creator 與 `python3 scripts/validate_repo.py` 全部通過。
-4. 精確 release bundle 通過 fresh-host 5 positive／3 negative 測試。
-5. Public release bytes、tag／release 與 submission bundle digest 相符。
-6. 使用者明確授權 portal submission。
+`submission/listing.json` 已由 `awaiting_publisher_inputs` 更新為 `published`，並保存 verified identity、organization、版本、日期、核准前狀態與 directory locator。這是目前發布狀態的 machine-readable source of truth。
 
 ## 官方參考
 

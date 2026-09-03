@@ -6,18 +6,22 @@
 
 Complex Enough is agent-led planning quality control for autonomous software development. It is designed for situations where the user has only a goal or partial domain knowledge and expects an AI agent to drive the design. The user remains the boss, owning goals, scope, and consequential decisions; Main acts as the meeting manager.
 
-The public plugin brand is **Complex Enough**. The contained skill and its stable technical identifier remain `orchestrate-multi-perspective-panel`; existing invocation names, schemas, installation paths, and `1.x` contracts do not change with the brand.
+The public plugin brand is **Complex Enough**. The contained skill, local marketplace plugin, and stable technical identifier remain `orchestrate-multi-perspective-panel`; existing invocation names, schemas, installation paths, and `1.x` contracts do not change with the brand. The official-directory submission ZIP uses the shorter wrapper identifier `complex-enough` so the required combined `plugin-name:skill-name` stays within the Platform limit; this does not rename the contained skill.
 
-## Install before official directory listing
+## Install
 
-Complex Enough has not yet been accepted into OpenAI's universal public Plugins Directory. Until then, install the public release from this repository and pin the release tag instead of tracking moving `main` bytes.
+### OpenAI Plugins Directory (recommended)
 
-### Plugin marketplace (recommended)
+Complex Enough v1.1.1 is published in OpenAI's universal Plugins Directory shared by ChatGPT and Codex. In a supported interface, open **Plugins**, search for **Complex Enough**, install it, and start a new chat or session before use.
+
+### GitHub release marketplace (alternative)
+
+Use the local marketplace when the universal directory is unavailable in the current host or account, or when you need a tag-pinned copy for local testing. Do not enable it beside the official-directory plugin or a same-name personal skill.
 
 Clone the release and build its local marketplace:
 
 ```bash
-git clone --depth 1 --branch v1.1.0 https://github.com/complex-enough/complex-enough.git
+git clone --depth 1 --branch v1.1.1 https://github.com/complex-enough/complex-enough.git
 cd complex-enough
 python3 -m pip install -r requirements-dev.txt
 python3 scripts/package_plugin.py --replace
@@ -25,7 +29,7 @@ codex plugin marketplace add ./build/marketplace
 codex plugin add orchestrate-multi-perspective-panel@complex-enough-releases
 ```
 
-Start a new thread after installation. In the ChatGPT desktop app, **Complex Enough** also appears under **Complex Enough Releases** in the Plugins Directory. This local marketplace is a pre-directory distribution source; it does not imply OpenAI review or endorsement. See OpenAI's [plugin marketplace documentation](https://developers.openai.com/plugins/build/plugins#add-a-marketplace-from-the-cli).
+Start a new thread after installation. In the ChatGPT desktop app, this local copy appears under **Complex Enough Releases** and is separate from the public-directory listing. See OpenAI's [plugin marketplace documentation](https://developers.openai.com/plugins/build/plugins#add-a-marketplace-from-the-cli).
 
 ### Codex personal skill
 
@@ -76,7 +80,7 @@ Controlled evaluations directly measure the upstream Plan, where a broader six-t
 
 The current skills-only release returns structured public claims, evidence, conflicts, decisions, and a synthesis. A planned GUI will make that deliberation easier to follow so users can learn domain knowledge and understand why tradeoffs exist, ask Main for clarification, and request an added or split perspective for a newly confirmed round before the final Plan is locked.
 
-Here, “learning” means the human user learns from the public decision process. It does not mean model training, permanent agent memory, hidden chain-of-thought, or access to raw private transcripts. This GUI is roadmap work and is not included in the current skills-only 1.1.0 release.
+Here, “learning” means the human user learns from the public decision process. It does not mean model training, permanent agent memory, hidden chain-of-thought, or access to raw private transcripts. This GUI is roadmap work and is not included in the current skills-only 1.1.1 release.
 
 ## How it works
 
@@ -228,34 +232,29 @@ Or ask naturally for a panel, independent perspectives, stakeholder lenses, adve
 | --- | --- |
 | Codex personal skill | Supported; current-runtime behavioral gate passed. |
 | Claude Code skill | Structurally compatible; host-specific behavioral forward tests remain required. |
-| GUI/API consumer | `meeting-plan` v1.1 and `panel-output` v1.2 contracts are ready; GUI starts after the skills-only plugin is submitted. |
+| GUI/API consumer | `meeting-plan` v1.1 and `panel-output` v1.2 contracts are ready; GUI remains separate roadmap work after the skills-only release. |
 | OpenAI project-owned Skills API | OpenAI supports directory or zip uploads and immutable versions; this repository has not yet claimed an API-hosted release. |
-| OpenAI universal plugin directory | A reproducible skills-only package and local marketplace are ready; no public or portal submission has occurred. |
+| OpenAI universal plugin directory | Complex Enough v1.1.1 was approved and publisher-released on 2026-09-03. |
 | Legacy `openai/skills` catalog | Deprecated by OpenAI in favor of plugins. |
-| Plugin bundle | Packaged and locally installed as v1.1.0; `.codex-plugin/plugin.json` and plugin-level `skills/` bytes are generated from the canonical standalone skill. |
+| Plugin bundle | Packaged as v1.1.1; the local marketplace keeps `orchestrate-multi-perspective-panel`, while the official submission wrapper uses `complex-enough` and contains the same canonical skill bytes. |
 
 The Skills API and a curated library or plugin marketplace are different distribution channels. Publishing this repository does not automatically place it in an official catalog.
 
-### Official directory readiness
+### Official directory publication
 
 OpenAI's current publication path accepts a **skills-only plugin**; an MCP server and custom UI are optional. The official flow is documented in [Build skills](https://developers.openai.com/plugins/build/skills), [Package your plugin](https://developers.openai.com/plugins/build/plugins), and [Submit plugins](https://developers.openai.com/plugins/deploy/submission).
 
-This repository has the core skill, explicit trigger boundaries, supporting resources, public contracts, validation, behavioral evidence, metadata, changelog, Apache-2.0 license, reproducible skills-only packaging, final bilingual policy content, brand assets, a static public website, and draft portal test cases. Build the local marketplace and submission ZIP with:
+The v1.1.1 skills-only submission was approved and published through the OpenAI Platform on 2026-09-03.
+
+This repository retains the core skill, explicit trigger boundaries, supporting resources, public contracts, validation, behavioral evidence, metadata, changelog, Apache-2.0 license, reproducible skills-only packaging, final bilingual policy content, brand assets, static public website, and portal-oriented test cases. Build the local marketplace and submission ZIP with:
 
 ```bash
 python3 scripts/package_plugin.py --replace
 ```
 
-Local package discovery and selective-routing smoke checks are recorded in [submission/local-smoke-2026-08-31.json](submission/local-smoke-2026-08-31.json). Public-surface source is prepared but has not been published. Before official submission it still needs:
+Local package discovery and selective-routing smoke checks are recorded in [submission/local-smoke-2026-08-31.json](submission/local-smoke-2026-08-31.json). The verified individual identity, public website and policy URLs, portal listing, availability, release notes, attestations, approval, and publisher-initiated publication are recorded in [submission/listing.json](submission/listing.json) and the [送審與發布紀錄](docs/official-plugin-submission-readiness.zh-TW.md).
 
-- confirmation that the OpenAI Platform verified individual display name exactly matches `Huan Min Wei`;
-- an OpenAI Platform organization with `Apps Management: Write`;
-- public activation of the prepared website, support, privacy, and terms URLs;
-- final portal confirmation of starter prompts, all selectable country/region availability, release notes, and policy attestations;
-- fresh-chat execution of the five positive and three negative portal cases against the exact public release bytes and final submission host;
-- review against the [plugin guidelines](https://developers.openai.com/plugins/app-guidelines), including clear utility and originality, authorized intellectual property, accurate claims, and no implication of OpenAI endorsement.
-
-The existing 26-case eval suite provides the evidence base, and [submission/test-cases.json](submission/test-cases.json) contains the portal-oriented five-positive/three-negative draft. Publisher-owned inputs and their current gates are recorded in [submission/listing.json](submission/listing.json) and the [送審準備紀錄](docs/official-plugin-submission-readiness.zh-TW.md). GUI development is intentionally scheduled after submission and is not a prerequisite for this skills-only release.
+The existing 26-case eval suite remains the product evidence base, and [submission/test-cases.json](submission/test-cases.json) preserves the five-positive/three-negative portal-oriented cases. Directory publication adds a supported distribution path; it does not replace those evaluations or prove downstream implementation outcomes. GUI development remains separate roadmap work and was not part of the published skills-only release.
 
 For local development, do not leave an older same-name personal skill beside the plugin: host discovery may select either source. Update the personal installation to the same bytes with `scripts/install_skill.py --check`, or remove the duplicate before testing the packaged plugin.
 

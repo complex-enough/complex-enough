@@ -1,11 +1,12 @@
 {
   "record_type": "internal_openai_plugin_submission_readiness",
-  "schema_version": "1.0",
-  "status": "awaiting_publisher_inputs",
+  "schema_version": "1.1",
+  "status": "published",
   "submission_type": "skills_only",
   "plugin": {
-    "name": "orchestrate-multi-perspective-panel",
-    "version": "1.1.0",
+    "name": "complex-enough",
+    "skill_name": "orchestrate-multi-perspective-panel",
+    "version": "1.1.1",
     "display_name": "Complex Enough",
     "category": "Developer Tools",
     "short_description": "Agent-led plan quality control",
@@ -40,7 +41,7 @@
     ]
   },
   "publisher_inputs": {
-    "verified_developer_or_business_identity": null,
+    "verified_developer_or_business_identity": "Huan Min Wei",
     "publisher_type": "individual",
     "publisher_display_name": "Huan Min Wei",
     "publisher_profile_url": "https://complexenough.com/en/",
@@ -51,9 +52,9 @@
     "terms_url": "https://complexenough.com/en/terms/",
     "logo_asset": "packaging/assets/logo.png",
     "country_availability": "All countries and regions selectable in the OpenAI submission portal",
-    "platform_organization_with_apps_management_write": null
+    "platform_organization_with_apps_management_write": "Personal"
   },
-    "release_notes": "Initial official-directory submission of the Complex Enough skills-only plugin, version 1.1.0. Improves planning before specs and code through selective meeting routing, user-reviewed role slates, evidence-based synthesis, public 1.x contracts, and deterministic local validators.",
+  "release_notes": "Initial official-directory submission of the Complex Enough skills-only plugin, version 1.1.1. Improves planning before specs and code through selective meeting routing, user-reviewed role slates, evidence-based synthesis, public 1.x contracts, and deterministic local validators. Uses a short official submission wrapper identifier while preserving the stable orchestrate-multi-perspective-panel skill identifier.",
   "submission_materials": {
     "plugin_manifest": "packaging/plugin.json",
     "test_cases": "submission/test-cases.json",
@@ -67,12 +68,22 @@
     "brand_assets": "brand/",
     "website_source": "site/",
     "build_command": "python3 scripts/package_plugin.py --replace",
-    "generated_bundle": "build/submission/orchestrate-multi-perspective-panel-1.1.0.zip"
+    "generated_bundle": "build/submission/complex-enough-1.1.1.zip"
+  },
+  "publication": {
+    "directory": "OpenAI universal Plugins Directory",
+    "published_version": "1.1.1",
+    "published_on": "2026-09-03",
+    "portal_status_before_publish": "Approved",
+    "publication_confirmed_by": "publisher",
+    "listing_locator": "Search for Complex Enough in the Plugins Directory",
+    "review_observation": "The portal returned Approved without an observable waiting period; the review mechanism was not exposed."
   },
   "notes": [
     "This file is an internal readiness record, not an OpenAI portal import schema.",
+    "The generated official submission manifest uses the complex-enough wrapper name; packaging/plugin.json remains the canonical local marketplace manifest for the stable orchestrate-multi-perspective-panel identifier.",
     "The public repository, website, support page, privacy policy, and terms are live over the verified complexenough.com HTTPS custom domain.",
-    "The exact verified individual display name and an eligible OpenAI Platform organization remain portal-time gates.",
-    "Do not change status to ready_to_submit until every publisher input is resolved and the generated bundle passes fresh-host validation."
+    "The verified individual identity, eligible Platform organization, portal approval, and publisher-initiated publication were completed on 2026-09-03.",
+    "No stable public listing permalink was captured; use the directory search locator until one is available."
   ]
 }

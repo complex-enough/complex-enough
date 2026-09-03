@@ -19,7 +19,10 @@ import install_skill
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PLUGIN_NAME = install_skill.SKILL_NAME
+SKILL_NAME = install_skill.SKILL_NAME
+PLUGIN_NAME = SKILL_NAME
+SUBMISSION_PLUGIN_NAME = "complex-enough"
+MAX_COMBINED_PLUGIN_SKILL_NAME = 64
 PLUGIN_MANIFEST = ROOT / "packaging" / "plugin.json"
 PLUGIN_ASSET_ROOT = ROOT / "packaging" / "assets"
 DEFAULT_OUTPUT_ROOT = ROOT / "build"
@@ -113,6 +116,18 @@ def load_manifest(path: Path = PLUGIN_MANIFEST) -> dict:
     return manifest
 
 
+def submission_manifest(manifest: dict, plugin_name: str = SUBMISSION_PLUGIN_NAME) -> dict:
+    combined_name = f"{plugin_name}:{SKILL_NAME}"
+    if len(combined_name) > MAX_COMBINED_PLUGIN_SKILL_NAME:
+        raise PackagingError(
+            "combined submission plugin and skill name must be at most "
+            f"{MAX_COMBINED_PLUGIN_SKILL_NAME} characters"
+        )
+    payload = json.loads(json.dumps(manifest))
+    payload["name"] = plugin_name
+    return payload
+
+
 def _assert_safe_output_root(output_root: Path) -> Path:
     absolute = Path(os.path.abspath(os.fspath(output_root.expanduser())))
     if absolute in {Path("/"), Path.home().resolve(), ROOT}:
@@ -123,7 +138,7 @@ def _assert_safe_output_root(output_root: Path) -> Path:
 
 
 def _copy_runtime(plugin_root: Path) -> None:
-    skill_root = plugin_root / "skills" / PLUGIN_NAME
+    skill_root = plugin_root / "skills" / SKILL_NAME
     for relative in install_skill.runtime_files("codex"):
         source = ROOT / relative
         if not source.is_file() or source.is_symlink():
@@ -215,8 +230,17 @@ def build(output_root: Path = DEFAULT_OUTPUT_ROOT, *, replace: bool = False) -> 
         marketplace_path = marketplace_root / ".agents" / "plugins" / "marketplace.json"
         _write_json(marketplace_path, _marketplace(manifest["interface"]["category"]))
 
-        archive = staged_root / "submission" / f"{PLUGIN_NAME}-{manifest['version']}.zip"
-        _write_reproducible_zip(plugin_root, archive)
+        submission_root = Path(directory) / "submission-plugin"
+        _write_json(
+            submission_root / ".codex-plugin" / "plugin.json",
+            submission_manifest(manifest),
+        )
+        _copy_runtime(submission_root)
+        _copy_plugin_assets(submission_root, manifest)
+        shutil.copy2(ROOT / "LICENSE", submission_root / "LICENSE", follow_symlinks=False)
+
+        archive = staged_root / "submission" / f"{SUBMISSION_PLUGIN_NAME}-{manifest['version']}.zip"
+        _write_reproducible_zip(submission_root, archive)
         digest = sha256(archive)
         (archive.parent / f"{archive.name}.sha256").write_text(
             f"{digest}  {archive.name}\n", encoding="utf-8"
@@ -229,7 +253,7 @@ def build(output_root: Path = DEFAULT_OUTPUT_ROOT, *, replace: bool = False) -> 
     return {
         "plugin_root": output_root / "marketplace" / "plugins" / PLUGIN_NAME,
         "marketplace": output_root / "marketplace" / ".agents" / "plugins" / "marketplace.json",
-        "archive": output_root / "submission" / f"{PLUGIN_NAME}-{manifest['version']}.zip",
+        "archive": output_root / "submission" / f"{SUBMISSION_PLUGIN_NAME}-{manifest['version']}.zip",
         "sha256": digest,
     }
 

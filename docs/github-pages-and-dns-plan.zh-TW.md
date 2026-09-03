@@ -1,6 +1,6 @@
 # Complex Enough GitHub Pages 與 DNS 發布計畫
 
-本文件是 GitHub Pages 與自訂網域發布 runbook。Repository 已公開，Pages source 已選擇 GitHub Actions；`v1.1.0` tag deployment 已於 2026-09-02 成功。`complexenough.com` 的 Organization 驗證、DNS、GitHub Pages custom domain 與 Enforce HTTPS 亦已於同日完成；官方送審仍是獨立的外部 gate。
+本文件是 GitHub Pages 與自訂網域發布 runbook。Repository 已公開，Pages source 已選擇 GitHub Actions；`v1.1.0` tag deployment 已於 2026-09-02 成功。`complexenough.com` 的 Organization 驗證、DNS、GitHub Pages custom domain 與 Enforce HTTPS 亦已於同日完成；官方 skills-only plugin 已於 2026-09-03 發布。
 
 ## 目前發布狀態
 
@@ -54,7 +54,7 @@
 12. 不新增 wildcard DNS。不得刪除或覆蓋既有 Google Workspace MX、SPF、DKIM 與 domain verification TXT。
 13. 等 GitHub 完成 DNS check 後啟用 **Enforce HTTPS**。
 14. 驗證 apex 與 `www`、兩種語言、四種政策頁、404、sitemap、手機版與無 JavaScript fallback。
-15. URL 實際可用後，才把 OpenAI internal readiness 狀態往 `ready_to_submit` 推進。
+15. URL 實際可用後才推進 OpenAI internal readiness；本項已完成，最終狀態於 2026-09-03 更新為 `published`。
 
 ## 回復方式
 
