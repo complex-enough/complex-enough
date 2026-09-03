@@ -6,6 +6,8 @@
 
 Complex Enough is agent-led planning quality control for autonomous software development. It is designed for situations where the user has only a goal or partial domain knowledge and expects an AI agent to drive the design. The user remains the boss, owning goals, scope, and consequential decisions; Main acts as the meeting manager.
 
+> **Better plans compound.** Agents can quickly turn a Plan into specs and code—and amplify its blind spots just as quickly. Complex Enough improves the starting point so downstream automation begins with broader perspectives and better-grounded assumptions.
+
 The public plugin brand is **Complex Enough**. The contained skill, local marketplace plugin, and stable technical identifier remain `orchestrate-multi-perspective-panel`; existing invocation names, schemas, installation paths, and `1.x` contracts do not change with the brand. The official-directory submission ZIP uses the shorter wrapper identifier `complex-enough` so the required combined `plugin-name:skill-name` stays within the Platform limit; this does not rename the contained skill.
 
 ## Install
