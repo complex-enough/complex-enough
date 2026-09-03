@@ -26,9 +26,9 @@ jobs:
           expected="v$(python3 -c 'import json; print(json.load(open("packaging/plugin.json", encoding="utf-8"))["version"])')"
           test "$GITHUB_REF_NAME" = "$expected"
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Upload static site artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
@@ -44,4 +44,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
