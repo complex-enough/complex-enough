@@ -130,8 +130,9 @@ h3 { margin-top: 1.8rem; font-size: 1.25rem; }
 .thesis {
   display: grid;
   grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-  align-items: end;
-  gap: clamp(1.5rem, 5vw, 5rem);
+  align-items: start;
+  column-gap: clamp(1.5rem, 5vw, 5rem);
+  row-gap: 1rem;
   margin-bottom: clamp(4rem, 8vw, 7rem);
   padding: clamp(1.8rem, 4vw, 3rem);
   border-radius: 26px;
@@ -139,7 +140,7 @@ h3 { margin-top: 1.8rem; font-size: 1.25rem; }
   background: var(--ink);
   box-shadow: var(--shadow);
 }
-.thesis .eyebrow { color: #9cddd7; }
+.thesis .eyebrow { grid-column: 1 / -1; margin: 0; color: #9cddd7; }
 .thesis h2 { margin: 0; }
 .thesis-copy { margin: 0; color: #d8e0e5; font-size: clamp(1.08rem, 2vw, 1.28rem); }
 .section { padding-block: clamp(4rem, 8vw, 7rem); border-top: 1px solid var(--line); }
@@ -192,7 +193,7 @@ code { padding: .12em .35em; border-radius: .35em; background: var(--warm); font
   .language-link { padding-left: 0; border-left: 0; }
   .hero { min-height: auto; grid-template-columns: 1fr; }
   .hero-mark { width: min(72vw, 320px); grid-row: 1; }
-  .thesis { grid-template-columns: 1fr; align-items: start; }
+  .thesis { grid-template-columns: 1fr; }
   .grid { grid-template-columns: 1fr; }
   .comparison-grid { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr; }
