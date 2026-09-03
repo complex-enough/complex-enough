@@ -22,10 +22,10 @@ codex
 
 Inside the Codex CLI, enter `/plugins`, search for **Complex Enough**, install it, and then start a new session before use.
 
-Invoke the plugin directly in that new session:
+In that new session, describe the task and ask Codex to use Complex Enough directly:
 
 ```text
-@Complex Enough Help me plan an inventory system. I only have the goal and partial domain knowledge. Select the smallest sufficient panel, discuss the important perspectives, and let me confirm before finalizing the Plan.
+Use Complex Enough to help me plan an inventory system. I only have the goal and partial domain knowledge. Select the smallest sufficient panel, discuss the important perspectives, and let me confirm before finalizing the Plan.
 ```
 
 ### GitHub release marketplace (alternative)
