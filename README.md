@@ -12,9 +12,21 @@ The public plugin brand is **Complex Enough**. The contained skill, local market
 
 ## Install
 
-### OpenAI Plugins Directory (recommended)
+### OpenAI Plugins Directory (recommended for Codex)
 
-Complex Enough v1.1.1 is published in OpenAI's universal Plugins Directory shared by ChatGPT and Codex. In a supported interface, open **Plugins**, search for **Complex Enough**, install it, and start a new chat or session before use.
+Complex Enough v1.1.1 is published in OpenAI's universal Plugins Directory. Start Codex:
+
+```bash
+codex
+```
+
+Inside the Codex CLI, enter `/plugins`, search for **Complex Enough**, install it, and then start a new session before use.
+
+Invoke the plugin directly in that new session:
+
+```text
+@Complex Enough Help me plan an inventory system. I only have the goal and partial domain knowledge. Select the smallest sufficient panel, discuss the important perspectives, and let me confirm before finalizing the Plan.
+```
 
 ### GitHub release marketplace (alternative)
 
